@@ -1,0 +1,7 @@
+{
+	"variants": {
+		"axis=x": { "model": "vbe:block/stone_slab_full", "x": 90 },
+		"axis=y": { "model": "vbe:block/stone_slab_full" },
+		"axis=z": { "model": "vbe:block/stone_slab_full", "x": 90, "y": 90 }
+	}
+}

@@ -1,0 +1,38 @@
+{
+	"schemaVersion": 1,
+	"id": "vbe",
+	"version": "${version}",
+
+	"name": "Vanilla Block Enhancements",
+	"description": "Enhancement for some vanilla blocks",
+	"authors": [
+		"paulevs"
+	],
+	"contact": {
+		"homepage": "https://github.com/paulevsGitch/BetterNetherBeta/releases",
+		"sources": "https://github.com/paulevsGitch/BetterNetherBeta",
+		"issues": "https://github.com/paulevsGitch/BetterNetherBeta/issues"
+	},
+
+	"license": "MIT",
+	"icon": "assets/vbe/icon.png",
+
+	"environment": "*",
+	"entrypoints": {
+		"stationapi:event_bus": [
+			"paulevs.vbe.listeners.CommonListener"
+		],
+		"bhcreative:event_bus": [
+			"paulevs.vbe.listeners.CreativeListener"
+		]
+	},
+
+	"mixins": [
+		"vbe.mixins.common.json"
+	],
+	
+	"depends": {
+		"minecraft": "1.0.0-beta.7.3",
+		"stationapi": "*"
+	}
+}

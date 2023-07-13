@@ -1,0 +1,10 @@
+{
+	"variants": {
+		"direction=south": { "model": "vbe:block/stone_slab_bottom", "x": 90 },
+		"direction=north": { "model": "vbe:block/stone_slab_top", "x": 90 },
+		"direction=west": { "model": "vbe:block/stone_slab_bottom", "x": 90, "y": 90 },
+		"direction=east": { "model": "vbe:block/stone_slab_top", "x": 90, "y": 90 },
+		"direction=down": { "model": "vbe:block/stone_slab_bottom" },
+		"direction=up": { "model": "vbe:block/stone_slab_top" }
+	}
+}

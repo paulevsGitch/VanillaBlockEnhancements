@@ -54,7 +54,11 @@ public abstract class ChestBlockMixin extends BlockWithEntity implements BeforeB
 		Direction side = facing.rotateCounterclockwise(Axis.Y);
 		BlockPos sidePos = pos.offset(side);
 		BlockState sideState = level.getBlockState(sidePos);
-		if (sideState.isOf(this) && sideState.get(VBEBlockProperties.CHEST_PART) == ChestPart.SINGLE) {
+		if (
+			sideState.isOf(this) &&
+			sideState.get(VBEBlockProperties.CHEST_PART) == ChestPart.SINGLE &&
+			sideState.get(VBEBlockProperties.FACING) == facing
+		) {
 			sideState = sideState.with(VBEBlockProperties.CHEST_PART, ChestPart.LEFT);
 			LevelUtil.setBlockSilent(level, sidePos.getX(), sidePos.getY(), sidePos.getZ(), sideState);
 			return chest.with(VBEBlockProperties.CHEST_PART, ChestPart.RIGHT);
@@ -63,7 +67,11 @@ public abstract class ChestBlockMixin extends BlockWithEntity implements BeforeB
 		side = facing.rotateClockwise(Axis.Y);
 		sidePos = pos.offset(side);
 		sideState = level.getBlockState(sidePos);
-		if (sideState.isOf(this) && sideState.get(VBEBlockProperties.CHEST_PART) == ChestPart.SINGLE) {
+		if (
+			sideState.isOf(this) &&
+			sideState.get(VBEBlockProperties.CHEST_PART) == ChestPart.SINGLE &&
+			sideState.get(VBEBlockProperties.FACING) == facing
+		) {
 			sideState = sideState.with(VBEBlockProperties.CHEST_PART, ChestPart.RIGHT);
 			LevelUtil.setBlockSilent(level, sidePos.getX(), sidePos.getY(), sidePos.getZ(), sideState);
 			return chest.with(VBEBlockProperties.CHEST_PART, ChestPart.LEFT);
@@ -140,16 +148,16 @@ public abstract class ChestBlockMixin extends BlockWithEntity implements BeforeB
 		if (side < 2) return;
 		if (!(view instanceof BlockStateView blockStateView)) return;
 		BlockState state = blockStateView.getBlockState(x, y, z);
-		int facing = state.get(VBEBlockProperties.FACING).getOpposite().getId();
-		if (facing != side) {
+		Direction facing = state.get(VBEBlockProperties.FACING);
+		if (facing.getId() != side && facing.getOpposite().getId() != side) {
 			info.setReturnValue(this.texture);
 			return;
 		}
 		ChestPart part = state.get(VBEBlockProperties.CHEST_PART);
-		int offset = 1;
+		int offset = facing.getId() == side ? 0 : 1;
 		switch (part) {
-			case RIGHT -> offset = 16;
-			case LEFT -> offset = 15;
+			case RIGHT -> offset = facing.getId() == side ? 31 : 16;
+			case LEFT -> offset = facing.getId() == side ? 32 : 15;
 		}
 		info.setReturnValue(this.texture + offset);
 	}

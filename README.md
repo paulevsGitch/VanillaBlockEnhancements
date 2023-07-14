@@ -24,6 +24,7 @@
 ### Block Behaviour Changes:
 - Slabs: can be placed vertically, full slabs have directions, full slabs will break by parts
 - Pumpkins and Jack o' Lanterns: don't require block below them
+- Intractable blocks: placing blocks with shift click will not open GUI or trigger them
 
 *Planned:*
 - Stairs: can be placed vertically and upside-down

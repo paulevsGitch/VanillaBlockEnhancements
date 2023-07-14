@@ -91,7 +91,7 @@ public class VBEFullSlabBlock extends TemplateBlockBase implements BeforeBlockRe
 	public void beforeBlockRemoved(Level level, int x, int y, int z) {
 		blockState = level.getBlockState(x, y, z);
 		if (player == null || !blockState.isOf(this)) return;
-		hit = LevelUtil.getHit(level, player);
+		hit = LevelUtil.raycast(level, player);
 	}
 	
 	public void setSelection(BlockState state, float dx, float dy, float dz) {
@@ -114,7 +114,7 @@ public class VBEFullSlabBlock extends TemplateBlockBase implements BeforeBlockRe
 	
 	@Environment(EnvType.CLIENT)
 	private BlockState getBreakingState(BlockState state, PlayerBase player, Level level) {
-		HitResult hit = LevelUtil.getHit(level, player);
+		HitResult hit = LevelUtil.raycast(level, player);
 		if (hit == null || hit.type != HitType.BLOCK) return state;
 		Axis axis = state.get(VBEBlockProperties.AXIS);
 		state = halfBlock.getDefaultState();

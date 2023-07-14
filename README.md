@@ -25,10 +25,9 @@
 - Slabs: can be placed vertically, full slabs have directions, full slabs will break by parts
 - Pumpkins and Jack o' Lanterns: don't require block below them
 - Intractable blocks: placing blocks with shift click will not open GUI or trigger them
+- Chests: use player direction instead of wall check, can be placed near each other
 
 *Planned:*
 - Stairs: can be placed vertically and upside-down
-- Furnaces: use player direction instead of wall check
-- Chests: use player direction instead of wall check, can be placed near each other
 - Trapdoors: not require handle block, can be place on top and bottom
 - Doors: use blockstates (no open/close issues), double doors will open at once

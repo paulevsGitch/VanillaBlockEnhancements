@@ -127,7 +127,7 @@ public class VBEHalfSlabBlock extends TemplateBlockBase {
 		
 		Direction facing = state.get(VBEBlockProperties.DIRECTION);
 		
-		HitResult hit = LevelUtil.getHit(level, player);
+		HitResult hit = LevelUtil.raycast(level, player);
 		if (hit == null || hit.type != HitType.BLOCK) return false;
 		
 		double dx = hit.pos.x - x;

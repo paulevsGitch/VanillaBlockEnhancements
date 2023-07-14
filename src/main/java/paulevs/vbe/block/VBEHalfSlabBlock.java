@@ -13,8 +13,6 @@ import net.minecraft.level.Level;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.hit.HitType;
 import net.minecraft.util.maths.Box;
-import net.minecraft.util.maths.MathHelper;
-import net.minecraft.util.maths.Vec3f;
 import net.modificationstation.stationapi.api.block.BlockState;
 import net.modificationstation.stationapi.api.item.ItemPlacementContext;
 import net.modificationstation.stationapi.api.registry.Identifier;
@@ -24,7 +22,8 @@ import net.modificationstation.stationapi.api.util.math.BlockPos;
 import net.modificationstation.stationapi.api.util.math.Direction;
 import net.modificationstation.stationapi.api.util.math.Direction.Axis;
 import net.modificationstation.stationapi.api.world.BlockStateView;
-import paulevs.vbe.CreativeUtil;
+import paulevs.vbe.utils.CreativeUtil;
+import paulevs.vbe.utils.LevelUtil;
 
 import java.util.ArrayList;
 
@@ -39,8 +38,8 @@ public class VBEHalfSlabBlock extends TemplateBlockBase {
 	public VBEHalfSlabBlock(Identifier id, BaseBlock source) {
 		this(id, source.material);
 		setTranslationKey(id.toString());
-		BaseBlock.EMITTANCE[this.id] = BaseBlock.EMITTANCE[source.id];
-		setHardness(source.getHardness());
+		BaseBlock.EMITTANCE[this.id] = BaseBlock.EMITTANCE[source.id] / 2;
+		setHardness(source.getHardness() * 0.5F);
 		setSounds(source.sounds);
 	}
 	
@@ -128,7 +127,7 @@ public class VBEHalfSlabBlock extends TemplateBlockBase {
 		
 		Direction facing = state.get(VBEBlockProperties.DIRECTION);
 		
-		HitResult hit = getHit(level, player);
+		HitResult hit = LevelUtil.getHit(level, player);
 		if (hit == null || hit.type != HitType.BLOCK) return false;
 		
 		double dx = hit.pos.x - x;
@@ -188,31 +187,6 @@ public class VBEHalfSlabBlock extends TemplateBlockBase {
 	@Environment(EnvType.CLIENT)
 	public void updateRenderBounds() {
 		this.setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
-	}
-	
-	private HitResult getHit(Level level, PlayerBase player) {
-		double dist = 5.0;
-		float toRadians = (float) Math.PI / 180;
-		float pitch = player.prevPitch + (player.pitch - player.prevPitch);
-		
-		double x = player.prevX + (player.x - player.prevX);
-		double y = player.prevY + (player.y - player.prevY) + 1.62 - (double) player.standingEyeHeight;
-		double z = player.prevZ + (player.z - player.prevZ);
-		Vec3f pos = Vec3f.getFromCacheAndSet(x, y, z);
-		
-		float yaw = player.prevYaw + (player.yaw - player.prevYaw);
-		yaw = -yaw * toRadians - (float) Math.PI;
-		float cosYaw = MathHelper.cos(yaw);
-		float sinYaw = MathHelper.sin(yaw);
-		float cosPitch = -MathHelper.cos(-pitch * toRadians);
-		
-		Vec3f dir = pos.add(
-			sinYaw * cosPitch * dist,
-			(MathHelper.sin(-pitch * ((float) Math.PI / 180))) * dist,
-			cosYaw * cosPitch * dist
-		);
-		
-		return level.getHitResult(pos, dir, false);
 	}
 	
 	@Override

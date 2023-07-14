@@ -1,0 +1,13 @@
+{
+	"required": true,
+	"minVersion": "0.8",
+	"package": "paulevs.vbe.mixin.client",
+	"compatibilityLevel": "JAVA_17",
+	"client": [
+		"SinglePlayerClientInteractionManagerMixin",
+		"LevelRendererMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

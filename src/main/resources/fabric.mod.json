@@ -21,14 +21,13 @@
 	"entrypoints": {
 		"stationapi:event_bus": [
 			"paulevs.vbe.listeners.CommonListener"
-		],
-		"bhcreative:event_bus": [
-			"paulevs.vbe.listeners.CreativeListener"
 		]
 	},
 
 	"mixins": [
-		"vbe.mixins.common.json"
+		"vbe.mixins.common.json",
+		"vbe.mixins.client.json",
+		"vbe.mixins.server.json"
 	],
 	
 	"depends": {

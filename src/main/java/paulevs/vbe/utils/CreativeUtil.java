@@ -1,4 +1,4 @@
-package paulevs.vbe;
+package paulevs.vbe.utils;
 
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.player.PlayerBase;

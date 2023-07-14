@@ -188,9 +188,4 @@ public class VBEHalfSlabBlock extends TemplateBlockBase {
 	public void updateRenderBounds() {
 		this.setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
 	}
-	
-	@Override
-	public int getRenderType() {
-		return 1;
-	}
 }

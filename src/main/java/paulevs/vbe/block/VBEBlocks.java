@@ -2,6 +2,7 @@ package paulevs.vbe.block;
 
 import net.minecraft.block.BaseBlock;
 import paulevs.vbe.VBE;
+import paulevs.vbe.utils.CreativeUtil;
 
 public class VBEBlocks {
 	public static final VBEHalfSlabBlock STONE_SLAB_HALF = new VBEHalfSlabBlock(VBE.id("stone_slab_half"), BaseBlock.STONE);
@@ -18,6 +19,7 @@ public class VBEBlocks {
 		connectSlabs(SANDSTONE_SLAB_HALF, SANDSTONE_SLAB_FULL);
 		connectSlabs(OAK_SLAB_HALF, OAK_SLAB_FULL);
 		connectSlabs(COBBLESTONE_SLAB_HALF, COBBLESTONE_SLAB_FULL);
+		CreativeUtil.registerBlockConverters();
 	}
 	
 	private static void connectSlabs(VBEHalfSlabBlock halfSlab, VBEFullSlabBlock fullSlab) {

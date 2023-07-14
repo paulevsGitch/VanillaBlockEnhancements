@@ -1,7 +1,11 @@
 package paulevs.vbe.block;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.BaseBlock;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.level.Level;
@@ -28,6 +32,9 @@ public class VBEFullSlabBlock extends TemplateBlockBase implements BeforeBlockRe
 	public static HitResult hit;
 	private BaseBlock halfBlock;
 	
+	@Environment(EnvType.CLIENT)
+	public static BlockState breakingState;
+	
 	public VBEFullSlabBlock(Identifier id, Material material) {
 		super(id, material);
 		setTranslationKey(id.toString());
@@ -37,7 +44,8 @@ public class VBEFullSlabBlock extends TemplateBlockBase implements BeforeBlockRe
 		this(id, source.material);
 		setTranslationKey(id.toString());
 		BaseBlock.EMITTANCE[this.id] = BaseBlock.EMITTANCE[source.id];
-		setHardness(source.getHardness());
+		this.resistance = source.getHardness() * 5F;
+		this.hardness = source.getHardness() * 0.5F;
 		setSounds(source.sounds);
 	}
 	
@@ -67,6 +75,9 @@ public class VBEFullSlabBlock extends TemplateBlockBase implements BeforeBlockRe
 	
 	@Override
 	public List<ItemStack> getDropList(Level level, int x, int y, int z, BlockState state, int meta) {
+		if (blockState.isOf(this) && player != null) {
+			return Collections.singletonList(new ItemStack(halfBlock));
+		}
 		return Collections.singletonList(new ItemStack(halfBlock, 2));
 	}
 	
@@ -90,5 +101,30 @@ public class VBEFullSlabBlock extends TemplateBlockBase implements BeforeBlockRe
 			case Y -> this.setBoundingBox(0.0F, dy > 0.5F ? 0.5F : 0.0F, 0.0F, 1.0F, dy > 0.5F ? 1.0F : 0.5F, 1.0F);
 			case Z -> this.setBoundingBox(0.0F, 0.0F, dz > 0.5F ? 0.5F : 0.0F, 1.0F, 1.0F, dz > 0.5F ? 1.0F : 0.5F);
 		}
+	}
+	
+	@Environment(EnvType.CLIENT)
+	public static BlockState getBreakingState(BlockState state) {
+		if (state.getBlock() instanceof VBEFullSlabBlock block) {
+			@SuppressWarnings("deprecation") Minecraft minecraft = (Minecraft) FabricLoader.getInstance().getGameInstance();
+			return block.getBreakingState(state, minecraft.player, minecraft.level);
+		}
+		return state;
+	}
+	
+	@Environment(EnvType.CLIENT)
+	private BlockState getBreakingState(BlockState state, PlayerBase player, Level level) {
+		HitResult hit = LevelUtil.getHit(level, player);
+		if (hit == null || hit.type != HitType.BLOCK) return state;
+		Axis axis = state.get(VBEBlockProperties.AXIS);
+		state = halfBlock.getDefaultState();
+		float delta = 0;
+		switch (axis) {
+			case X -> delta = (float) (hit.pos.x - hit.x);
+			case Y -> delta = (float) (hit.pos.y - hit.y);
+			case Z -> delta = (float) (hit.pos.z - hit.z);
+		}
+		Direction facing = Direction.from(axis, delta < 0.5F ? AxisDirection.NEGATIVE : AxisDirection.POSITIVE);
+		return state.with(VBEBlockProperties.DIRECTION, facing);
 	}
 }

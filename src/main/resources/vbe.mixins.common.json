@@ -6,6 +6,7 @@
 	"mixins": [
 		"TrapdoorBlockMixin",
 		"PumpkinBlockMixin",
+		"FenceBlockMixin",
 		"ChestBlockMixin",
 		"ItemStackMixin",
 		"StoneSlabMixin",

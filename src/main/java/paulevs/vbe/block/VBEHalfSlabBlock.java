@@ -170,12 +170,20 @@ public class VBEHalfSlabBlock extends TemplateBlockBase {
 		}
 		
 		Direction face = Direction.byId(side);
-		BlockState state1 = bsView.getBlockState(x - face.getOffsetX(), y - face.getOffsetY(), z - face.getOffsetZ());
-		BlockState state2 = bsView.getBlockState(x, y, z);
+		BlockState selfState = bsView.getBlockState(x, y, z);
 		
-		if (state1.getBlock() instanceof VBEHalfSlabBlock && state2.getBlock() instanceof VBEHalfSlabBlock) {
-			Direction slab2 = state2.get(VBEBlockProperties.DIRECTION);
-			Direction slab1 = state1.get(VBEBlockProperties.DIRECTION);
+		if (selfState.getBlock() instanceof VBEHalfSlabBlock) {
+			Direction selfDir = selfState.get(VBEBlockProperties.DIRECTION);
+			if (face == selfDir) {
+				return super.isSideRendered(view, x, y, z, side);
+			}
+		}
+		
+		BlockState sideState = bsView.getBlockState(x - face.getOffsetX(), y - face.getOffsetY(), z - face.getOffsetZ());
+		
+		if (sideState.getBlock() instanceof VBEHalfSlabBlock && selfState.getBlock() instanceof VBEHalfSlabBlock) {
+			Direction slab2 = selfState.get(VBEBlockProperties.DIRECTION);
+			Direction slab1 = sideState.get(VBEBlockProperties.DIRECTION);
 			return slab1 != slab2;
 		}
 		

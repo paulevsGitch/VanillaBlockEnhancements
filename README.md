@@ -26,12 +26,13 @@
 **Make backup of your world before install!**
 
 ### Block Behaviour Changes:
-- Intractable blocks: placing blocks with shift click will not open GUI or trigger them, digging will not activate them
-- Chests: use player direction instead of wall check, can be placed near each other
-- Doors: use blockstates (no open/close issues), double doors will open at once
-- Trapdoors: use blockstates (no open/close issues), not require handle block, can be place on top and bottom
-- Slabs: can be placed vertically, full slabs have directions, full slabs will break by parts
-- Pumpkins and Jack o' Lanterns: don't require block below them
+- **Intractable blocks**: placing blocks with shift click will not open GUI or trigger them, digging will not activate them
+- **Chests**: use player direction instead of wall check, can be placed near each other
+- **Doors**: use blockstates (no open/close issues), double doors will open at once, tag for doors that require redstone (`requires_power`)
+- **Trapdoors**: use blockstates (no open/close issues), not require handle block, can be place on top and bottom, tag for trapdoors that require redstone (`requires_power`)
+- **Slabs**: can be placed vertically, full slabs have directions, full slabs will break by parts
+- **Pumpkins** and **Jack o' Lanterns**: don't require block below them
+- **Fences**: can connect to solid blocks and blocks with `fence_connect` tag, have better collisions and selections
 
 *Planned:*
-- Stairs: can be placed vertically and upside-down
+- **Stairs**: can be placed vertically and upside-down

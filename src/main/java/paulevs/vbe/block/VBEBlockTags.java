@@ -7,6 +7,7 @@ import paulevs.vbe.VBE;
 
 public class VBEBlockTags {
 	public static final TagKey<BaseBlock> REQUIRES_POWER = get("requires_power");
+	public static final TagKey<BaseBlock> FENCE_CONNECT = get("fence_connect");
 	
 	private static TagKey<BaseBlock> get(String name) {
 		return TagKey.of(BlockRegistry.KEY, VBE.id(name));

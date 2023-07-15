@@ -21,6 +21,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import paulevs.vbe.block.VBEBlockProperties;
 import paulevs.vbe.block.VBEBlockProperties.TopBottom;
+import paulevs.vbe.block.VBEBlockTags;
 import paulevs.vbe.utils.LevelUtil;
 
 @Mixin(TrapdoorBlock.class)
@@ -86,11 +87,8 @@ public class TrapdoorBlockMixin extends BaseBlock {
 	private void vbe_canUse(Level level, int x, int y, int z, PlayerBase player, CallbackInfoReturnable<Boolean> info) {
 		info.setReturnValue(true);
 		
-		if (this.material == Material.METAL) {
-			return;
-		}
-		
 		BlockState state = level.getBlockState(x, y, z);
+		if (state.isIn(VBEBlockTags.REQUIRES_POWER)) return;
 		if (!state.isOf(this)) return;
 		
 		boolean opened = !state.get(VBEBlockProperties.OPENED) || level.hasRedstonePower(x, y, z);

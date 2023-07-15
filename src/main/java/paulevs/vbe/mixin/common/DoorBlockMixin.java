@@ -23,6 +23,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import paulevs.vbe.block.VBEBlockProperties;
 import paulevs.vbe.block.VBEBlockProperties.TopBottom;
+import paulevs.vbe.block.VBEBlockTags;
 import paulevs.vbe.utils.LevelUtil;
 
 @Mixin(DoorBlock.class)
@@ -54,11 +55,10 @@ public abstract class DoorBlockMixin extends BaseBlock {
 	private void vbe_canUse(Level level, int x, int y, int z, PlayerBase player, CallbackInfoReturnable<Boolean> info) {
 		info.setReturnValue(true);
 		
-		if (this.material == Material.METAL) {
-			return;
-		}
-		
 		BlockState state = level.getBlockState(x, y, z);
+		if (state.isIn(VBEBlockTags.REQUIRES_POWER)) return;
+		if (!state.isOf(this)) return;
+		
 		TopBottom part = state.get(VBEBlockProperties.TOP_BOTTOM);
 		int py = part == TopBottom.TOP ? y - 1 : y + 1;
 		int y1 = Math.min(y, py);

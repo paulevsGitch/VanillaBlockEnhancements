@@ -33,6 +33,8 @@
 - **Slabs**: can be placed vertically, full slabs have directions, full slabs will break by parts
 - **Pumpkins** and **Jack o' Lanterns**: don't require block below them
 - **Fences**: can connect to solid blocks and blocks with `fence_connect` tag, have better collisions and selections
+- **Water**: fixed bug when water was not created between two blocks if block below was water
+- **Lava**: 4 blocks of lava can produce one new between them, similar to 2 blocks of water
 
 *Planned:*
 - **Stairs**: can be placed vertically and upside-down

@@ -25,8 +25,10 @@ import paulevs.vbe.utils.LevelUtil;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 
 public class VBEFullSlabBlock extends TemplateBlockBase implements BeforeBlockRemoved {
+	private final Function<Integer, Integer> textureGetter;
 	private static BlockState blockState;
 	public static PlayerBase player;
 	public static HitResult hit;
@@ -38,15 +40,17 @@ public class VBEFullSlabBlock extends TemplateBlockBase implements BeforeBlockRe
 	public VBEFullSlabBlock(Identifier id, Material material) {
 		super(id, material);
 		setTranslationKey(id.toString());
+		this.textureGetter = side -> this.texture;
 	}
 	
 	public VBEFullSlabBlock(Identifier id, BaseBlock source) {
-		this(id, source.material);
+		super(id, source.material);
 		setTranslationKey(id.toString());
 		BaseBlock.EMITTANCE[this.id] = BaseBlock.EMITTANCE[source.id];
 		this.resistance = source.getHardness() * 5F;
 		this.hardness = source.getHardness() * 0.5F;
 		setSounds(source.sounds);
+		this.textureGetter = source::getTextureForSide;
 	}
 	
 	@Override
@@ -126,5 +130,10 @@ public class VBEFullSlabBlock extends TemplateBlockBase implements BeforeBlockRe
 		}
 		Direction facing = Direction.from(axis, delta < 0.5F ? AxisDirection.NEGATIVE : AxisDirection.POSITIVE);
 		return state.with(VBEBlockProperties.DIRECTION, facing);
+	}
+	
+	@Override
+	public int getTextureForSide(int side) {
+		return textureGetter.apply(side);
 	}
 }

@@ -13,6 +13,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import paulevs.vbe.block.FenceConnector;
 import paulevs.vbe.block.VBEBlockProperties;
@@ -55,5 +56,10 @@ public class FenceBlockMixin extends BaseBlock implements FenceConnector {
 		float z1 = vbe_canConnect(level.getBlockState(x, y, z - 1), Direction.EAST) ? 0.0F : 0.375F;
 		float z2 = vbe_canConnect(level.getBlockState(x, y, z + 1), Direction.WEST) ? 1.0F : 0.625F;
 		setBoundingBox(x1, 0.0F, z1, x2, 1.0F, z2);
+	}
+	
+	@Inject(method = "canPlaceAt", at = @At(value = "HEAD"), cancellable = true)
+	private void vbe_canPlaceAt(Level level, int x, int y, int z, CallbackInfoReturnable<Boolean> info) {
+		info.setReturnValue(true);
 	}
 }

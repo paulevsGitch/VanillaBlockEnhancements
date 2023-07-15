@@ -23,6 +23,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import paulevs.vbe.block.VBEBlockProperties;
 import paulevs.vbe.block.VBEBlockProperties.TopBottom;
+import paulevs.vbe.utils.LevelUtil;
 
 @Mixin(DoorBlock.class)
 public abstract class DoorBlockMixin extends BaseBlock {
@@ -37,7 +38,7 @@ public abstract class DoorBlockMixin extends BaseBlock {
 		super.appendProperties(builder);
 		builder.add(
 			VBEBlockProperties.FACING,
-			VBEBlockProperties.DOOR_PART,
+			VBEBlockProperties.TOP_BOTTOM,
 			VBEBlockProperties.OPENED,
 			VBEBlockProperties.INVERTED
 		);
@@ -58,7 +59,7 @@ public abstract class DoorBlockMixin extends BaseBlock {
 		}
 		
 		BlockState state = level.getBlockState(x, y, z);
-		TopBottom part = state.get(VBEBlockProperties.DOOR_PART);
+		TopBottom part = state.get(VBEBlockProperties.TOP_BOTTOM);
 		int py = part == TopBottom.TOP ? y - 1 : y + 1;
 		int y1 = Math.min(y, py);
 		int y2 = Math.max(y, py);
@@ -69,11 +70,11 @@ public abstract class DoorBlockMixin extends BaseBlock {
 		state = state.with(VBEBlockProperties.OPENED, opened);
 		
 		if (level.getBlockState(x, y, z) == state) return;
-		level.setBlockState(x, y, z, state);
+		LevelUtil.setBlockSilent(level, x, y, z, state);
 		
 		state = level.getBlockState(x, py, z);
 		if (state.isOf(this)) {
-			level.setBlockState(x, py, z, state.with(VBEBlockProperties.OPENED, opened));
+			LevelUtil.setBlockSilent(level, x, py, z, state.with(VBEBlockProperties.OPENED, opened));
 		}
 		
 		level.callAreaEvents(x, y1, z, x, y2, z);
@@ -88,14 +89,14 @@ public abstract class DoorBlockMixin extends BaseBlock {
 	}
 	
 	@Inject(method = "onAdjacentBlockUpdate", at = @At("HEAD"), cancellable = true)
-	private void vbe_onAdjacentBlockUpdate(Level level, int x, int y, int z, int side, CallbackInfo info) {
+	private void vbe_onAdjacentBlockUpdate(Level level, int x, int y, int z, int blockID, CallbackInfo info) {
 		info.cancel();
 		
 		BlockState state = level.getBlockState(x, y, z);
 		if (!state.isOf(this)) return;
 		
 		int py = y;
-		TopBottom part = state.get(VBEBlockProperties.DOOR_PART);
+		TopBottom part = state.get(VBEBlockProperties.TOP_BOTTOM);
 		
 		switch (part) {
 			case TOP -> py = y - 1;
@@ -126,15 +127,17 @@ public abstract class DoorBlockMixin extends BaseBlock {
 			return;
 		}
 		
-		boolean opened = level.hasRedstonePower(x, y1, z) || level.hasRedstonePower(x, y2, z);
-		opened |= vbe_hasConnectedPower(level, x, y, z, state);
-		
-		if (opened != state.get(VBEBlockProperties.OPENED)) {
-			state = state.with(VBEBlockProperties.OPENED, opened);
-			level.setBlockState(x, y, z, state);
-			level.setBlockState(x, py, z, stateConnected.with(VBEBlockProperties.OPENED, opened));
-			level.callAreaEvents(x, y1, z, x, y2, z);
-			level.playLevelEvent(null, 1003, x, y1, z, 0);
+		if (BaseBlock.BY_ID[blockID].getEmitsRedstonePower()) {
+			boolean opened = level.hasRedstonePower(x, y1, z) || level.hasRedstonePower(x, y2, z);
+			opened |= vbe_hasConnectedPower(level, x, y, z, state);
+			
+			if (opened != state.get(VBEBlockProperties.OPENED)) {
+				state = state.with(VBEBlockProperties.OPENED, opened);
+				level.setBlockState(x, y, z, state);
+				level.setBlockState(x, py, z, stateConnected.with(VBEBlockProperties.OPENED, opened));
+				level.callAreaEvents(x, y1, z, x, y2, z);
+				level.playLevelEvent(null, 1003, x, y1, z, 0);
+			}
 		}
 		
 		vbe_updateSideDoor(level, x, y1, z, state);
@@ -153,7 +156,7 @@ public abstract class DoorBlockMixin extends BaseBlock {
 		BlockState state = level.getBlockState(x, y, z);
 		if (!state.isOf(this)) return;
 		
-		TopBottom part = state.get(VBEBlockProperties.DOOR_PART);
+		TopBottom part = state.get(VBEBlockProperties.TOP_BOTTOM);
 		Direction d = state.get(VBEBlockProperties.FACING);
 		
 		if (state.get(VBEBlockProperties.OPENED)) {

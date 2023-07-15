@@ -52,8 +52,8 @@ public class VBEDoorItem extends TemplateDoor {
 		state = state.with(VBEBlockProperties.INVERTED, inverted);
 		
 		level.stopPhysics = true;
-		LevelUtil.setBlockSilent(level, x, y, z, state.with(VBEBlockProperties.DOOR_PART, TopBottom.BOTTOM));
-		LevelUtil.setBlockSilent(level, x, y + 1, z, state.with(VBEBlockProperties.DOOR_PART, TopBottom.TOP));
+		LevelUtil.setBlockSilent(level, x, y, z, state.with(VBEBlockProperties.TOP_BOTTOM, TopBottom.BOTTOM));
+		LevelUtil.setBlockSilent(level, x, y + 1, z, state.with(VBEBlockProperties.TOP_BOTTOM, TopBottom.TOP));
 		level.stopPhysics = false;
 		
 		level.callAreaEvents(x, y, z, x, y + 1, z);

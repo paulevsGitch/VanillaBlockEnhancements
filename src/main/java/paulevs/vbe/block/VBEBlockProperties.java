@@ -10,7 +10,7 @@ public class VBEBlockProperties {
 	public static final EnumProperty<Direction> FACING = EnumProperty.of("facing", Direction.class, dir -> dir.getAxis().isHorizontal());
 	public static final EnumProperty<Direction> DIRECTION = EnumProperty.of("direction", Direction.class);
 	public static final EnumProperty<ChestPart> CHEST_PART = EnumProperty.of("part", ChestPart.class);
-	public static final EnumProperty<TopBottom> DOOR_PART = EnumProperty.of("part", TopBottom.class);
+	public static final EnumProperty<TopBottom> TOP_BOTTOM = EnumProperty.of("part", TopBottom.class);
 	public static final EnumProperty<Axis> AXIS = EnumProperty.of("axis", Axis.class);
 	public static final BooleanProperty INVERTED = BooleanProperty.of("inverted");
 	public static final BooleanProperty OPENED = BooleanProperty.of("opened");

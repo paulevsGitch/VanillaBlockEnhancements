@@ -73,8 +73,8 @@ public class TrapdoorBlockMixin extends BaseBlock {
 		
 		if (BaseBlock.BY_ID[blockID].getEmitsRedstonePower()) {
 			boolean opened = level.hasRedstonePower(x, y, z);
-			if (opened && !state.get(VBEBlockProperties.OPENED)) {
-				state = state.with(VBEBlockProperties.OPENED, true);
+			if (opened != state.get(VBEBlockProperties.OPENED)) {
+				state = state.with(VBEBlockProperties.OPENED, opened);
 				LevelUtil.setBlockSilent(level, x, y, z, state);
 				level.callAreaEvents(x, y, z);
 				level.playLevelEvent(null, 1003, x, y, z, 0);

@@ -26,21 +26,25 @@ import paulevs.vbe.utils.CreativeUtil;
 import paulevs.vbe.utils.LevelUtil;
 
 import java.util.ArrayList;
+import java.util.function.Function;
 
 public class VBEHalfSlabBlock extends TemplateBlockBase {
+	private final Function<Integer, Integer> textureGetter;
 	private BaseBlock fullBlock;
 	
 	public VBEHalfSlabBlock(Identifier id, Material material) {
 		super(id, material);
 		setTranslationKey(id.toString());
+		this.textureGetter = side -> this.texture;
 	}
 	
 	public VBEHalfSlabBlock(Identifier id, BaseBlock source) {
-		this(id, source.material);
+		super(id, source.material);
 		setTranslationKey(id.toString());
 		BaseBlock.EMITTANCE[this.id] = BaseBlock.EMITTANCE[source.id] / 2;
 		setHardness(source.getHardness() * 0.5F);
 		setSounds(source.sounds);
+		this.textureGetter = source::getTextureForSide;
 	}
 	
 	@Override
@@ -59,12 +63,12 @@ public class VBEHalfSlabBlock extends TemplateBlockBase {
 		BlockPos pos = context.getBlockPos();
 		Direction face = context.getSide().getOpposite();
 		BlockState state = level.getBlockState(pos.offset(face));
-		if (state.isOf(this)) {
+		if (state.getBlock() instanceof VBEHalfSlabBlock) {
 			Direction facing = state.get(VBEBlockProperties.DIRECTION);
 			if (facing.getAxis() != face.getAxis()) {
 				PlayerBase player = context.getPlayer();
 				if (player != null && !player.isChild()) {
-					return state;
+					return getDefaultState().with(VBEBlockProperties.DIRECTION, facing);
 				}
 			}
 		}
@@ -174,7 +178,7 @@ public class VBEHalfSlabBlock extends TemplateBlockBase {
 		
 		if (selfState.getBlock() instanceof VBEHalfSlabBlock) {
 			Direction selfDir = selfState.get(VBEBlockProperties.DIRECTION);
-			if (face == selfDir) {
+			if (face == selfDir || face == selfDir.getOpposite()) {
 				return super.isSideRendered(view, x, y, z, side);
 			}
 		}
@@ -195,5 +199,10 @@ public class VBEHalfSlabBlock extends TemplateBlockBase {
 	@Environment(EnvType.CLIENT)
 	public void updateRenderBounds() {
 		this.setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
+	}
+	
+	@Override
+	public int getTextureForSide(int side) {
+		return textureGetter.apply(side);
 	}
 }

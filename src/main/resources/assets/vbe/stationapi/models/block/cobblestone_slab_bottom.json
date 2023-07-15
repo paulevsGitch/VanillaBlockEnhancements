@@ -1,8 +1,0 @@
-{
-	"parent": "vbe:block/template_slab_bottom",
-	"textures": {
-		"bottom": "minecraft:block/cobblestone",
-		"side": "minecraft:block/cobblestone",
-		"top": "minecraft:block/cobblestone"
-	}
-}

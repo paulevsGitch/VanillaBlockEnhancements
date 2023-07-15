@@ -2,7 +2,9 @@ package paulevs.vbe.listeners;
 
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.modificationstation.stationapi.api.event.registry.BlockRegistryEvent;
+import net.modificationstation.stationapi.api.event.registry.ItemRegistryEvent;
 import paulevs.vbe.block.VBEBlocks;
+import paulevs.vbe.item.VBEItems;
 
 public class CommonListener {
 	public static boolean blockRegistered = false;
@@ -11,5 +13,10 @@ public class CommonListener {
 	private void onBlockRegister(BlockRegistryEvent event) {
 		VBEBlocks.init();
 		blockRegistered = true;
+	}
+	
+	@EventListener
+	private void onBlockRegister(ItemRegistryEvent event) {
+		VBEItems.init();
 	}
 }

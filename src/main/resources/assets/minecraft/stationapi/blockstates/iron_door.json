@@ -1,0 +1,43 @@
+{
+	"variants": {
+		"opened=false,inverted=false,part=bottom,facing=south": { "model": "vbe:block/iron_door_bottom", "y": 270 },
+		"opened=false,inverted=false,part=bottom,facing=north": { "model": "vbe:block/iron_door_bottom", "y": 90 },
+		"opened=false,inverted=false,part=bottom,facing=west": { "model": "vbe:block/iron_door_bottom" },
+		"opened=false,inverted=false,part=bottom,facing=east": { "model": "vbe:block/iron_door_bottom", "y": 180 },
+		
+		"opened=false,inverted=true,part=bottom,facing=south": { "model": "vbe:block/iron_door_bottom_inverted", "y": 270 },
+		"opened=false,inverted=true,part=bottom,facing=north": { "model": "vbe:block/iron_door_bottom_inverted", "y": 90 },
+		"opened=false,inverted=true,part=bottom,facing=west": { "model": "vbe:block/iron_door_bottom_inverted" },
+		"opened=false,inverted=true,part=bottom,facing=east": { "model": "vbe:block/iron_door_bottom_inverted", "y": 180 },
+		
+		"opened=false,inverted=false,part=top,facing=south": { "model": "vbe:block/iron_door_top", "y": 270 },
+		"opened=false,inverted=false,part=top,facing=north": { "model": "vbe:block/iron_door_top", "y": 90 },
+		"opened=false,inverted=false,part=top,facing=west": { "model": "vbe:block/iron_door_top" },
+		"opened=false,inverted=false,part=top,facing=east": { "model": "vbe:block/iron_door_top", "y": 180 },
+		
+		"opened=false,inverted=true,part=top,facing=south": { "model": "vbe:block/iron_door_top_inverted", "y": 270 },
+		"opened=false,inverted=true,part=top,facing=north": { "model": "vbe:block/iron_door_top_inverted", "y": 90 },
+		"opened=false,inverted=true,part=top,facing=west": { "model": "vbe:block/iron_door_top_inverted" },
+		"opened=false,inverted=true,part=top,facing=east": { "model": "vbe:block/iron_door_top_inverted", "y": 180 },
+		
+		"opened=true,inverted=false,part=bottom,facing=south": { "model": "vbe:block/iron_door_bottom_inverted" },
+		"opened=true,inverted=false,part=bottom,facing=north": { "model": "vbe:block/iron_door_bottom_inverted", "y": 180 },
+		"opened=true,inverted=false,part=bottom,facing=west": { "model": "vbe:block/iron_door_bottom_inverted", "y": 90 },
+		"opened=true,inverted=false,part=bottom,facing=east": { "model": "vbe:block/iron_door_bottom_inverted", "y": 270 },
+		
+		"opened=true,inverted=true,part=bottom,facing=south": { "model": "vbe:block/iron_door_bottom", "y": 180 },
+		"opened=true,inverted=true,part=bottom,facing=north": { "model": "vbe:block/iron_door_bottom" },
+		"opened=true,inverted=true,part=bottom,facing=west": { "model": "vbe:block/iron_door_bottom", "y": 270 },
+		"opened=true,inverted=true,part=bottom,facing=east": { "model": "vbe:block/iron_door_bottom", "y": 90 },
+		
+		"opened=true,inverted=false,part=top,facing=south": { "model": "vbe:block/iron_door_top_inverted" },
+		"opened=true,inverted=false,part=top,facing=north": { "model": "vbe:block/iron_door_top_inverted", "y": 180 },
+		"opened=true,inverted=false,part=top,facing=west": { "model": "vbe:block/iron_door_top_inverted", "y": 90 },
+		"opened=true,inverted=false,part=top,facing=east": { "model": "vbe:block/iron_door_top_inverted", "y": 270 },
+		
+		"opened=true,inverted=true,part=top,facing=south": { "model": "vbe:block/iron_door_top", "y": 180 },
+		"opened=true,inverted=true,part=top,facing=north": { "model": "vbe:block/iron_door_top" },
+		"opened=true,inverted=true,part=top,facing=west": { "model": "vbe:block/iron_door_top", "y": 270 },
+		"opened=true,inverted=true,part=top,facing=east": { "model": "vbe:block/iron_door_top", "y": 90 }
+	}
+}

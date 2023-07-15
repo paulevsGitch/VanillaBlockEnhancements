@@ -21,13 +21,17 @@
 	</tbody>
 </table>
 
+**Mod is not compatible with saves that have chests, doors and other blocks changed by that mod!**
+
+**Make backup of your world before install!**
+
 ### Block Behaviour Changes:
 - Slabs: can be placed vertically, full slabs have directions, full slabs will break by parts
 - Pumpkins and Jack o' Lanterns: don't require block below them
 - Intractable blocks: placing blocks with shift click will not open GUI or trigger them
 - Chests: use player direction instead of wall check, can be placed near each other
+- Doors: use blockstates (no open/close issues), double doors will open at once
 
 *Planned:*
 - Stairs: can be placed vertically and upside-down
 - Trapdoors: not require handle block, can be place on top and bottom
-- Doors: use blockstates (no open/close issues), double doors will open at once

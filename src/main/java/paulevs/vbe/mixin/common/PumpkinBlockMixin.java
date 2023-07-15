@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(PumpkinBlock.class)
 public class PumpkinBlockMixin {
 	@Redirect(method = "canPlaceAt", at = @At(value = "INVOKE", target = "Lnet/minecraft/level/Level;canSuffocate(III)Z"))
-	private boolean injected(Level level, int x, int y, int z) {
+	private boolean vbe_canPlaceAt(Level level, int x, int y, int z) {
 		return true;
 	}
 }

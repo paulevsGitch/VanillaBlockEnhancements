@@ -6,3 +6,5 @@ tile.oak_slab_half.name=Oak Slab
 tile.oak_slab_full.name=Full Oak Slab
 tile.cobblestone_slab_half.name=Cobblestone Slab
 tile.cobblestone_slab_full.name=Full Cobblestone Slab
+item.oak_door.name=Oak Door
+item.iron_door.name=Iron Door

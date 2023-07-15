@@ -1,0 +1,6 @@
+{
+	"parent": "vbe:block/template_door_top",
+	"textures": {
+		"door": "minecraft:block/iron_door_top"
+	}
+}

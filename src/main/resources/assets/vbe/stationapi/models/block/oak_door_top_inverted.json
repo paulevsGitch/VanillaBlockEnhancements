@@ -1,0 +1,6 @@
+{
+	"parent": "vbe:block/template_door_top_inverted",
+	"textures": {
+		"door": "minecraft:block/oak_door_top"
+	}
+}

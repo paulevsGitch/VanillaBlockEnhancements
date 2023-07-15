@@ -8,13 +8,16 @@ import net.minecraft.block.material.Material;
 import net.minecraft.level.Level;
 import net.minecraft.util.maths.Box;
 import net.modificationstation.stationapi.api.block.BlockState;
+import net.modificationstation.stationapi.api.util.math.Direction;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import paulevs.vbe.block.FenceConnector;
+import paulevs.vbe.block.VBEBlockProperties;
 import paulevs.vbe.block.VBEBlockTags;
+import paulevs.vbe.block.VBEHalfSlabBlock;
 
 @Mixin(FenceBlock.class)
 public class FenceBlockMixin extends BaseBlock implements FenceConnector {
@@ -36,18 +39,21 @@ public class FenceBlockMixin extends BaseBlock implements FenceConnector {
 	}
 	
 	@Override
-	public boolean vbe_canConnect(BlockState state) {
+	public boolean vbe_canConnect(BlockState state, Direction face) {
 		if (state.isIn(VBEBlockTags.FENCE_CONNECT)) return true;
 		BaseBlock block = state.getBlock();
+		if (block instanceof VBEHalfSlabBlock) {
+			return state.get(VBEBlockProperties.DIRECTION).getOpposite() == face;
+		}
 		return block instanceof FenceBlock || (block.isFullOpaque() && block.isFullCube());
 	}
 	
 	@Unique
 	private void vbe_updateState(Level level, int x, int y, int z) {
-		float x1 = vbe_canConnect(level.getBlockState(x - 1, y, z)) ? 0.0F : 0.375F;
-		float x2 = vbe_canConnect(level.getBlockState(x + 1, y, z)) ? 1.0F : 0.625F;
-		float z1 = vbe_canConnect(level.getBlockState(x, y, z - 1)) ? 0.0F : 0.375F;
-		float z2 = vbe_canConnect(level.getBlockState(x, y, z + 1)) ? 1.0F : 0.625F;
+		float x1 = vbe_canConnect(level.getBlockState(x - 1, y, z), Direction.NORTH) ? 0.0F : 0.375F;
+		float x2 = vbe_canConnect(level.getBlockState(x + 1, y, z), Direction.SOUTH) ? 1.0F : 0.625F;
+		float z1 = vbe_canConnect(level.getBlockState(x, y, z - 1), Direction.EAST) ? 0.0F : 0.375F;
+		float z2 = vbe_canConnect(level.getBlockState(x, y, z + 1), Direction.WEST) ? 1.0F : 0.625F;
 		setBoundingBox(x1, 0.0F, z1, x2, 1.0F, z2);
 	}
 }

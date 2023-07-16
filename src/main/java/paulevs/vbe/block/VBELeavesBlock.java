@@ -44,7 +44,7 @@ public class VBELeavesBlock extends LeavesBaseBlock implements BlockTemplate {
 			state -> state.isIn(VBEBlockTags.LOGS),
 			state -> state.isIn(VBEBlockTags.LEAVES)
 		));
-		setDefaultState(getDefaultState().with(VBEBlockProperties.DISTANCE, 1));
+		setDefaultState(getDefaultState().with(VBEBlockProperties.NATURAL, true).with(VBEBlockProperties.ACTIVE, false));
 		setLightOpacity(4);
 		setTicksRandomly(true);
 	}
@@ -52,16 +52,20 @@ public class VBELeavesBlock extends LeavesBaseBlock implements BlockTemplate {
 	@Override
 	public void appendProperties(Builder<BaseBlock, BlockState> builder) {
 		super.appendProperties(builder);
-		builder.add(VBEBlockProperties.DISTANCE);
+		builder.add(VBEBlockProperties.NATURAL, VBEBlockProperties.ACTIVE);
 	}
 	
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext context) {
-		return getDefaultState().with(VBEBlockProperties.DISTANCE, 0);
+		return getDefaultState().with(VBEBlockProperties.NATURAL, false);
 	}
 	
 	@Override
 	public void onAdjacentBlockUpdate(Level level, int x, int y, int z, int blockID) {
+		BlockState state = level.getBlockState(x, y, z);
+		if (state.isOf(this) && !state.get(VBEBlockProperties.ACTIVE)) {
+			LevelUtil.setBlockSilent(level, x, y, z, state.with(VBEBlockProperties.ACTIVE, true));
+		}
 		checkLeaves(level, x, y, z);
 	}
 	
@@ -86,27 +90,41 @@ public class VBELeavesBlock extends LeavesBaseBlock implements BlockTemplate {
 	private void checkLeaves(Level level, int x, int y, int z) {
 		if (level.isClientSide) return;
 		BlockState state = level.getBlockState(x, y, z);
+		
 		if (!state.isOf(this)) return;
-		int distance = state.get(VBEBlockProperties.DISTANCE);
-		if (distance == 0) return;
+		if (!state.get(VBEBlockProperties.NATURAL)) return;
+		if (!state.get(VBEBlockProperties.ACTIVE)) return;
+		
+		LevelUtil.setBlockSilent(level, x, y, z, state.with(VBEBlockProperties.ACTIVE, false));
+		
 		int radius = search.search(level, x, y, z);
-		if (radius == -1 || radius > maxDistance) {
-			drop(level, x, y, z, 0);
-			level.setBlockState(x, y, z, States.AIR.get());
-			level.callAreaEvents(x, y, z);
-			for (byte i = 0; i < 6; i++) {
-				Direction side = Direction.byId(i);
-				int px = x + side.getOffsetX();
-				int py = y + side.getOffsetY();
-				int pz = z + side.getOffsetZ();
-				state = level.getBlockState(px, py, pz);
-				if (state.getBlock() instanceof VBELeavesBlock) {
-					level.scheduleTick(px, py, pz, state.getBlock().id, 10 + level.random.nextInt(20));
+		if (radius > 0 && radius <= maxDistance) return;
+		
+		for (int dx = -maxDistance; dx <= maxDistance; dx++) {
+			for (int dz = -maxDistance; dz <= maxDistance; dz++) {
+				for (int dy = -maxDistance; dy <= maxDistance; dy++) {
+					state = level.getBlockState(x + dx, y + dy, z + dz);
+					if (!(state.getBlock() instanceof VBELeavesBlock)) continue;
+					if (!state.get(VBEBlockProperties.NATURAL)) continue;
+					if (state.get(VBEBlockProperties.ACTIVE)) continue;
+					LevelUtil.setBlockSilent(level, x + dx, y + dy, z + dz, state.with(VBEBlockProperties.ACTIVE, true));
 				}
 			}
 		}
-		else if (distance != radius) {
-			LevelUtil.setBlockSilent(level, x, y, z, state.with(VBEBlockProperties.DISTANCE, radius));
+		
+		drop(level, x, y, z, 0);
+		level.setBlockState(x, y, z, States.AIR.get());
+		level.callAreaEvents(x, y, z);
+		
+		for (byte i = 0; i < 6; i++) {
+			Direction side = Direction.byId(i);
+			int px = x + side.getOffsetX();
+			int py = y + side.getOffsetY();
+			int pz = z + side.getOffsetZ();
+			state = level.getBlockState(px, py, pz);
+			if (state.getBlock() instanceof VBELeavesBlock) {
+				level.scheduleTick(px, py, pz, state.getBlock().id, 10 + level.random.nextInt(20));
+			}
 		}
 	}
 	

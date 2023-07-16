@@ -2,7 +2,6 @@ package paulevs.vbe.block;
 
 import net.modificationstation.stationapi.api.state.property.BooleanProperty;
 import net.modificationstation.stationapi.api.state.property.EnumProperty;
-import net.modificationstation.stationapi.api.state.property.IntProperty;
 import net.modificationstation.stationapi.api.util.StringIdentifiable;
 import net.modificationstation.stationapi.api.util.math.Direction;
 import net.modificationstation.stationapi.api.util.math.Direction.Axis;
@@ -15,8 +14,9 @@ public class VBEBlockProperties {
 	public static final EnumProperty<TopBottom> TOP_BOTTOM = EnumProperty.of("part", TopBottom.class);
 	public static final EnumProperty<Axis> AXIS = EnumProperty.of("axis", Axis.class);
 	public static final BooleanProperty INVERTED = BooleanProperty.of("inverted");
+	public static final BooleanProperty NATURAL = BooleanProperty.of("natural");
+	public static final BooleanProperty ACTIVE = BooleanProperty.of("active");
 	public static final BooleanProperty OPENED = BooleanProperty.of("opened");
-	public static final IntProperty DISTANCE = IntProperty.of("distance", 0, 7);
 	
 	public enum ChestPart implements StringIdentifiable {
 		SINGLE("single"), LEFT("left"), RIGHT("right");

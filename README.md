@@ -30,11 +30,12 @@
 - **Chests**: use player direction instead of wall check, can be placed near each other
 - **Doors**: no open/close issues, double doors will open at once, tag for doors that require redstone (`requires_power`)
 - **Trapdoors**: no open/close issues, not require handle block, can be place on top and bottom, tag for trapdoors that require redstone (`requires_power`)
-- **Slabs**: can be placed vertically, full slabs have directions, full slabs will break by parts
+- **Slabs**: can be placed vertically, full slabs have directions, full slabs will break by parts, will be crafted 6 instead of 3
 - **Pumpkins** and **Jack o' Lanterns**: don't require block below them
 - **Fences**: can connect to solid blocks and blocks with `fence_connect` tag, have better collisions and selections
 - **Water**: fixed bug when water was not created between two blocks if block below was water
 - **Lava**: 4 blocks of lava can produce one new between them, similar to 2 blocks of water
-- **Stairs**: can be placed vertically and upside-down
+- **Stairs**: can be placed vertically and upside-down, will be crafted 6 instead of 4
 - **Logs**: can be placed directionally
-- **Leaves**: player placed leaves don't decay, natural leaves decay faster, all leaves have `leaves` tag, all logs with `logs` tag can support leaves
+- **Leaves**: player placed leaves don't decay, natural leaves decay faster, all leaves have `leaves` tag, all logs with `logs` tag can support leaves, less transparent leaves
+- **Beds**: Monsters will not spawn near you randomly during night

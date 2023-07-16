@@ -9,15 +9,21 @@ import net.modificationstation.stationapi.api.util.math.Direction;
 import net.modificationstation.stationapi.api.util.maths.MutableBlockPos;
 import net.modificationstation.stationapi.api.world.BlockStateView;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import paulevs.vbe.block.FenceConnector;
+import paulevs.vbe.block.StairsShape;
 
 @Mixin(BlockRenderer.class)
-public class BlockRendererMixin {
+public abstract class BlockRendererMixin {
+	@Shadow private BlockView blockView;
+	
+	@Shadow public abstract boolean renderFullCube(BaseBlock arg, int i, int j, int k);
+	
 	@Unique private final MutableBlockPos vbe_blockPos = new MutableBlockPos(0, 0, 0);
 	@Unique private FenceBlock vbe_fenceBlock;
 	
@@ -39,5 +45,21 @@ public class BlockRendererMixin {
 			return connector.vbe_canConnect(state, face) ? vbe_fenceBlock.id : 0;
 		}
 		return 0;
+	}
+	
+	@Inject(method = "renderStairs", at = @At("HEAD"), cancellable = true)
+	private void vbe_renderStairs(BaseBlock block, int x, int y, int z, CallbackInfoReturnable<Boolean> info) {
+		if (this.blockView instanceof BlockStateView blockStateView && block instanceof StairsShape) {
+			StairsShape.cast(block).vbe_getStairsShape(blockStateView.getBlockState(x, y, z)).forEach(shape -> {
+				block.minX = shape.minX;
+				block.minY = shape.minY;
+				block.minZ = shape.minZ;
+				block.maxX = shape.maxX;
+				block.maxY = shape.maxY;
+				block.maxZ = shape.maxZ;
+				this.renderFullCube(block, x, y, z);
+			});
+			info.setReturnValue(true);
+		}
 	}
 }

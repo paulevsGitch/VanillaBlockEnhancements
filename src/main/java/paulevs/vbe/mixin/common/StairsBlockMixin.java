@@ -151,11 +151,17 @@ public class StairsBlockMixin extends BaseBlock implements StairsShape {
 		return this.template.getTextureForSide(side);
 	}
 	
+	@Inject(method = "<init>", at = @At("TAIL"))
+	private void vbe_onInit(int id, BaseBlock source, CallbackInfo info) {
+		this.setLightOpacity(0);
+	}
+	
 	@Inject(method = "afterPlaced", at = @At("HEAD"), cancellable = true)
 	private void vbe_afterPlaced(Level level, int x, int y, int z, LivingEntity placer, CallbackInfo info) {
 		info.cancel();
 	}
 	
+	@SuppressWarnings("rawtypes")
 	@Inject(method = "doesBoxCollide", at = @At("HEAD"), cancellable = true)
 	private void vbe_doesBoxCollide(Level level, int x, int y, int z, Box box, ArrayList list, CallbackInfo info) {
 		vbe_getStairsShape(level.getBlockState(x, y, z)).forEach(shape -> {

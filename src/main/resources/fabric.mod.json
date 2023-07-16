@@ -21,6 +21,9 @@
 	"entrypoints": {
 		"stationapi:event_bus": [
 			"paulevs.vbe.listeners.CommonListener"
+		],
+		"stationapi:event_bus_client": [
+			"paulevs.vbe.listeners.ClientListener"
 		]
 	},
 

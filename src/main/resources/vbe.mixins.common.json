@@ -7,12 +7,17 @@
 		"FlowingFluidBlockMixin",
 		"TrapdoorBlockMixin",
 		"PumpkinBlockMixin",
+		"LeavesBlockMixin",
 		"StairsBlockMixin",
 		"FenceBlockMixin",
 		"ChestBlockMixin",
+		"SpruceTreeMixin",
+		"BirchTreeMixin",
 		"ItemStackMixin",
 		"StoneSlabMixin",
-		"DoorBlockMixin"
+		"DoorBlockMixin",
+		"LogBlockMixin",
+		"OakTreeMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

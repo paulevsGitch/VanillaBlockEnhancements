@@ -1,0 +1,7 @@
+{
+	"variants": {
+		"axis=x": { "model": "vbe:block/spruce_log", "x": 90 },
+		"axis=y": { "model": "vbe:block/spruce_log" },
+		"axis=z": { "model": "vbe:block/spruce_log", "x": 90, "y": 90 }
+	}
+}

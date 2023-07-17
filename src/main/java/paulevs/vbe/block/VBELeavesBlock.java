@@ -21,14 +21,18 @@ import paulevs.vbe.utils.LevelUtil;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.function.Function;
 
 public class VBELeavesBlock extends LeavesBaseBlock implements BlockTemplate {
+	private static final Function<BlockState, BlockState> ACTIVATOR = state -> state.with(VBEBlockProperties.ACTIVE, true);
+	private static final Function<BlockState, Boolean> LEAVES_FILTER = state -> state.isIn(VBEBlockTags.LEAVES);
+	private static final Function<BlockState, Boolean> LOG_FILTER = state -> state.isIn(VBEBlockTags.LOGS);
 	private static final Map<Integer, FloodFillSearch> SEARCH_CACHE = new HashMap<>();
 	private final FloodFillSearch search;
 	private final int maxDistance;
 	
 	public VBELeavesBlock(Identifier id) {
-		this(id, Material.LEAVES, 7);
+		this(id, Material.LEAVES, 5);
 	}
 	
 	public VBELeavesBlock(Identifier id, Material material, int maxDistance) {
@@ -39,11 +43,7 @@ public class VBELeavesBlock extends LeavesBaseBlock implements BlockTemplate {
 		disableStat();
 		disableNotifyOnMetaDataChange();
 		this.maxDistance = maxDistance;
-		this.search = SEARCH_CACHE.computeIfAbsent(maxDistance, radius -> new FloodFillSearch(
-			radius,
-			state -> state.isIn(VBEBlockTags.LOGS),
-			state -> state.isIn(VBEBlockTags.LEAVES)
-		));
+		this.search = SEARCH_CACHE.computeIfAbsent(maxDistance, FloodFillSearch::new);
 		setDefaultState(getDefaultState().with(VBEBlockProperties.NATURAL, true).with(VBEBlockProperties.ACTIVE, false));
 		setLightOpacity(4);
 		setTicksRandomly(true);
@@ -62,7 +62,8 @@ public class VBELeavesBlock extends LeavesBaseBlock implements BlockTemplate {
 	
 	@Override
 	public void onAdjacentBlockUpdate(Level level, int x, int y, int z, int blockID) {
-		if (blockID == 0) checkLeaves(level, x, y, z, true);
+		//if (blockID == 0) checkLeaves(level, x, y, z, true);
+		checkLeaves(level, x, y, z, true);
 	}
 	
 	@Override
@@ -95,27 +96,11 @@ public class VBELeavesBlock extends LeavesBaseBlock implements BlockTemplate {
 		
 		LevelUtil.setBlockSilent(level, x, y, z, state.with(VBEBlockProperties.ACTIVE, false));
 		
-		int radius = search.search(level, x, y, z);
+		int radius = search.search(level, x, y, z, LOG_FILTER, LEAVES_FILTER);
 		if (radius > 0 && radius <= maxDistance) return;
 		
 		if (force && !active) {
-			for (int dx = -maxDistance; dx <= maxDistance; dx++) {
-				for (int dz = -maxDistance; dz <= maxDistance; dz++) {
-					for (int dy = -maxDistance; dy <= maxDistance; dy++) {
-						state = level.getBlockState(x + dx, y + dy, z + dz);
-						if (!(state.getBlock() instanceof VBELeavesBlock)) continue;
-						if (!state.get(VBEBlockProperties.NATURAL)) continue;
-						if (state.get(VBEBlockProperties.ACTIVE)) continue;
-						LevelUtil.setBlockSilent(
-							level,
-							x + dx,
-							y + dy,
-							z + dz,
-							state.with(VBEBlockProperties.ACTIVE, true)
-						);
-					}
-				}
-			}
+			search.transform(level, x, y, z, LEAVES_FILTER, ACTIVATOR);
 		}
 		
 		drop(level, x, y, z, 0);
@@ -132,13 +117,5 @@ public class VBELeavesBlock extends LeavesBaseBlock implements BlockTemplate {
 				level.scheduleTick(px, py, pz, state.getBlock().id, 10 + level.random.nextInt(20));
 			}
 		}
-	}
-	
-	static {
-		SEARCH_CACHE.put(7, new FloodFillSearch(
-			7,
-			state -> state.isIn(VBEBlockTags.LOGS),
-			state -> state.isIn(VBEBlockTags.LEAVES)
-		));
 	}
 }

@@ -9,7 +9,7 @@ import paulevs.vbe.VBE;
 public class VBEBlockTags {
 	public static final TagKey<BaseBlock> REQUIRES_POWER = get("requires_power");
 	public static final TagKey<BaseBlock> FENCE_CONNECT = get("fence_connect");
-	public static final TagKey<BaseBlock> LEAVES = get("leaves");
+	public static final TagKey<BaseBlock> LEAVES = getDefault("leaves");
 	public static final TagKey<BaseBlock> LOGS = getDefault("logs");
 	
 	private static TagKey<BaseBlock> get(String name) {

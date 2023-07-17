@@ -32,7 +32,7 @@ public abstract class FlowingFluidBlockMixin extends FluidBlock {
 	
 	@Inject(method = "onScheduledTick", at = @At("HEAD"), cancellable = true)
 	private void vbe_onScheduledTick(Level level, int x, int y, int z, Random random, CallbackInfo info) {
-		if (this.material != Material.LAVA) return;
+		if (this.material != Material.LAVA || level.dimension.id == -1) return;
 		
 		if (level.getMaterial(x - 1, y, z) != Material.LAVA) return;
 		if (level.getMaterial(x + 1, y, z) != Material.LAVA) return;

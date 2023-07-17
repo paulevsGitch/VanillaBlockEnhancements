@@ -34,7 +34,7 @@
 - **Pumpkins** and **Jack o' Lanterns**: don't require block below them
 - **Fences**: can connect to solid blocks and blocks with `fence_connect` tag, have better collisions and selections
 - **Water**: fixed bug when water was not created between two blocks if block below was water
-- **Lava**: 4 blocks of lava can produce one new between them, similar to 2 blocks of water
+- **Lava**: in the Nether 4 blocks of lava can produce one new between them, similar to 2 blocks of water
 - **Stairs**: can be placed vertically and upside-down, will be crafted 6 instead of 4
 - **Logs**: can be placed directionally
 - **Leaves**: player placed leaves don't decay, natural leaves decay faster, all leaves have `leaves` tag, all logs with `logs` tag can support leaves, less transparent leaves

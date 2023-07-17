@@ -5,6 +5,7 @@ import net.minecraft.block.StairsBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerBase;
+import net.minecraft.item.ItemStack;
 import net.minecraft.level.Level;
 import net.minecraft.util.maths.Box;
 import net.modificationstation.stationapi.api.block.BlockState;
@@ -23,6 +24,7 @@ import paulevs.vbe.block.VBEBlockProperties;
 import paulevs.vbe.block.VBEBlockProperties.StairsPart;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -175,5 +177,10 @@ public class StairsBlockMixin extends BaseBlock implements StairsShape {
 		});
 		this.setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 		info.cancel();
+	}
+	
+	@Override
+	public List<ItemStack> getDropList(Level level, int x, int y, int z, BlockState state, int meta) {
+		return Collections.singletonList(new ItemStack(this));
 	}
 }

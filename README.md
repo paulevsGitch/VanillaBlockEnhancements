@@ -39,3 +39,5 @@
 - **Logs**: can be placed directionally
 - **Leaves**: player placed leaves don't decay, natural leaves decay faster, all leaves have `leaves` tag, all logs with `logs` tag can support leaves, less transparent leaves
 - **Beds**: Monsters will not spawn near you randomly during night
+
+Tools are now effective on some vanilla blocks (that was breaking slowly) and on all new blocks

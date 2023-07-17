@@ -62,16 +62,12 @@ public class VBELeavesBlock extends LeavesBaseBlock implements BlockTemplate {
 	
 	@Override
 	public void onAdjacentBlockUpdate(Level level, int x, int y, int z, int blockID) {
-		BlockState state = level.getBlockState(x, y, z);
-		if (state.isOf(this) && !state.get(VBEBlockProperties.ACTIVE)) {
-			LevelUtil.setBlockSilent(level, x, y, z, state.with(VBEBlockProperties.ACTIVE, true));
-		}
-		checkLeaves(level, x, y, z);
+		if (blockID == 0) checkLeaves(level, x, y, z, true);
 	}
 	
 	@Override
 	public void onScheduledTick(Level level, int x, int y, int z, Random random) {
-		checkLeaves(level, x, y, z);
+		checkLeaves(level, x, y, z, false);
 	}
 	
 	@Override
@@ -87,27 +83,37 @@ public class VBELeavesBlock extends LeavesBaseBlock implements BlockTemplate {
 		return super.isSideRendered(view, x, y, z, side);
 	}
 	
-	private void checkLeaves(Level level, int x, int y, int z) {
+	private void checkLeaves(Level level, int x, int y, int z, boolean force) {
 		if (level.isClientSide) return;
 		BlockState state = level.getBlockState(x, y, z);
 		
 		if (!state.isOf(this)) return;
 		if (!state.get(VBEBlockProperties.NATURAL)) return;
-		if (!state.get(VBEBlockProperties.ACTIVE)) return;
+		
+		boolean active = state.get(VBEBlockProperties.ACTIVE);
+		if (!force && !active) return;
 		
 		LevelUtil.setBlockSilent(level, x, y, z, state.with(VBEBlockProperties.ACTIVE, false));
 		
 		int radius = search.search(level, x, y, z);
 		if (radius > 0 && radius <= maxDistance) return;
 		
-		for (int dx = -maxDistance; dx <= maxDistance; dx++) {
-			for (int dz = -maxDistance; dz <= maxDistance; dz++) {
-				for (int dy = -maxDistance; dy <= maxDistance; dy++) {
-					state = level.getBlockState(x + dx, y + dy, z + dz);
-					if (!(state.getBlock() instanceof VBELeavesBlock)) continue;
-					if (!state.get(VBEBlockProperties.NATURAL)) continue;
-					if (state.get(VBEBlockProperties.ACTIVE)) continue;
-					LevelUtil.setBlockSilent(level, x + dx, y + dy, z + dz, state.with(VBEBlockProperties.ACTIVE, true));
+		if (force && !active) {
+			for (int dx = -maxDistance; dx <= maxDistance; dx++) {
+				for (int dz = -maxDistance; dz <= maxDistance; dz++) {
+					for (int dy = -maxDistance; dy <= maxDistance; dy++) {
+						state = level.getBlockState(x + dx, y + dy, z + dz);
+						if (!(state.getBlock() instanceof VBELeavesBlock)) continue;
+						if (!state.get(VBEBlockProperties.NATURAL)) continue;
+						if (state.get(VBEBlockProperties.ACTIVE)) continue;
+						LevelUtil.setBlockSilent(
+							level,
+							x + dx,
+							y + dy,
+							z + dz,
+							state.with(VBEBlockProperties.ACTIVE, true)
+						);
+					}
 				}
 			}
 		}

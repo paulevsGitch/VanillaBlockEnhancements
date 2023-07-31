@@ -5,8 +5,10 @@
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
 		"LevelMonsterSpawnerMixin",
+		"CraftingContainerMixin",
 		"FlowingFluidBlockMixin",
 		"RecipeRegistryMixin",
+		"FarmlandBlockMixin",
 		"TrapdoorBlockMixin",
 		"PumpkinBlockMixin",
 		"LeavesBlockMixin",

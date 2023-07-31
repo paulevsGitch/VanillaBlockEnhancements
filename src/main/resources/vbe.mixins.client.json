@@ -9,6 +9,7 @@
 		"BaseClientInteractionManagerMixin",
 		"BakedModelRendererImplMixin",
 		"ArsenicBlockRendererMixin",
+		"ArsenicItemRendererMixin",
 		"BlockRendererMixin",
 		"LevelRendererMixin"
 	],

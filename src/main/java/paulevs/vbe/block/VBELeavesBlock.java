@@ -62,7 +62,6 @@ public class VBELeavesBlock extends LeavesBaseBlock implements BlockTemplate {
 	
 	@Override
 	public void onAdjacentBlockUpdate(Level level, int x, int y, int z, int blockID) {
-		//if (blockID == 0) checkLeaves(level, x, y, z, true);
 		checkLeaves(level, x, y, z, true);
 	}
 	
@@ -85,7 +84,7 @@ public class VBELeavesBlock extends LeavesBaseBlock implements BlockTemplate {
 	}
 	
 	private void checkLeaves(Level level, int x, int y, int z, boolean force) {
-		if (level.isClientSide) return;
+		if (level.isRemote) return;
 		BlockState state = level.getBlockState(x, y, z);
 		
 		if (!state.isOf(this)) return;
@@ -105,7 +104,7 @@ public class VBELeavesBlock extends LeavesBaseBlock implements BlockTemplate {
 		
 		drop(level, x, y, z, 0);
 		level.setBlockState(x, y, z, States.AIR.get());
-		level.callAreaEvents(x, y, z);
+		level.updateBlock(x, y, z);
 		
 		for (byte i = 0; i < 6; i++) {
 			Direction side = Direction.byId(i);

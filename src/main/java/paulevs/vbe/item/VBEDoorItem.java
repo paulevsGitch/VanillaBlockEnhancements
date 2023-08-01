@@ -56,7 +56,7 @@ public class VBEDoorItem extends TemplateDoor {
 		LevelUtil.setBlockSilent(level, x, y + 1, z, state.with(VBEBlockProperties.TOP_BOTTOM, TopBottom.TOP));
 		level.stopPhysics = false;
 		
-		level.callAreaEvents(x, y, z, x, y + 1, z);
+		level.updateArea(x, y, z, x, y + 1, z);
 		
 		level.updateAdjacentBlocks(x, y, z, door.id);
 		level.updateAdjacentBlocks(x, y + 1, z, door.id);

@@ -7,7 +7,7 @@ import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.ChestBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerBase;
-import net.minecraft.inventory.DoubleChest;
+import net.minecraft.inventory.DoubleChestInventory;
 import net.minecraft.inventory.InventoryBase;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
@@ -104,7 +104,7 @@ public abstract class ChestBlockMixin extends BlockWithEntity implements BeforeB
 	
 	@Inject(method = "canUse", at = @At("HEAD"), cancellable = true)
 	private void vbe_canUse(Level level, int x, int y, int z, PlayerBase player, CallbackInfoReturnable<Boolean> info) {
-		if (level.isClientSide) { // isRemote
+		if (level.isRemote) {
 			info.setReturnValue(true);
 			return;
 		}
@@ -135,8 +135,8 @@ public abstract class ChestBlockMixin extends BlockWithEntity implements BeforeB
 		InventoryBase sideInventory = (InventoryBase) level.getBlockEntity(x, y, z);
 		
 		switch (part) {
-			case LEFT -> inventoryBase = new DoubleChest("Large chest", inventoryBase, sideInventory);
-			case RIGHT -> inventoryBase = new DoubleChest("Large chest", sideInventory, inventoryBase);
+			case LEFT -> inventoryBase = new DoubleChestInventory("Large chest", inventoryBase, sideInventory);
+			case RIGHT -> inventoryBase = new DoubleChestInventory("Large chest", sideInventory, inventoryBase);
 		}
 		
 		player.openChestScreen(inventoryBase);

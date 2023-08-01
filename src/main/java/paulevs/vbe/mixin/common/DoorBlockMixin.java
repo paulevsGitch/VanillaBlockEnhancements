@@ -77,7 +77,7 @@ public abstract class DoorBlockMixin extends BaseBlock {
 			LevelUtil.setBlockSilent(level, x, py, z, state.with(VBEBlockProperties.OPENED, opened));
 		}
 		
-		level.callAreaEvents(x, y1, z, x, y2, z);
+		level.updateArea(x, y1, z, x, y2, z);
 		level.playLevelEvent(player, 1003, x, y, z, 0);
 		
 		vbe_updateSideDoor(level, x, y1, z, level.getBlockState(x, y1, z));
@@ -112,17 +112,17 @@ public abstract class DoorBlockMixin extends BaseBlock {
 			level.setBlockState(x, y1, z, States.AIR.get());
 			level.setBlockState(x, y2, z, States.AIR.get());
 			if (part == TopBottom.BOTTOM) {
-				level.callAreaEvents(x, y1, z, x, y2, z);
+				level.updateArea(x, y1, z, x, y2, z);
 				this.drop(level, x, y1, z, 0);
 			}
-			else level.callAreaEvents(x, y1, z, x, y2, z);
+			else level.updateArea(x, y1, z, x, y2, z);
 			return;
 		}
 		
 		if (part == TopBottom.BOTTOM && !canPlaceAt(level, x, y, z)) {
 			level.setBlockState(x, y1, z, States.AIR.get());
 			level.setBlockState(x, y2, z, States.AIR.get());
-			level.callAreaEvents(x, y1, z, x, y2, z);
+			level.updateArea(x, y1, z, x, y2, z);
 			this.drop(level, x, y1, z, 0);
 			return;
 		}
@@ -135,7 +135,7 @@ public abstract class DoorBlockMixin extends BaseBlock {
 				state = state.with(VBEBlockProperties.OPENED, opened);
 				level.setBlockState(x, y, z, state);
 				level.setBlockState(x, py, z, stateConnected.with(VBEBlockProperties.OPENED, opened));
-				level.callAreaEvents(x, y1, z, x, y2, z);
+				level.updateArea(x, y1, z, x, y2, z);
 				level.playLevelEvent(null, 1003, x, y1, z, 0);
 			}
 		}
@@ -193,7 +193,7 @@ public abstract class DoorBlockMixin extends BaseBlock {
 		if (opened != sideStateBottom.get(VBEBlockProperties.OPENED) || opened != sideStateTop.get(VBEBlockProperties.OPENED)) {
 			level.setBlockState(x, y, z, sideStateBottom.with(VBEBlockProperties.OPENED, opened));
 			level.setBlockState(x, y + 1, z, sideStateTop.with(VBEBlockProperties.OPENED, opened));
-			level.callAreaEvents(x, y, z, x, y + 1, z);
+			level.updateArea(x, y, z, x, y + 1, z);
 			level.playLevelEvent(null, 1003, x, y, z, 0);
 		}
 	}

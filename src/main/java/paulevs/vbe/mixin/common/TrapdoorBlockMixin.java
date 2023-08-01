@@ -77,7 +77,7 @@ public class TrapdoorBlockMixin extends BaseBlock {
 			if (opened != state.get(VBEBlockProperties.OPENED)) {
 				state = state.with(VBEBlockProperties.OPENED, opened);
 				LevelUtil.setBlockSilent(level, x, y, z, state);
-				level.callAreaEvents(x, y, z);
+				level.updateBlock(x, y, z);
 				level.playLevelEvent(null, 1003, x, y, z, 0);
 			}
 		}
@@ -97,7 +97,7 @@ public class TrapdoorBlockMixin extends BaseBlock {
 		if (changed == state) return;
 		
 		LevelUtil.setBlockSilent(level, x, y, z, changed);
-		level.callAreaEvents(x, y, z);
+		level.updateBlock(x, y, z);
 		level.playLevelEvent(null, 1003, x, y, z, 0);
 	}
 	

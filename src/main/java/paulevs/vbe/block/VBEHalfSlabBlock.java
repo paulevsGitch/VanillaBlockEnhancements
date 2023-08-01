@@ -157,7 +157,7 @@ public class VBEHalfSlabBlock extends TemplateBlockBase {
 		
 		level.setBlockState(x, y, z, fullBlock);
 		level.playSound(x + 0.5, y + 0.5, z + 0.5, this.sounds.getWalkSound(), 1.0F, 1.0F);
-		level.callAreaEvents(x, y, z);
+		level.updateBlock(x, y, z);
 		
 		if (!CreativeUtil.isCreative(player)) {
 			stack.count--;

@@ -3,7 +3,7 @@
 	"minVersion": "0.8",
 	"package": "paulevs.vbe.mixin.server",
 	"compatibilityLevel": "JAVA_17",
-	"mixins": [
+	"server": [
 		"ServerPlayerInteractionManagerMixin"
 	],
 	"injectors": {

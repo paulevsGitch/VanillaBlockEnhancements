@@ -124,7 +124,7 @@ public class VBEHalfSlabBlock extends TemplateBlockBase {
 		BaseItem item = stack.getType();
 		if (!(item instanceof BlockItem blockItem)) return false;
 		
-		if (blockItem.id != this.id) return false;
+		if (blockItem.getBlock() != this) return false;
 		
 		BlockState state = level.getBlockState(x, y, z);
 		if (!state.isOf(this)) return false;

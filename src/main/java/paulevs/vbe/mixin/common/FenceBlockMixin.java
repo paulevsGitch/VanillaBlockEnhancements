@@ -5,6 +5,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.block.BaseBlock;
 import net.minecraft.block.FenceBlock;
 import net.minecraft.block.material.Material;
+import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
 import net.minecraft.util.maths.Box;
 import net.modificationstation.stationapi.api.block.BlockState;
@@ -36,6 +37,13 @@ public class FenceBlockMixin extends BaseBlock implements FenceConnector {
 	public Box getOutlineShape(Level level, int x, int y, int z) {
 		vbe_updateState(level, x, y, z);
 		return super.getOutlineShape(level, x, y, z);
+	}
+	
+	@Override
+	public void updateBoundingBox(BlockView blockView, int x, int y, int z) {
+		if (blockView instanceof Level level) {
+			vbe_updateState(level, x, y, z);
+		}
 	}
 	
 	@Override

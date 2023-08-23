@@ -7,8 +7,8 @@ import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.ChestBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerBase;
+import net.minecraft.inventory.BaseInventory;
 import net.minecraft.inventory.DoubleChestInventory;
-import net.minecraft.inventory.InventoryBase;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
 import net.modificationstation.stationapi.api.block.BeforeBlockRemoved;
@@ -109,12 +109,12 @@ public abstract class ChestBlockMixin extends BlockWithEntity implements BeforeB
 			return;
 		}
 		
-		InventoryBase inventoryBase = (InventoryBase) level.getBlockEntity(x, y, z);
+		BaseInventory inventory = (BaseInventory) level.getBlockEntity(x, y, z);
 		BlockState state = level.getBlockState(x, y, z);
 		
 		ChestPart part = state.get(VBEBlockProperties.CHEST_PART);
 		if (part == ChestPart.SINGLE) {
-			player.openChestScreen(inventoryBase);
+			player.openChestScreen(inventory);
 			info.setReturnValue(true);
 			return;
 		}
@@ -127,19 +127,19 @@ public abstract class ChestBlockMixin extends BlockWithEntity implements BeforeB
 		
 		state = level.getBlockState(x, y, z);
 		if (!state.isOf(this)) {
-			player.openChestScreen(inventoryBase);
+			player.openChestScreen(inventory);
 			info.setReturnValue(true);
 			return;
 		}
 		
-		InventoryBase sideInventory = (InventoryBase) level.getBlockEntity(x, y, z);
+		BaseInventory sideInventory = (BaseInventory) level.getBlockEntity(x, y, z);
 		
 		switch (part) {
-			case LEFT -> inventoryBase = new DoubleChestInventory("Large chest", inventoryBase, sideInventory);
-			case RIGHT -> inventoryBase = new DoubleChestInventory("Large chest", sideInventory, inventoryBase);
+			case LEFT -> inventory = new DoubleChestInventory("Large chest", inventory, sideInventory);
+			case RIGHT -> inventory = new DoubleChestInventory("Large chest", sideInventory, inventory);
 		}
 		
-		player.openChestScreen(inventoryBase);
+		player.openChestScreen(inventory);
 	}
 	
 	@Environment(value= EnvType.CLIENT)

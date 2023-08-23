@@ -1,5 +1,7 @@
 package paulevs.vbe.mixin.client;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.block.BaseBlock;
 import net.minecraft.block.FenceBlock;
 import net.minecraft.client.render.block.BlockRenderer;
@@ -13,7 +15,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import paulevs.vbe.block.FenceConnector;
 import paulevs.vbe.block.StairsShape;
@@ -33,18 +34,18 @@ public abstract class BlockRendererMixin {
 		vbe_blockPos.set(x, y, z);
 	}
 	
-	@Redirect(method = "renderFence", at = @At(
-		value = "INVOKE",
-		target = "Lnet/minecraft/level/BlockView;getBlockId(III)I"
-	))
-	private int vbe_renderFence(BlockView view, int x, int y, int z) {
+	@WrapOperation(
+		method = "renderFence",
+		at = @At(value = "INVOKE", target = "Lnet/minecraft/level/BlockView;getBlockId(III)I")
+	)
+	private int vbe_renderFence(BlockView view, int x, int y, int z, Operation<Integer> original) {
 		if (view instanceof BlockStateView blockStateView) {
 			FenceConnector connector = FenceConnector.cast(vbe_fenceBlock);
 			BlockState state = blockStateView.getBlockState(x, y, z);
 			Direction face = Direction.fromVector(x - vbe_blockPos.x, y - vbe_blockPos.y, z - vbe_blockPos.z);
 			return connector.vbe_canConnect(state, face) ? vbe_fenceBlock.id : 0;
 		}
-		return 0;
+		return original.call(view, x, y, z);
 	}
 	
 	@Inject(method = "renderStairs", at = @At("HEAD"), cancellable = true)

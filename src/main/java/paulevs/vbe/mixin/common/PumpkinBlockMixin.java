@@ -1,15 +1,17 @@
 package paulevs.vbe.mixin.common;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.block.PumpkinBlock;
-import net.minecraft.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(PumpkinBlock.class)
 public class PumpkinBlockMixin {
-	@Redirect(method = "canPlaceAt", at = @At(value = "INVOKE", target = "Lnet/minecraft/level/Level;canSuffocate(III)Z"))
-	private boolean vbe_canPlaceAt(Level level, int x, int y, int z) {
+	@ModifyExpressionValue(
+		method = "canPlaceAt",
+		at = @At(value = "INVOKE", target = "Lnet/minecraft/level/Level;canSuffocate(III)Z")
+	)
+	private boolean vbe_canPlaceAt(boolean original) {
 		return true;
 	}
 }

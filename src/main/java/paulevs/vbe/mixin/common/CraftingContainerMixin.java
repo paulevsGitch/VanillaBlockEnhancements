@@ -26,7 +26,7 @@ public class CraftingContainerMixin {
 		vbe_addOrDrop(player, inventory.getCursorItem());
 		inventory.setCursorItem(null);
 		for (byte index = 0; index < 9; index++) {
-			vbe_addOrDrop(player, this.inventory.getInventoryItem(index));
+			vbe_addOrDrop(player, this.inventory.getItem(index));
 		}
 	}
 	

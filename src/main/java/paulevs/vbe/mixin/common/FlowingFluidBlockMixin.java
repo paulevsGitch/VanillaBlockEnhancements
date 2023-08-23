@@ -1,5 +1,7 @@
 package paulevs.vbe.mixin.common;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.block.material.Material;
@@ -27,6 +29,14 @@ public abstract class FlowingFluidBlockMixin extends FluidBlock {
 		target = "Lnet/minecraft/level/Level;getBlockMeta(III)I"
 	))
 	private int vbe_fixWrongMeta(Level level, int x, int y, int z) {
+		return level.getBlockMeta(x, y - 1, z);
+	}
+	
+	@WrapOperation(
+		method = "onScheduledTick",
+		at = @At(value = "INVOKE", target = "Lnet/minecraft/level/Level;getBlockMeta(III)I")
+	)
+	private int vbe_renderFence(Level level, int x, int y, int z, Operation<Integer> original) {
 		return level.getBlockMeta(x, y - 1, z);
 	}
 	

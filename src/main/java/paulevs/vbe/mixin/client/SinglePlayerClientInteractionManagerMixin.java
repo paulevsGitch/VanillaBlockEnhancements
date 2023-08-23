@@ -28,5 +28,5 @@ public class SinglePlayerClientInteractionManagerMixin extends BaseClientInterac
 		value = "INVOKE",
 		target = "Lnet/minecraft/block/BaseBlock;activate(Lnet/minecraft/level/Level;IIILnet/minecraft/entity/player/PlayerBase;)V"
 	))
-	private void injected(BaseBlock instance, Level i, int j, int k, int arg2, PlayerBase playerBase) {}
+	private void vbe_disableActivation(BaseBlock instance, Level i, int j, int k, int arg2, PlayerBase playerBase) {}
 }

@@ -8,7 +8,6 @@ import net.minecraft.block.FenceBlock;
 import net.minecraft.client.render.block.BlockRenderer;
 import net.minecraft.level.BlockView;
 import net.modificationstation.stationapi.api.block.BlockState;
-import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint.ModID;
 import net.modificationstation.stationapi.api.util.math.Direction;
 import net.modificationstation.stationapi.api.util.math.MutableBlockPos;
 import net.modificationstation.stationapi.api.world.BlockStateView;
@@ -16,23 +15,18 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.At.Shift;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
-import org.spongepowered.asm.mixin.injection.ModifyArgs;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import paulevs.vbe.block.FenceConnector;
 import paulevs.vbe.block.StairsShape;
 import paulevs.vbe.render.BlockViewWrapper;
-import paulevs.vbe.render.CustomBreakingRender;
 import paulevs.vbe.render.VBEBlockRenderer;
 
 @Mixin(BlockRenderer.class)
 public abstract class BlockRendererMixin {
 	@Shadow private BlockView blockView;
-	
-	@Shadow public abstract boolean renderFullCube(BaseBlock arg, int i, int j, int k);
 	
 	@Unique private final MutableBlockPos vbe_blockPos = new MutableBlockPos();
 	@Unique private FenceBlock vbe_fenceBlock;

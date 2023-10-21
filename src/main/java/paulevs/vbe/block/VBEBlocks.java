@@ -34,40 +34,36 @@ public class VBEBlocks {
 	}
 	
 	public static VBEHalfSlabBlock getHalfSlabByMeta(int meta) {
-		VBEHalfSlabBlock block = STONE_SLAB_HALF;
-		switch (meta & 3) {
-			case 1 -> block = SANDSTONE_SLAB_HALF;
-			case 2 -> block = OAK_SLAB_HALF;
-			case 3 -> block = COBBLESTONE_SLAB_HALF;
-		}
-		return block;
+		return switch (meta & 3) {
+			case 1 -> SANDSTONE_SLAB_HALF;
+			case 2 -> OAK_SLAB_HALF;
+			case 3 -> COBBLESTONE_SLAB_HALF;
+			default -> STONE_SLAB_HALF;
+		};
 	}
 	
 	public static VBEFullSlabBlock getFullSlabByMeta(int meta) {
-		VBEFullSlabBlock block = STONE_SLAB_FULL;
-		switch (meta & 3) {
-			case 1 -> block = SANDSTONE_SLAB_FULL;
-			case 2 -> block = OAK_SLAB_FULL;
-			case 3 -> block = COBBLESTONE_SLAB_FULL;
-		}
-		return block;
+		return switch (meta & 3) {
+			case 1 -> SANDSTONE_SLAB_FULL;
+			case 2 -> OAK_SLAB_FULL;
+			case 3 -> COBBLESTONE_SLAB_FULL;
+			default -> STONE_SLAB_FULL;
+		};
 	}
 	
 	public static VBELogBlock getLogByMeta(int meta) {
-		VBELogBlock block = OAK_LOG;
-		switch (meta & 3) {
-			case 1 -> block = SPRUCE_LOG;
-			case 2 -> block = BIRCH_LOG;
-		}
-		return block;
+		return switch (meta & 3) {
+			case 1 -> SPRUCE_LOG;
+			case 2 -> BIRCH_LOG;
+			default -> OAK_LOG;
+		};
 	}
 	
 	public static VBELeavesBlock getLeavesByMeta(int meta) {
-		VBELeavesBlock block = OAK_LEAVES;
-		switch (meta & 3) {
-			case 1 -> block = SPRUCE_LEAVES;
-			case 2 -> block = BIRCH_LEAVES;
-		}
-		return block;
+		return switch (meta & 3) {
+			case 1 -> SPRUCE_LEAVES;
+			case 2 -> BIRCH_LEAVES;
+			default -> OAK_LEAVES;
+		};
 	}
 }

@@ -21,7 +21,6 @@ public class ItemStackMixin {
 		int converted = ItemConverter.getID(itemId, damage);
 		if (converted == -1) return;
 		this.itemId = converted;
-		damage = 0;
 	}
 	
 	@Inject(method = "<init>(Lnet/minecraft/util/io/CompoundTag;)V", at = @At("TAIL"))
@@ -30,6 +29,5 @@ public class ItemStackMixin {
 		int converted = ItemConverter.getID(itemId, damage);
 		if (converted == -1) return;
 		this.itemId = converted;
-		damage = 0;
 	}
 }

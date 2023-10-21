@@ -5,8 +5,14 @@ import net.fabricmc.api.Environment;
 import net.minecraft.block.BaseBlock;
 import net.minecraft.block.LeavesBaseBlock;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.player.PlayerBase;
+import net.minecraft.item.BaseItem;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ShearsItem;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
+import net.minecraft.stat.Stats;
+import net.modificationstation.stationapi.api.block.AfterBreakWithBlockState;
 import net.modificationstation.stationapi.api.block.BlockState;
 import net.modificationstation.stationapi.api.block.States;
 import net.modificationstation.stationapi.api.item.ItemPlacementContext;
@@ -68,6 +74,19 @@ public class VBELeavesBlock extends LeavesBaseBlock implements BlockTemplate {
 	@Override
 	public void onScheduledTick(Level level, int x, int y, int z, Random random) {
 		checkLeaves(level, x, y, z, false);
+	}
+	
+	@Override
+	public void afterBreak(Level level, PlayerBase player, int x, int y, int z, int meta) {
+		if (!level.isRemote) {
+			ItemStack item = player.getHeldItem();
+			if (item != null && item.getType() instanceof ShearsItem) {
+				if (this.isStatEnabled) player.increaseStat(Stats.mineBlock[this.id], 1);
+				this.drop(level, x, y, z, new ItemStack(this));
+				return;
+			}
+		}
+		super.afterBreak(level, player, x, y, z, meta);
 	}
 	
 	@Override

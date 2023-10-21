@@ -83,6 +83,7 @@ public class VBEHalfSlabBlock extends TemplateBlockBase {
 		}
 		
 		BlockState state = bsView.getBlockState(x, y, z);
+		if (!state.isOf(this)) return;
 		Direction facing = state.get(VBEBlockProperties.DIRECTION);
 		
 		int dx = facing.getOffsetX();

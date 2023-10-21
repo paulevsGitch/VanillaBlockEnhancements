@@ -6,6 +6,7 @@ import net.minecraft.block.BaseBlock;
 import net.minecraft.block.DoorBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerBase;
+import net.minecraft.item.ItemStack;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
 import net.modificationstation.stationapi.api.block.BlockState;
@@ -25,6 +26,8 @@ import paulevs.vbe.block.VBEBlockProperties;
 import paulevs.vbe.block.VBEBlockProperties.TopBottom;
 import paulevs.vbe.block.VBEBlockTags;
 import paulevs.vbe.utils.LevelUtil;
+
+import java.util.List;
 
 @Mixin(DoorBlock.class)
 public abstract class DoorBlockMixin extends BaseBlock {
@@ -113,7 +116,6 @@ public abstract class DoorBlockMixin extends BaseBlock {
 			level.setBlockState(x, y2, z, States.AIR.get());
 			if (part == TopBottom.BOTTOM) {
 				level.updateArea(x, y1, z, x, y2, z);
-				this.drop(level, x, y1, z, 0);
 			}
 			else level.updateArea(x, y1, z, x, y2, z);
 			return;

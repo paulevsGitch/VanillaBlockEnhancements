@@ -20,6 +20,7 @@ import net.modificationstation.stationapi.api.template.block.TemplateBlockBase;
 import net.modificationstation.stationapi.api.util.math.Direction;
 import net.modificationstation.stationapi.api.util.math.Direction.Axis;
 import net.modificationstation.stationapi.api.util.math.Direction.AxisDirection;
+import paulevs.vbe.render.CustomBreakingRender;
 import paulevs.vbe.utils.LevelUtil;
 
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
-public class VBEFullSlabBlock extends TemplateBlockBase implements BeforeBlockRemoved {
+public class VBEFullSlabBlock extends TemplateBlockBase implements BeforeBlockRemoved, CustomBreakingRender {
 	private final Function<Integer, Integer> textureGetter;
 	private static BlockState blockState;
 	public static PlayerBase player;
@@ -98,7 +99,9 @@ public class VBEFullSlabBlock extends TemplateBlockBase implements BeforeBlockRe
 		hit = LevelUtil.raycast(level, player);
 	}
 	
-	public void setSelection(BlockState state, float dx, float dy, float dz) {
+	@Override
+	@Environment(EnvType.CLIENT)
+	public void vbe_setSelection(BlockState state, float dx, float dy, float dz) {
 		Axis axis = state.get(VBEBlockProperties.AXIS);
 		switch (axis) {
 			case X -> this.setBoundingBox(dx > 0.5F ? 0.5F : 0.0F, 0.0F, 0.0F, dx > 0.5F ? 1.0F : 0.5F, 1.0F, 1.0F);
@@ -107,18 +110,12 @@ public class VBEFullSlabBlock extends TemplateBlockBase implements BeforeBlockRe
 		}
 	}
 	
+	@Override
 	@Environment(EnvType.CLIENT)
-	public static BlockState getBreakingState(BlockState state) {
-		if (state.getBlock() instanceof VBEFullSlabBlock block) {
-			@SuppressWarnings("deprecation") Minecraft minecraft = (Minecraft) FabricLoader.getInstance().getGameInstance();
-			return block.getBreakingState(state, minecraft.player, minecraft.level);
-		}
-		return state;
-	}
-	
-	@Environment(EnvType.CLIENT)
-	private BlockState getBreakingState(BlockState state, PlayerBase player, Level level) {
-		HitResult hit = LevelUtil.raycast(level, player);
+	public BlockState vbe_getBreakingState(BlockState state) {
+		@SuppressWarnings("deprecation")
+		Minecraft minecraft = (Minecraft) FabricLoader.getInstance().getGameInstance();
+		HitResult hit = LevelUtil.raycast(minecraft.level, minecraft.player);
 		if (hit == null || hit.type != HitType.BLOCK) return state;
 		Axis axis = state.get(VBEBlockProperties.AXIS);
 		state = halfBlock.getDefaultState();

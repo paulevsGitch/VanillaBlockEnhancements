@@ -5,12 +5,13 @@ import net.modificationstation.stationapi.impl.client.arsenic.renderer.render.Ba
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
-import paulevs.vbe.block.VBEFullSlabBlock;
+import paulevs.vbe.render.CustomBreakingRender;
 
 @Mixin(value = BakedModelRendererImpl.class, remap = false)
 public class BakedModelRendererImplMixin {
 	@ModifyVariable(method = "renderDamage", at = @At("HEAD"), argsOnly = true)
 	private BlockState vbe_changeDamageState(BlockState state) {
-		return VBEFullSlabBlock.getBreakingState(state);
+		if (!(state.getBlock() instanceof CustomBreakingRender render)) return state;
+		return render.vbe_getBreakingState(state);
 	}
 }

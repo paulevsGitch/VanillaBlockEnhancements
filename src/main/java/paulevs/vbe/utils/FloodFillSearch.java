@@ -1,5 +1,7 @@
 package paulevs.vbe.utils;
 
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.level.Level;
 import net.modificationstation.stationapi.api.block.BlockState;
 import net.modificationstation.stationapi.api.util.math.Direction;
@@ -10,7 +12,7 @@ import java.util.List;
 import java.util.function.Function;
 
 public class FloodFillSearch {
-	private final List<List<Integer>> buffers = new ArrayList<>();
+	private final List<IntList> buffers = new ArrayList<>();
 	private final boolean[] mask;
 	private final short[] steps;
 	private final int offset;
@@ -25,12 +27,12 @@ public class FloodFillSearch {
 		mask = new boolean[side * side2];
 		steps = new short[mask.length];
 		center = getIndex(offset, offset, offset);
-		buffers.add(new ArrayList<>(mask.length >> 2));
-		buffers.add(new ArrayList<>(mask.length >> 2));
+		buffers.add(new IntArrayList(mask.length >> 2));
+		buffers.add(new IntArrayList(mask.length >> 2));
 	}
 	
 	public int search(Level level, int x, int y, int z, Function<BlockState, Boolean> criteria, Function<BlockState, Boolean> filter) {
-		List<Integer> starts = buffers.get(0);
+		IntList starts = buffers.get(0);
 		
 		starts.clear();
 		starts.add(center);
@@ -46,7 +48,7 @@ public class FloodFillSearch {
 		while (!starts.isEmpty()) {
 			starts = buffers.get(index);
 			index = (byte) ((index + 1) & 1);
-			List<Integer> ends = buffers.get(index);
+			IntList ends = buffers.get(index);
 			ends.clear();
 			
 			for (int pos : starts) {
@@ -84,7 +86,7 @@ public class FloodFillSearch {
 	}
 	
 	public void transform(Level level, int x, int y, int z, Function<BlockState, Boolean> criteria, Function<BlockState, BlockState> transformer) {
-		List<Integer> starts = buffers.get(0);
+		IntList starts = buffers.get(0);
 		
 		starts.clear();
 		starts.add(center);
@@ -100,7 +102,7 @@ public class FloodFillSearch {
 		while (!starts.isEmpty()) {
 			starts = buffers.get(index);
 			index = (byte) ((index + 1) & 1);
-			List<Integer> ends = buffers.get(index);
+			IntList ends = buffers.get(index);
 			ends.clear();
 			
 			for (int pos : starts) {

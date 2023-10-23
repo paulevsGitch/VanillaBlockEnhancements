@@ -14,6 +14,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import paulevs.vbe.block.FenceConnector;
 import paulevs.vbe.block.VBEBlockProperties;
@@ -24,6 +25,11 @@ import paulevs.vbe.block.VBEHalfSlabBlock;
 public class FenceBlockMixin extends BaseBlock implements FenceConnector {
 	public FenceBlockMixin(int id, Material material) {
 		super(id, material);
+	}
+	
+	@Inject(method = "<init>", at = @At(value = "TAIL"))
+	private void vbe_onFenceInit(int id, int texture, CallbackInfo info) {
+		ALLOWS_GRASS_UNDER[id] = true;
 	}
 	
 	@Inject(method = "getCollisionShape", at = @At("HEAD"), cancellable = true)

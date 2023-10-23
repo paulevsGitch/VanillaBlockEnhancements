@@ -2,7 +2,9 @@ package paulevs.vbe.render;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.BaseBlock;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.render.block.BlockRenderer;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
@@ -14,7 +16,7 @@ import paulevs.vbe.block.StairsShape;
 
 @Environment(EnvType.CLIENT)
 public class VBEBlockRenderer {
-	private static BlockViewWrapper wrapper = new BlockViewWrapper();
+	private static final BlockViewWrapper WRAPPER = new BlockViewWrapper();
 	private static BaseBlock block;
 	
 	public static void startSelectionRendering(Level level, BaseBlock block, HitResult hit) {
@@ -40,7 +42,10 @@ public class VBEBlockRenderer {
 	}
 	
 	public static void renderStairs(StairsShape stairs, BlockState state, int x, int y, int z, BlockRenderer renderer) {
-		stairs.vbe_getStairsShape(state).forEach(shape -> {
+		BaseBlock block = state.getBlock();
+		@SuppressWarnings("deprecation")
+		Level level = ((Minecraft) FabricLoader.getInstance().getGameInstance()).level;
+		stairs.vbe_getStairsShape(level, x, y, z, state).forEach(shape -> {
 			block.minX = shape.minX;
 			block.minY = shape.minY;
 			block.minZ = shape.minZ;
@@ -54,8 +59,8 @@ public class VBEBlockRenderer {
 	public static BlockView getBreakView(BlockView view, int x, int y, int z) {
 		BlockState state = ((BlockStateView) view).getBlockState(x, y, z);
 		if (state.getBlock() instanceof CustomBreakingRender render) {
-			wrapper.setData(view, render.vbe_getBreakingState(state), x, y, z);
-			return wrapper;
+			WRAPPER.setData(view, render.vbe_getBreakingState(state), x, y, z);
+			return WRAPPER;
 		}
 		return view;
 	}

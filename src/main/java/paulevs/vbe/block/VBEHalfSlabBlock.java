@@ -36,6 +36,7 @@ public class VBEHalfSlabBlock extends TemplateBlockBase {
 		super(id, material);
 		setTranslationKey(id.toString());
 		this.textureGetter = side -> this.texture;
+		ALLOWS_GRASS_UNDER[this.id] = true;
 	}
 	
 	public VBEHalfSlabBlock(Identifier id, BaseBlock source) {
@@ -45,6 +46,7 @@ public class VBEHalfSlabBlock extends TemplateBlockBase {
 		setHardness(source.getHardness() * 0.5F);
 		setSounds(source.sounds);
 		this.textureGetter = source::getTextureForSide;
+		ALLOWS_GRASS_UNDER[this.id] = true;
 	}
 	
 	@Override

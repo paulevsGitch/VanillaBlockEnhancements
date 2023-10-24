@@ -29,7 +29,7 @@ public class FenceBlockMixin extends BaseBlock implements FenceConnector {
 	
 	@Inject(method = "<init>", at = @At(value = "TAIL"))
 	private void vbe_onFenceInit(int id, int texture, CallbackInfo info) {
-		ALLOWS_GRASS_UNDER[id] = true;
+		ALLOWS_GRASS_UNDER[this.id] = true;
 	}
 	
 	@Inject(method = "getCollisionShape", at = @At("HEAD"), cancellable = true)

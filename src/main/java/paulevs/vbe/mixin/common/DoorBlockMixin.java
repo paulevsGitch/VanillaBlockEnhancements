@@ -48,6 +48,11 @@ public abstract class DoorBlockMixin extends BaseBlock {
 		);
 	}
 	
+	@Inject(method = "<init>", at = @At(value = "TAIL"))
+	private void vbe_onFenceInit(int id, Material material, CallbackInfo info) {
+		ALLOWS_GRASS_UNDER[this.id] = true;
+	}
+	
 	@Environment(value= EnvType.CLIENT)
 	@Inject(method = "getRenderType", at = @At("HEAD"), cancellable = true)
 	private void vbe_getRenderType(CallbackInfoReturnable<Integer> info) {

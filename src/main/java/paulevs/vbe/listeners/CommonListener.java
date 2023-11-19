@@ -10,6 +10,7 @@ import net.modificationstation.stationapi.api.event.registry.ItemRegistryEvent;
 import paulevs.vbe.block.StairsShape;
 import paulevs.vbe.block.VBEBlocks;
 import paulevs.vbe.item.VBEItems;
+import paulevs.vbe.utils.CreativeUtil;
 
 public class CommonListener {
 	public static boolean blockRegistered = false;
@@ -22,7 +23,7 @@ public class CommonListener {
 	}
 	
 	@EventListener
-	private void onBlockRegister(ItemRegistryEvent event) {
+	private void onItemRegister(ItemRegistryEvent event) {
 		VBEItems.init();
 	}
 	
@@ -31,5 +32,6 @@ public class CommonListener {
 		SmeltingRecipeRegistry.getInstance().addSmeltingRecipe(VBEBlocks.OAK_LOG.id, new ItemStack(Item.coal, 1, 1));
 		SmeltingRecipeRegistry.getInstance().addSmeltingRecipe(VBEBlocks.SPRUCE_LOG.id, new ItemStack(Item.coal, 1, 1));
 		SmeltingRecipeRegistry.getInstance().addSmeltingRecipe(VBEBlocks.BIRCH_LOG.id, new ItemStack(Item.coal, 1, 1));
+		CreativeUtil.registerBlockConverters();
 	}
 }

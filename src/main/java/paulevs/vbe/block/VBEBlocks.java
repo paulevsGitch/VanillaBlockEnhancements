@@ -25,7 +25,6 @@ public class VBEBlocks {
 		connectSlabs(SANDSTONE_SLAB_HALF, SANDSTONE_SLAB_FULL);
 		connectSlabs(OAK_SLAB_HALF, OAK_SLAB_FULL);
 		connectSlabs(COBBLESTONE_SLAB_HALF, COBBLESTONE_SLAB_FULL);
-		CreativeUtil.registerBlockConverters();
 	}
 	
 	private static void connectSlabs(VBEHalfSlabBlock halfSlab, VBEFullSlabBlock fullSlab) {

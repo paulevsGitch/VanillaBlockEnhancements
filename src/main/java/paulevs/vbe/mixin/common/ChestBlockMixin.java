@@ -104,8 +104,9 @@ public abstract class ChestBlockMixin extends BlockWithEntity implements BeforeB
 	
 	@Inject(method = "canUse", at = @At("HEAD"), cancellable = true)
 	private void vbe_canUse(Level level, int x, int y, int z, PlayerEntity player, CallbackInfoReturnable<Boolean> info) {
+		info.setReturnValue(true);
+		
 		if (level.isRemote) {
-			info.setReturnValue(true);
 			return;
 		}
 		
@@ -115,7 +116,6 @@ public abstract class ChestBlockMixin extends BlockWithEntity implements BeforeB
 		ChestPart part = state.get(VBEBlockProperties.CHEST_PART);
 		if (part == ChestPart.SINGLE) {
 			player.openChestScreen(inventory);
-			info.setReturnValue(true);
 			return;
 		}
 		
@@ -128,7 +128,6 @@ public abstract class ChestBlockMixin extends BlockWithEntity implements BeforeB
 		state = level.getBlockState(x, y, z);
 		if (!state.isOf(this)) {
 			player.openChestScreen(inventory);
-			info.setReturnValue(true);
 			return;
 		}
 		

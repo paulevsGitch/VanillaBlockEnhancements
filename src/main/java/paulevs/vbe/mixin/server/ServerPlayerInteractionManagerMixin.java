@@ -21,7 +21,7 @@ public class ServerPlayerInteractionManagerMixin {
 		at = @At("HEAD"), cancellable = true
 	)
 	private void vbe_onUseBlock(PlayerEntity player, Level level, ItemStack stack, int x, int y, int z, int side, CallbackInfoReturnable<Boolean> info) {
-		if (player.isChild()) info.setReturnValue(stack.useOnBlock(player, level, x, y, z, side));
+		if (stack != null && player.isChild()) info.setReturnValue(stack.useOnBlock(player, level, x, y, z, side));
 	}
 	
 	@Inject(method = "activateBlock", at = @At(value = "HEAD"))

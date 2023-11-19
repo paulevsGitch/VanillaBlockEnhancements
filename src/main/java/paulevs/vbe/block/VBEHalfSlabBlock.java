@@ -2,11 +2,11 @@ package paulevs.vbe.block;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.block.BaseBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.PlayerBase;
-import net.minecraft.item.BaseItem;
+import net.minecraft.entity.living.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
@@ -16,9 +16,9 @@ import net.minecraft.util.maths.BlockPos;
 import net.minecraft.util.maths.Box;
 import net.modificationstation.stationapi.api.block.BlockState;
 import net.modificationstation.stationapi.api.item.ItemPlacementContext;
-import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.state.StateManager.Builder;
-import net.modificationstation.stationapi.api.template.block.TemplateBlockBase;
+import net.modificationstation.stationapi.api.template.block.TemplateBlock;
+import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.util.math.Direction;
 import net.modificationstation.stationapi.api.util.math.Direction.Axis;
 import net.modificationstation.stationapi.api.world.BlockStateView;
@@ -28,34 +28,34 @@ import paulevs.vbe.utils.LevelUtil;
 import java.util.ArrayList;
 import java.util.function.Function;
 
-public class VBEHalfSlabBlock extends TemplateBlockBase {
+public class VBEHalfSlabBlock extends TemplateBlock {
 	private final Function<Integer, Integer> textureGetter;
-	private BaseBlock fullBlock;
+	private Block fullBlock;
 	
 	public VBEHalfSlabBlock(Identifier id, Material material) {
 		super(id, material);
 		setTranslationKey(id.toString());
 		this.textureGetter = side -> this.texture;
-		ALLOWS_GRASS_UNDER[this.id] = true;
+		NO_AMBIENT_OCCLUSION[this.id] = true;
 	}
 	
-	public VBEHalfSlabBlock(Identifier id, BaseBlock source) {
+	public VBEHalfSlabBlock(Identifier id, Block source) {
 		super(id, source.material);
 		setTranslationKey(id.toString());
-		BaseBlock.EMITTANCE[this.id] = BaseBlock.EMITTANCE[source.id] / 2;
+		Block.EMITTANCE[this.id] = Block.EMITTANCE[source.id] / 2;
 		setHardness(source.getHardness() * 0.5F);
 		setSounds(source.sounds);
-		this.textureGetter = source::getTextureForSide;
-		ALLOWS_GRASS_UNDER[this.id] = true;
+		this.textureGetter = source::getTexture;
+		NO_AMBIENT_OCCLUSION[this.id] = true;
 	}
 	
 	@Override
-	public void appendProperties(Builder<BaseBlock, BlockState> builder) {
+	public void appendProperties(Builder<Block, BlockState> builder) {
 		super.appendProperties(builder);
 		builder.add(VBEBlockProperties.DIRECTION);
 	}
 	
-	public void setFullBlock(BaseBlock fullBlock) {
+	public void setFullBlock(Block fullBlock) {
 		this.fullBlock = fullBlock;
 	}
 	
@@ -68,7 +68,7 @@ public class VBEHalfSlabBlock extends TemplateBlockBase {
 		if (state.getBlock() instanceof VBEHalfSlabBlock) {
 			Direction facing = state.get(VBEBlockProperties.DIRECTION);
 			if (facing.getAxis() != face.getAxis()) {
-				PlayerBase player = context.getPlayer();
+				PlayerEntity player = context.getPlayer();
 				if (player != null && !player.isChild()) {
 					return getDefaultState().with(VBEBlockProperties.DIRECTION, facing);
 				}
@@ -120,11 +120,11 @@ public class VBEHalfSlabBlock extends TemplateBlockBase {
 	}
 	
 	@Override
-	public boolean canUse(Level level, int x, int y, int z, PlayerBase player) {
+	public boolean canUse(Level level, int x, int y, int z, PlayerEntity player) {
 		ItemStack stack = player.getHeldItem();
 		if (stack == null) return false;
 		
-		BaseItem item = stack.getType();
+		Item item = stack.getType();
 		if (!(item instanceof BlockItem blockItem)) return false;
 		
 		if (blockItem.getBlock() != this) return false;
@@ -205,7 +205,7 @@ public class VBEHalfSlabBlock extends TemplateBlockBase {
 	}
 	
 	@Override
-	public int getTextureForSide(int side) {
+	public int getTexture(int side) {
 		return textureGetter.apply(side);
 	}
 }

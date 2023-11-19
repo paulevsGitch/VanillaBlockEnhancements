@@ -1,6 +1,6 @@
 package paulevs.vbe.mixin.common;
 
-import net.minecraft.block.BaseBlock;
+import net.minecraft.block.Block;
 import net.minecraft.item.AxeItem;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -15,23 +15,23 @@ import java.util.List;
 
 @Mixin(AxeItem.class)
 public class AxeItemMixin {
-	@Shadow private static BaseBlock[] effectiveBlocks;
+	@Shadow private static Block[] effectiveBlocks;
 	
 	@Inject(method = "<clinit>", at = @At("TAIL"))
 	private static void vbe_onInit(CallbackInfo info) {
-		List<BaseBlock> blocks = new ArrayList<>(Arrays.asList(effectiveBlocks));
-		blocks.add(BaseBlock.WORKBENCH);
-		blocks.add(BaseBlock.WOOD_STAIRS);
-		blocks.add(BaseBlock.WOOD_DOOR);
-		blocks.add(BaseBlock.STANDING_SIGN);
-		blocks.add(BaseBlock.WALL_SIGN);
-		blocks.add(BaseBlock.FENCE);
-		blocks.add(BaseBlock.WOODEN_PRESSURE_PLATE);
+		List<Block> blocks = new ArrayList<>(Arrays.asList(effectiveBlocks));
+		blocks.add(Block.WORKBENCH);
+		blocks.add(Block.WOOD_STAIRS);
+		blocks.add(Block.WOOD_DOOR);
+		blocks.add(Block.STANDING_SIGN);
+		blocks.add(Block.WALL_SIGN);
+		blocks.add(Block.FENCE);
+		blocks.add(Block.WOODEN_PRESSURE_PLATE);
 		blocks.add(VBEBlocks.OAK_SLAB_FULL);
 		blocks.add(VBEBlocks.OAK_SLAB_HALF);
 		blocks.add(VBEBlocks.OAK_LOG);
 		blocks.add(VBEBlocks.SPRUCE_LOG);
 		blocks.add(VBEBlocks.BIRCH_LOG);
-		effectiveBlocks = blocks.toArray(BaseBlock[]::new);
+		effectiveBlocks = blocks.toArray(Block[]::new);
 	}
 }

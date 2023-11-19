@@ -1,12 +1,12 @@
 package paulevs.vbe;
 
-import net.modificationstation.stationapi.api.registry.Identifier;
-import net.modificationstation.stationapi.api.registry.ModID;
+import net.modificationstation.stationapi.api.util.Identifier;
+import net.modificationstation.stationapi.api.util.Namespace;
 
 public class VBE {
-	public static final ModID MOD_ID = ModID.of("vbe");
+	public static final Namespace NAMESPACE = Namespace.of("vbe");
 	
 	public static Identifier id(String name) {
-		return MOD_ID.id(name);
+		return NAMESPACE.id(name);
 	}
 }

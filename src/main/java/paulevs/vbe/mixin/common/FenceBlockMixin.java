@@ -2,7 +2,7 @@ package paulevs.vbe.mixin.common;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.block.BaseBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.FenceBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.level.BlockView;
@@ -22,14 +22,14 @@ import paulevs.vbe.block.VBEBlockTags;
 import paulevs.vbe.block.VBEHalfSlabBlock;
 
 @Mixin(FenceBlock.class)
-public class FenceBlockMixin extends BaseBlock implements FenceConnector {
+public class FenceBlockMixin extends Block implements FenceConnector {
 	public FenceBlockMixin(int id, Material material) {
 		super(id, material);
 	}
 	
 	@Inject(method = "<init>", at = @At(value = "TAIL"))
 	private void vbe_onFenceInit(int id, int texture, CallbackInfo info) {
-		ALLOWS_GRASS_UNDER[this.id] = true;
+		NO_AMBIENT_OCCLUSION[this.id] = true;
 	}
 	
 	@Inject(method = "getCollisionShape", at = @At("HEAD"), cancellable = true)
@@ -55,7 +55,7 @@ public class FenceBlockMixin extends BaseBlock implements FenceConnector {
 	@Override
 	public boolean vbe_canConnect(BlockState state, Direction face) {
 		if (state.isIn(VBEBlockTags.FENCE_CONNECT)) return true;
-		BaseBlock block = state.getBlock();
+		Block block = state.getBlock();
 		if (block instanceof VBEHalfSlabBlock) {
 			return state.get(VBEBlockProperties.DIRECTION).getOpposite() == face;
 		}

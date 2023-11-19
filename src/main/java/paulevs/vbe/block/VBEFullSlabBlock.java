@@ -3,10 +3,10 @@ package paulevs.vbe.block;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.block.BaseBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.PlayerBase;
+import net.minecraft.entity.living.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.level.Level;
 import net.minecraft.util.hit.HitResult;
@@ -14,9 +14,9 @@ import net.minecraft.util.hit.HitType;
 import net.minecraft.util.maths.Box;
 import net.modificationstation.stationapi.api.block.BeforeBlockRemoved;
 import net.modificationstation.stationapi.api.block.BlockState;
-import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.state.StateManager.Builder;
-import net.modificationstation.stationapi.api.template.block.TemplateBlockBase;
+import net.modificationstation.stationapi.api.template.block.TemplateBlock;
+import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.util.math.Direction;
 import net.modificationstation.stationapi.api.util.math.Direction.Axis;
 import net.modificationstation.stationapi.api.util.math.Direction.AxisDirection;
@@ -28,12 +28,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
-public class VBEFullSlabBlock extends TemplateBlockBase implements BeforeBlockRemoved, CustomBreakingRender {
+public class VBEFullSlabBlock extends TemplateBlock implements BeforeBlockRemoved, CustomBreakingRender {
 	private final Function<Integer, Integer> textureGetter;
 	private static BlockState blockState;
-	public static PlayerBase player;
+	public static PlayerEntity player;
 	public static HitResult hit;
-	private BaseBlock halfBlock;
+	private Block halfBlock;
 	
 	@Environment(EnvType.CLIENT)
 	public static BlockState breakingState;
@@ -44,23 +44,23 @@ public class VBEFullSlabBlock extends TemplateBlockBase implements BeforeBlockRe
 		this.textureGetter = side -> this.texture;
 	}
 	
-	public VBEFullSlabBlock(Identifier id, BaseBlock source) {
+	public VBEFullSlabBlock(Identifier id, Block source) {
 		super(id, source.material);
 		setTranslationKey(id.toString());
-		BaseBlock.EMITTANCE[this.id] = BaseBlock.EMITTANCE[source.id];
+		Block.EMITTANCE[this.id] = Block.EMITTANCE[source.id];
 		this.resistance = source.getHardness() * 5F;
 		this.hardness = source.getHardness() * 0.5F;
 		setSounds(source.sounds);
-		this.textureGetter = source::getTextureForSide;
+		this.textureGetter = source::getTexture;
 	}
 	
 	@Override
-	public void appendProperties(Builder<BaseBlock, BlockState> builder) {
+	public void appendProperties(Builder<Block, BlockState> builder) {
 		super.appendProperties(builder);
 		builder.add(VBEBlockProperties.AXIS);
 	}
 	
-	public void setHalfBlock(BaseBlock halfBlock) {
+	public void setHalfBlock(Block halfBlock) {
 		this.halfBlock = halfBlock;
 	}
 	
@@ -130,7 +130,7 @@ public class VBEFullSlabBlock extends TemplateBlockBase implements BeforeBlockRe
 	}
 	
 	@Override
-	public int getTextureForSide(int side) {
+	public int getTexture(int side) {
 		return textureGetter.apply(side);
 	}
 }

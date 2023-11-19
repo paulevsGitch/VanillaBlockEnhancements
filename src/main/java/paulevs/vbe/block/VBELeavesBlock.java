@@ -2,23 +2,22 @@ package paulevs.vbe.block;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.block.BaseBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.LeavesBaseBlock;
+import net.minecraft.block.LeavesBlock;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.PlayerBase;
-import net.minecraft.item.BaseItem;
+import net.minecraft.entity.living.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShearsItem;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
 import net.minecraft.stat.Stats;
-import net.modificationstation.stationapi.api.block.AfterBreakWithBlockState;
 import net.modificationstation.stationapi.api.block.BlockState;
 import net.modificationstation.stationapi.api.block.States;
 import net.modificationstation.stationapi.api.item.ItemPlacementContext;
-import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.state.StateManager.Builder;
 import net.modificationstation.stationapi.api.template.block.BlockTemplate;
+import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.util.math.Direction;
 import net.modificationstation.stationapi.api.world.BlockStateView;
 import paulevs.vbe.utils.FloodFillSearch;
@@ -56,7 +55,7 @@ public class VBELeavesBlock extends LeavesBaseBlock implements BlockTemplate {
 	}
 	
 	@Override
-	public void appendProperties(Builder<BaseBlock, BlockState> builder) {
+	public void appendProperties(Builder<Block, BlockState> builder) {
 		super.appendProperties(builder);
 		builder.add(VBEBlockProperties.NATURAL, VBEBlockProperties.ACTIVE);
 	}
@@ -77,7 +76,7 @@ public class VBELeavesBlock extends LeavesBaseBlock implements BlockTemplate {
 	}
 	
 	@Override
-	public void afterBreak(Level level, PlayerBase player, int x, int y, int z, int meta) {
+	public void afterBreak(Level level, PlayerEntity player, int x, int y, int z, int meta) {
 		if (!level.isRemote) {
 			ItemStack item = player.getHeldItem();
 			if (item != null && item.getType() instanceof ShearsItem) {
@@ -94,7 +93,7 @@ public class VBELeavesBlock extends LeavesBaseBlock implements BlockTemplate {
 	public boolean isSideRendered(BlockView view, int x, int y, int z, int side) {
 		if (view instanceof BlockStateView blockStateView) {
 			BlockState state = blockStateView.getBlockState(x, y, z);
-			if (state.getBlock() instanceof LeavesBaseBlock || !state.isOpaque()) {
+			if (state.getBlock() instanceof LeavesBlock || !state.isOpaque()) {
 				return true;
 			}
 			return super.isSideRendered(view, x, y, z, side);

@@ -1,16 +1,16 @@
 package paulevs.vbe.utils;
 
-import net.minecraft.entity.player.PlayerBase;
+import net.minecraft.entity.living.player.PlayerEntity;
 import net.minecraft.level.Level;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.maths.MathHelper;
-import net.minecraft.util.maths.Vec3f;
+import net.minecraft.util.maths.Vec3D;
 import net.modificationstation.stationapi.api.block.BlockState;
-import net.modificationstation.stationapi.impl.level.chunk.ChunkSection;
-import net.modificationstation.stationapi.impl.level.chunk.FlattenedChunk;
+import net.modificationstation.stationapi.impl.world.chunk.ChunkSection;
+import net.modificationstation.stationapi.impl.world.chunk.FlattenedChunk;
 
 public class LevelUtil {
-	public static HitResult raycast(Level level, PlayerBase player) {
+	public static HitResult raycast(Level level, PlayerEntity player) {
 		double dist = 5.0;
 		float toRadians = (float) Math.PI / 180;
 		float pitch = player.prevPitch + (player.pitch - player.prevPitch);
@@ -18,7 +18,7 @@ public class LevelUtil {
 		double x = player.prevX + (player.x - player.prevX);
 		double y = player.prevY + (player.y - player.prevY) + 1.62 - (double) player.standingEyeHeight;
 		double z = player.prevZ + (player.z - player.prevZ);
-		Vec3f pos = Vec3f.getFromCacheAndSet(x, y, z);
+		Vec3D pos = Vec3D.getFromCacheAndSet(x, y, z);
 		
 		float yaw = player.prevYaw + (player.yaw - player.prevYaw);
 		yaw = -yaw * toRadians - (float) Math.PI;
@@ -26,7 +26,7 @@ public class LevelUtil {
 		float sinYaw = MathHelper.sin(yaw);
 		float cosPitch = -MathHelper.cos(-pitch * toRadians);
 		
-		Vec3f dir = pos.add(
+		Vec3D dir = pos.add(
 			sinYaw * cosPitch * dist,
 			(MathHelper.sin(-pitch * ((float) Math.PI / 180))) * dist,
 			cosYaw * cosPitch * dist

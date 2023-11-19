@@ -1,6 +1,6 @@
 package paulevs.vbe.mixin.common;
 
-import net.minecraft.block.BaseBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.StoneSlabBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
@@ -15,7 +15,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Mixin(StoneSlabBlock.class)
-public class StoneSlabMixin extends BaseBlock {
+public class StoneSlabMixin extends Block {
 	@Shadow private boolean field_2324;
 	
 	public StoneSlabMixin(int i, Material arg) {

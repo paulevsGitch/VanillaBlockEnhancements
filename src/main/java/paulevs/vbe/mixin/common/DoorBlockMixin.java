@@ -2,11 +2,10 @@ package paulevs.vbe.mixin.common;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.block.BaseBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.DoorBlock;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.PlayerBase;
-import net.minecraft.item.ItemStack;
+import net.minecraft.entity.living.player.PlayerEntity;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
 import net.modificationstation.stationapi.api.block.BlockState;
@@ -27,10 +26,8 @@ import paulevs.vbe.block.VBEBlockProperties.TopBottom;
 import paulevs.vbe.block.VBEBlockTags;
 import paulevs.vbe.utils.LevelUtil;
 
-import java.util.List;
-
 @Mixin(DoorBlock.class)
-public abstract class DoorBlockMixin extends BaseBlock {
+public abstract class DoorBlockMixin extends Block {
 	@Shadow public abstract boolean canPlaceAt(Level arg, int i, int j, int k);
 	
 	public DoorBlockMixin(int i, Material arg) {
@@ -38,7 +35,7 @@ public abstract class DoorBlockMixin extends BaseBlock {
 	}
 	
 	@Override
-	public void appendProperties(Builder<BaseBlock, BlockState> builder) {
+	public void appendProperties(Builder<Block, BlockState> builder) {
 		super.appendProperties(builder);
 		builder.add(
 			VBEBlockProperties.FACING,
@@ -50,7 +47,7 @@ public abstract class DoorBlockMixin extends BaseBlock {
 	
 	@Inject(method = "<init>", at = @At(value = "TAIL"))
 	private void vbe_onFenceInit(int id, Material material, CallbackInfo info) {
-		ALLOWS_GRASS_UNDER[this.id] = true;
+		NO_AMBIENT_OCCLUSION[this.id] = true;
 	}
 	
 	@Environment(value= EnvType.CLIENT)
@@ -60,7 +57,7 @@ public abstract class DoorBlockMixin extends BaseBlock {
 	}
 	
 	@Inject(method = "canUse", at = @At("HEAD"), cancellable = true)
-	private void vbe_canUse(Level level, int x, int y, int z, PlayerBase player, CallbackInfoReturnable<Boolean> info) {
+	private void vbe_canUse(Level level, int x, int y, int z, PlayerEntity player, CallbackInfoReturnable<Boolean> info) {
 		info.setReturnValue(true);
 		
 		BlockState state = level.getBlockState(x, y, z);
@@ -91,7 +88,7 @@ public abstract class DoorBlockMixin extends BaseBlock {
 		vbe_updateSideDoor(level, x, y1, z, level.getBlockState(x, y1, z));
 	}
 	
-	@Inject(method = "getTextureForSide", at = @At("HEAD"), cancellable = true)
+	@Inject(method = "getTexture", at = @At("HEAD"), cancellable = true)
 	private void vbe_fixTexture(int i, int j, CallbackInfoReturnable<Integer> info) {
 		info.setReturnValue(0);
 	}
@@ -134,7 +131,7 @@ public abstract class DoorBlockMixin extends BaseBlock {
 			return;
 		}
 		
-		if (BaseBlock.BY_ID[blockID].getEmitsRedstonePower()) {
+		if (Block.BY_ID[blockID].getEmitsRedstonePower()) {
 			boolean opened = level.hasRedstonePower(x, y1, z) || level.hasRedstonePower(x, y2, z);
 			opened |= vbe_hasConnectedPower(level, x, y, z, state);
 			

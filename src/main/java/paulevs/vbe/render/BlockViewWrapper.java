@@ -2,7 +2,7 @@ package paulevs.vbe.render;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.block.entity.BaseBlockEntity;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.material.Material;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.gen.BiomeSource;
@@ -35,7 +35,7 @@ public class BlockViewWrapper implements BlockView, BlockStateView {
 	}
 	
 	@Override
-	public BaseBlockEntity getBlockEntity(int x, int y, int z) {
+	public BlockEntity getBlockEntity(int x, int y, int z) {
 		return originalView.getBlockEntity(x, y, z);
 	}
 	

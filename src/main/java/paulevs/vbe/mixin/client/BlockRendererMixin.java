@@ -3,7 +3,7 @@ package paulevs.vbe.mixin.client;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
-import net.minecraft.block.BaseBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.FenceBlock;
 import net.minecraft.client.render.block.BlockRenderer;
 import net.minecraft.level.BlockView;
@@ -32,7 +32,7 @@ public abstract class BlockRendererMixin {
 	@Unique private FenceBlock vbe_fenceBlock;
 	
 	@Inject(method = "renderFence", at = @At("HEAD"))
-	private void vbe_renderFence(BaseBlock block, int x, int y, int z, CallbackInfoReturnable<Boolean> info) {
+	private void vbe_renderFence(Block block, int x, int y, int z, CallbackInfoReturnable<Boolean> info) {
 		vbe_fenceBlock = (FenceBlock) block;
 		vbe_blockPos.set(x, y, z);
 	}
@@ -52,7 +52,7 @@ public abstract class BlockRendererMixin {
 	}
 	
 	@Inject(method = "renderStairs", at = @At("HEAD"), cancellable = true)
-	private void vbe_renderStairs(BaseBlock block, int x, int y, int z, CallbackInfoReturnable<Boolean> info) {
+	private void vbe_renderStairs(Block block, int x, int y, int z, CallbackInfoReturnable<Boolean> info) {
 		if (this.blockView instanceof BlockStateView stateView && block instanceof StairsShape stairs) {
 			VBEBlockRenderer.renderStairs(stairs, stateView.getBlockState(x, y, z), x, y, z, BlockRenderer.class.cast(this));
 			info.setReturnValue(true);
@@ -60,15 +60,15 @@ public abstract class BlockRendererMixin {
 	}
 	
 	@Inject(method = "renderWithOverride", at = @At("HEAD"))
-	private void vbe_setWrappedBlockView(BaseBlock block, int x, int y, int z, int texture, CallbackInfo info) {
+	private void vbe_setWrappedBlockView(Block block, int x, int y, int z, int texture, CallbackInfo info) {
 		blockView = VBEBlockRenderer.getBreakView(blockView, x, y, z);
 	}
 	
 	@ModifyArg(method = "renderWithOverride", at = @At(
 		value = "INVOKE",
-		target = "Lnet/minecraft/client/render/block/BlockRenderer;render(Lnet/minecraft/block/BaseBlock;III)Z"
+		target = "Lnet/minecraft/client/render/block/BlockRenderer;render(Lnet/minecraft/block/Block;III)Z"
 	))
-	public BaseBlock vbe_replaceBreakingBlock(BaseBlock block, @Local(index = 2) int x, @Local(index = 3) int y, @Local(index = 4) int z) {
+	public Block vbe_replaceBreakingBlock(Block block, @Local(index = 2) int x, @Local(index = 3) int y, @Local(index = 4) int z) {
 		if (blockView instanceof BlockViewWrapper wrapper) {
 			return wrapper.getBlockState(x, y, z).getBlock();
 		}
@@ -76,7 +76,7 @@ public abstract class BlockRendererMixin {
 	}
 	
 	@Inject(method = "renderWithOverride", at = @At("TAIL"))
-	private void vbe_returnBlockView(BaseBlock block, int x, int y, int z, int texture, CallbackInfo info) {
+	private void vbe_returnBlockView(Block block, int x, int y, int z, int texture, CallbackInfo info) {
 		if (blockView instanceof BlockViewWrapper wrapper) {
 			blockView = wrapper.getOriginalView();
 		}

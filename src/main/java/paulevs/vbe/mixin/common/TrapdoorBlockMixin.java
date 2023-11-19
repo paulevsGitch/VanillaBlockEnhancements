@@ -1,9 +1,9 @@
 package paulevs.vbe.mixin.common;
 
-import net.minecraft.block.BaseBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.TrapdoorBlock;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.PlayerBase;
+import net.minecraft.entity.living.player.PlayerEntity;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
 import net.minecraft.util.hit.HitResult;
@@ -25,13 +25,13 @@ import paulevs.vbe.block.VBEBlockTags;
 import paulevs.vbe.utils.LevelUtil;
 
 @Mixin(TrapdoorBlock.class)
-public class TrapdoorBlockMixin extends BaseBlock {
+public class TrapdoorBlockMixin extends Block {
 	public TrapdoorBlockMixin(int id, Material material) {
 		super(id, material);
 	}
 	
 	@Override
-	public void appendProperties(Builder<BaseBlock, BlockState> builder) {
+	public void appendProperties(Builder<Block, BlockState> builder) {
 		super.appendProperties(builder);
 		builder.add(
 			VBEBlockProperties.FACING,
@@ -43,7 +43,7 @@ public class TrapdoorBlockMixin extends BaseBlock {
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext context) {
 		Direction facing = context.getSide().getOpposite();
-		PlayerBase player = context.getPlayer();
+		PlayerEntity player = context.getPlayer();
 		
 		if (facing.getAxis() == Axis.Y) {
 			facing = Direction.fromRotation(player == null ? 0 : player.yaw);
@@ -72,7 +72,7 @@ public class TrapdoorBlockMixin extends BaseBlock {
 		BlockState state = level.getBlockState(x, y, z);
 		if (!state.isOf(this)) return;
 		
-		if (BaseBlock.BY_ID[blockID].getEmitsRedstonePower()) {
+		if (Block.BY_ID[blockID].getEmitsRedstonePower()) {
 			boolean opened = level.hasRedstonePower(x, y, z);
 			if (opened != state.get(VBEBlockProperties.OPENED)) {
 				state = state.with(VBEBlockProperties.OPENED, opened);
@@ -84,7 +84,7 @@ public class TrapdoorBlockMixin extends BaseBlock {
 	}
 	
 	@Inject(method = "canUse", at = @At("HEAD"), cancellable = true)
-	private void vbe_canUse(Level level, int x, int y, int z, PlayerBase player, CallbackInfoReturnable<Boolean> info) {
+	private void vbe_canUse(Level level, int x, int y, int z, PlayerEntity player, CallbackInfoReturnable<Boolean> info) {
 		info.setReturnValue(true);
 		
 		BlockState state = level.getBlockState(x, y, z);

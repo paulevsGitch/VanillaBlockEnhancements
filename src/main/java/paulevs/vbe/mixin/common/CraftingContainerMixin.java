@@ -1,9 +1,9 @@
 package paulevs.vbe.mixin.common;
 
 import net.minecraft.container.CraftingContainer;
-import net.minecraft.entity.player.PlayerBase;
-import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.entity.living.player.PlayerEntity;
 import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.inventory.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
@@ -19,7 +19,7 @@ public class CraftingContainerMixin {
 	@Shadow private Level level;
 	
 	@Inject(method = "onClosed", at = @At("HEAD"), cancellable = true)
-	public void vbe_onClosed(PlayerBase player, CallbackInfo info) {
+	public void vbe_onClosed(PlayerEntity player, CallbackInfo info) {
 		info.cancel();
 		if (this.level.isRemote) return;
 		PlayerInventory inventory = player.inventory;
@@ -31,7 +31,7 @@ public class CraftingContainerMixin {
 	}
 	
 	@Unique
-	private void vbe_addOrDrop(PlayerBase player, ItemStack stack) {
+	private void vbe_addOrDrop(PlayerEntity player, ItemStack stack) {
 		if (stack == null) return;
 		if (!player.inventory.addStack(stack)) {
 			player.dropItem(stack);

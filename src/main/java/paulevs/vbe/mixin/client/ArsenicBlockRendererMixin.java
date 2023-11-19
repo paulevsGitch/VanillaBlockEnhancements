@@ -2,7 +2,7 @@ package paulevs.vbe.mixin.client;
 
 import net.modificationstation.stationapi.api.block.BlockState;
 import net.modificationstation.stationapi.impl.client.arsenic.renderer.render.ArsenicBlockRenderer;
-import net.modificationstation.stationapi.mixin.arsenic.client.BlockRendererAccessor;
+import net.modificationstation.stationapi.mixin.arsenic.client.BlockRenderManagerAccessor;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -12,7 +12,7 @@ import paulevs.vbe.render.VBEBlockRenderer;
 
 @Mixin(value = ArsenicBlockRenderer.class, remap = false)
 public class ArsenicBlockRendererMixin {
-	@Shadow @Final private BlockRendererAccessor blockRendererAccessor;
+	@Shadow @Final private BlockRenderManagerAccessor blockRendererAccessor;
 	
 	@ModifyVariable(method = "renderWorld", at = @At("STORE"), ordinal = 0)
 	private BlockState vbe_changeBreakingState(BlockState state) {

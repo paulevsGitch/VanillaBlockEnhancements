@@ -1,8 +1,8 @@
 package paulevs.vbe.mixin.client;
 
-import net.minecraft.block.BaseBlock;
+import net.minecraft.block.Block;
 import net.minecraft.client.render.LevelRenderer;
-import net.minecraft.entity.player.PlayerBase;
+import net.minecraft.entity.living.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.level.Level;
 import net.minecraft.util.hit.HitResult;
@@ -21,11 +21,11 @@ public class LevelRendererMixin {
 	
 	@Inject(method = "renderBlockOutline", at = @At(
 		value = "INVOKE",
-		target = "Lnet/minecraft/block/BaseBlock;updateBoundingBox(Lnet/minecraft/level/BlockView;III)V",
+		target = "Lnet/minecraft/block/Block;updateBoundingBox(Lnet/minecraft/level/BlockView;III)V",
 		shift = Shift.AFTER
 	), locals = LocalCapture.CAPTURE_FAILSOFT)
-	public void vbe_renderBlockOutline(PlayerBase player, HitResult hit, int arg3, ItemStack stack, float par5, CallbackInfo info, float var6, int blockID) {
-		VBEBlockRenderer.startSelectionRendering(level, BaseBlock.BY_ID[blockID], hit);
+	public void vbe_renderBlockOutline(PlayerEntity player, HitResult hit, int arg3, ItemStack stack, float par5, CallbackInfo info, float var6, int blockID) {
+		VBEBlockRenderer.startSelectionRendering(level, Block.BY_ID[blockID], hit);
 	}
 	
 	@Inject(method = "renderBlockOutline", at = @At(
@@ -33,7 +33,7 @@ public class LevelRendererMixin {
 		target = "Lnet/minecraft/client/render/LevelRenderer;renderBox(Lnet/minecraft/util/maths/Box;)V",
 		shift = Shift.AFTER
 	))
-	public void vbe_resetBoundingBox(PlayerBase player, HitResult hit, int arg3, ItemStack stack, float par5, CallbackInfo info) {
+	public void vbe_resetBoundingBox(PlayerEntity player, HitResult hit, int arg3, ItemStack stack, float par5, CallbackInfo info) {
 		VBEBlockRenderer.endSelectionRendering();
 	}
 }

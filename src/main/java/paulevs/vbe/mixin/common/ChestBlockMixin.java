@@ -2,13 +2,13 @@ package paulevs.vbe.mixin.common;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.block.BaseBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.ChestBlock;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.PlayerBase;
-import net.minecraft.inventory.BaseInventory;
+import net.minecraft.entity.living.player.PlayerEntity;
 import net.minecraft.inventory.DoubleChestInventory;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
 import net.minecraft.util.maths.BlockPos;
@@ -34,7 +34,7 @@ public abstract class ChestBlockMixin extends BlockWithEntity implements BeforeB
 	}
 	
 	@Override
-	public void appendProperties(Builder<BaseBlock, BlockState> builder) {
+	public void appendProperties(Builder<Block, BlockState> builder) {
 		super.appendProperties(builder);
 		builder.add(VBEBlockProperties.FACING, VBEBlockProperties.CHEST_PART);
 	}
@@ -43,7 +43,7 @@ public abstract class ChestBlockMixin extends BlockWithEntity implements BeforeB
 	public BlockState getPlacementState(ItemPlacementContext context) {
 		Level level = context.getWorld();
 		BlockPos pos = context.getBlockPos();
-		PlayerBase player = context.getPlayer();
+		PlayerEntity player = context.getPlayer();
 		Direction facing = Direction.fromRotation(player == null ? 0 : player.yaw);
 		
 		BlockState chest = getDefaultState().with(VBEBlockProperties.FACING, facing);
@@ -103,13 +103,13 @@ public abstract class ChestBlockMixin extends BlockWithEntity implements BeforeB
 	}
 	
 	@Inject(method = "canUse", at = @At("HEAD"), cancellable = true)
-	private void vbe_canUse(Level level, int x, int y, int z, PlayerBase player, CallbackInfoReturnable<Boolean> info) {
+	private void vbe_canUse(Level level, int x, int y, int z, PlayerEntity player, CallbackInfoReturnable<Boolean> info) {
 		if (level.isRemote) {
 			info.setReturnValue(true);
 			return;
 		}
 		
-		BaseInventory inventory = (BaseInventory) level.getBlockEntity(x, y, z);
+		Inventory inventory = (Inventory) level.getBlockEntity(x, y, z);
 		BlockState state = level.getBlockState(x, y, z);
 		
 		ChestPart part = state.get(VBEBlockProperties.CHEST_PART);
@@ -132,7 +132,7 @@ public abstract class ChestBlockMixin extends BlockWithEntity implements BeforeB
 			return;
 		}
 		
-		BaseInventory sideInventory = (BaseInventory) level.getBlockEntity(x, y, z);
+		Inventory sideInventory = (Inventory) level.getBlockEntity(x, y, z);
 		
 		switch (part) {
 			case LEFT -> inventory = new DoubleChestInventory("Large chest", inventory, sideInventory);
@@ -143,7 +143,7 @@ public abstract class ChestBlockMixin extends BlockWithEntity implements BeforeB
 	}
 	
 	@Environment(value= EnvType.CLIENT)
-	@Inject(method = "getTextureForSide(Lnet/minecraft/level/BlockView;IIII)I", at = @At("HEAD"), cancellable = true)
+	@Inject(method = "getTexture(Lnet/minecraft/level/BlockView;IIII)I", at = @At("HEAD"), cancellable = true)
 	private void vbe_getTextureForSide(BlockView view, int x, int y, int z, int side, CallbackInfoReturnable<Integer> info) {
 		if (side < 2) return;
 		if (!(view instanceof BlockStateView blockStateView)) return;

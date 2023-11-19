@@ -1,10 +1,10 @@
 package paulevs.vbe.mixin.client;
 
-import net.minecraft.block.BaseBlock;
-import net.minecraft.client.BaseClientInteractionManager;
+import net.minecraft.block.Block;
+import net.minecraft.client.ClientInteractionManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.SinglePlayerClientInteractionManager;
-import net.minecraft.entity.player.PlayerBase;
+import net.minecraft.entity.living.player.PlayerEntity;
 import net.minecraft.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import paulevs.vbe.block.VBEFullSlabBlock;
 
 @Mixin(SinglePlayerClientInteractionManager.class)
-public class SinglePlayerClientInteractionManagerMixin extends BaseClientInteractionManager {
+public class SinglePlayerClientInteractionManagerMixin extends ClientInteractionManager {
 	public SinglePlayerClientInteractionManagerMixin(Minecraft minecraft) {
 		super(minecraft);
 	}
@@ -26,7 +26,7 @@ public class SinglePlayerClientInteractionManagerMixin extends BaseClientInterac
 	
 	@Redirect(method = "playerDigBlock", at = @At(
 		value = "INVOKE",
-		target = "Lnet/minecraft/block/BaseBlock;activate(Lnet/minecraft/level/Level;IIILnet/minecraft/entity/player/PlayerBase;)V"
+		target = "Lnet/minecraft/block/Block;activate(Lnet/minecraft/level/Level;IIILnet/minecraft/entity/living/player/PlayerEntity;)V"
 	))
-	private void vbe_disableActivation(BaseBlock instance, Level i, int j, int k, int arg2, PlayerBase playerBase) {}
+	private void vbe_disableActivation(Block instance, Level i, int j, int k, int arg2, PlayerEntity playerBase) {}
 }

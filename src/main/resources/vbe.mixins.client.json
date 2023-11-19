@@ -6,7 +6,7 @@
 	"client": [
 		"SinglePlayerClientInteractionManagerMixin",
 		"MultiPlayerClientInteractionManagerMixin",
-		"BaseClientInteractionManagerMixin",
+		"ClientInteractionManagerMixin",
 		"BakedModelRendererImplMixin",
 		"ArsenicBlockRendererMixin",
 		"ArsenicItemRendererMixin",

@@ -1,6 +1,6 @@
 package paulevs.vbe.mixin.server;
 
-import net.minecraft.entity.player.PlayerBase;
+import net.minecraft.entity.living.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.level.Level;
 import net.minecraft.server.ServerPlayerInteractionManager;
@@ -14,13 +14,13 @@ import paulevs.vbe.block.VBEFullSlabBlock;
 
 @Mixin(ServerPlayerInteractionManager.class)
 public class ServerPlayerInteractionManagerMixin {
-	@Shadow public PlayerBase player;
+	@Shadow public PlayerEntity player;
 	
 	@Inject(
-		method = "useOnBlock(Lnet/minecraft/entity/player/PlayerBase;Lnet/minecraft/level/Level;Lnet/minecraft/item/ItemStack;IIII)Z",
+		method = "useOnBlock",
 		at = @At("HEAD"), cancellable = true
 	)
-	private void vbe_onUseBlock(PlayerBase player, Level level, ItemStack stack, int x, int y, int z, int side, CallbackInfoReturnable<Boolean> info) {
+	private void vbe_onUseBlock(PlayerEntity player, Level level, ItemStack stack, int x, int y, int z, int side, CallbackInfoReturnable<Boolean> info) {
 		if (player.isChild()) info.setReturnValue(stack.useOnBlock(player, level, x, y, z, side));
 	}
 	

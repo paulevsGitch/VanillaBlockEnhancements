@@ -2,12 +2,12 @@ package paulevs.vbe.item;
 
 import net.minecraft.block.DoorBlock;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.PlayerBase;
+import net.minecraft.entity.living.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.level.Level;
 import net.modificationstation.stationapi.api.block.BlockState;
-import net.modificationstation.stationapi.api.registry.Identifier;
-import net.modificationstation.stationapi.api.template.item.TemplateDoor;
+import net.modificationstation.stationapi.api.template.item.TemplateDoorItem;
+import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.util.math.Direction;
 import net.modificationstation.stationapi.api.util.math.Direction.Axis;
 import paulevs.vbe.block.VBEBlockProperties;
@@ -15,7 +15,7 @@ import paulevs.vbe.block.VBEBlockProperties.TopBottom;
 import paulevs.vbe.utils.CreativeUtil;
 import paulevs.vbe.utils.LevelUtil;
 
-public class VBEDoorItem extends TemplateDoor {
+public class VBEDoorItem extends TemplateDoorItem {
 	private final DoorBlock door;
 	
 	public VBEDoorItem(Identifier id, DoorBlock door) {
@@ -25,7 +25,7 @@ public class VBEDoorItem extends TemplateDoor {
 	}
 	
 	@Override
-	public boolean useOnBlock(ItemStack stack, PlayerBase player, Level level, int x, int y, int z, int side) {
+	public boolean useOnBlock(ItemStack stack, PlayerEntity player, Level level, int x, int y, int z, int side) {
 		Direction direction = Direction.byId(side);
 		
 		x += direction.getOffsetX();

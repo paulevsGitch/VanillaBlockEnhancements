@@ -2,13 +2,13 @@ package paulevs.vbe.block;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.block.BaseBlock;
+import net.minecraft.block.Block;
 import net.minecraft.client.render.block.FoliageColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
 import net.modificationstation.stationapi.api.block.BlockState;
-import net.modificationstation.stationapi.api.registry.Identifier;
+import net.modificationstation.stationapi.api.util.Identifier;
 
 import java.util.Collections;
 import java.util.List;
@@ -22,13 +22,13 @@ public class VanillaLeavesWrapper extends VBELeavesBlock {
 	}
 	
 	@Override
-	public int getTextureForSide(int side, int meta) {
-		return LEAVES.getTextureForSide(side, this.meta);
+	public int getTexture(int side, int meta) {
+		return LEAVES.getTexture(side, this.meta);
 	}
 	
 	@Override
-	public int getTextureForSide(int side) {
-		return LEAVES.getTextureForSide(side, this.meta);
+	public int getTexture(int side) {
+		return LEAVES.getTexture(side, this.meta);
 	}
 	
 	@Override
@@ -51,6 +51,6 @@ public class VanillaLeavesWrapper extends VBELeavesBlock {
 	public List<ItemStack> getDropList(Level level, int x, int y, int z, BlockState state, int meta) {
 		int count = LEAVES.getDropCount(level.random);
 		if (count == 0) return Collections.emptyList();
-		return Collections.singletonList(new ItemStack(BaseBlock.SAPLING.id, count, this.meta));
+		return Collections.singletonList(new ItemStack(Block.SAPLING.id, count, this.meta));
 	}
 }

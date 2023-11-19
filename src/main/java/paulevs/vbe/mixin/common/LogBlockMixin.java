@@ -1,6 +1,6 @@
 package paulevs.vbe.mixin.common;
 
-import net.minecraft.block.BaseBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.LogBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
@@ -14,7 +14,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Mixin(LogBlock.class)
-public class LogBlockMixin extends BaseBlock {
+public class LogBlockMixin extends Block {
 	public LogBlockMixin(int id, Material material) {
 		super(id, material);
 	}

@@ -1,10 +1,10 @@
 package paulevs.vbe.mixin.common;
 
-import net.minecraft.block.BaseBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.StairsBlock;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerBase;
+import net.minecraft.entity.living.LivingEntity;
+import net.minecraft.entity.living.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.level.Level;
 import net.minecraft.util.maths.BlockPos;
@@ -13,11 +13,8 @@ import net.modificationstation.stationapi.api.block.BlockState;
 import net.modificationstation.stationapi.api.item.ItemPlacementContext;
 import net.modificationstation.stationapi.api.state.StateManager.Builder;
 import net.modificationstation.stationapi.api.util.math.Direction;
-import net.modificationstation.stationapi.api.util.math.Direction.Axis;
-import net.modificationstation.stationapi.api.world.BlockStateView;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -27,27 +24,25 @@ import paulevs.vbe.block.VBEBlockProperties.StairsPart;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Mixin(StairsBlock.class)
-public class StairsBlockMixin extends BaseBlock implements StairsShape {
-	@Shadow private BaseBlock template;
+public class StairsBlockMixin extends Block implements StairsShape {
+	@Shadow private Block template;
 	
 	public StairsBlockMixin(int id, Material material) {
 		super(id, material);
 	}
 	
 	@Override
-	public void appendProperties(Builder<BaseBlock, BlockState> builder) {
+	public void appendProperties(Builder<Block, BlockState> builder) {
 		super.appendProperties(builder);
 		builder.add(VBEBlockProperties.FACING, VBEBlockProperties.STAIRS_PART);
 	}
 	
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext context) {
-		PlayerBase player = context.getPlayer();
+		PlayerEntity player = context.getPlayer();
 		BlockState state = getDefaultState();
 		
 		Direction facing = context.getSide();
@@ -78,17 +73,17 @@ public class StairsBlockMixin extends BaseBlock implements StairsShape {
 	}
 	
 	@Override
-	public int getTextureForSide(int side, int meta) {
-		return this.template.getTextureForSide(side, meta);
+	public int getTexture(int side, int meta) {
+		return this.template.getTexture(side, meta);
 	}
 	
 	@Override
-	public int getTextureForSide(int side) {
-		return this.template.getTextureForSide(side);
+	public int getTexture(int side) {
+		return this.template.getTexture(side);
 	}
 	
 	@Inject(method = "<init>", at = @At("TAIL"))
-	private void vbe_onInit(int id, BaseBlock source, CallbackInfo info) {
+	private void vbe_onInit(int id, Block source, CallbackInfo info) {
 		this.setLightOpacity(0);
 	}
 	

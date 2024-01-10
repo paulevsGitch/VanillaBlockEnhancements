@@ -21,6 +21,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import paulevs.vbe.VBE;
 import paulevs.vbe.block.VBEBlockProperties;
 import paulevs.vbe.block.VBEBlockProperties.TopBottom;
 import paulevs.vbe.block.VBEBlockTags;
@@ -37,6 +38,7 @@ public abstract class DoorBlockMixin extends Block {
 	@Override
 	public void appendProperties(Builder<Block, BlockState> builder) {
 		super.appendProperties(builder);
+		if (!VBE.ENHANCED_DOORS.getValue()) return;
 		builder.add(
 			VBEBlockProperties.FACING,
 			VBEBlockProperties.TOP_BOTTOM,
@@ -46,18 +48,22 @@ public abstract class DoorBlockMixin extends Block {
 	}
 	
 	@Inject(method = "<init>", at = @At(value = "TAIL"))
-	private void vbe_onFenceInit(int id, Material material, CallbackInfo info) {
+	private void vbe_onDoorInit(int id, Material material, CallbackInfo info) {
+		if (!VBE.ENHANCED_DOORS.getValue()) return;
 		NO_AMBIENT_OCCLUSION[this.id] = true;
+		LIGHT_OPACITY[this.id] = 0;
 	}
 	
 	@Environment(value= EnvType.CLIENT)
 	@Inject(method = "getRenderType", at = @At("HEAD"), cancellable = true)
 	private void vbe_getRenderType(CallbackInfoReturnable<Integer> info) {
+		if (!VBE.ENHANCED_DOORS.getValue()) return;
 		info.setReturnValue(0);
 	}
 	
 	@Inject(method = "canUse", at = @At("HEAD"), cancellable = true)
 	private void vbe_canUse(Level level, int x, int y, int z, PlayerEntity player, CallbackInfoReturnable<Boolean> info) {
+		if (!VBE.ENHANCED_DOORS.getValue()) return;
 		info.setReturnValue(true);
 		
 		BlockState state = level.getBlockState(x, y, z);
@@ -90,11 +96,13 @@ public abstract class DoorBlockMixin extends Block {
 	
 	@Inject(method = "getTexture", at = @At("HEAD"), cancellable = true)
 	private void vbe_fixTexture(int i, int j, CallbackInfoReturnable<Integer> info) {
+		if (!VBE.ENHANCED_DOORS.getValue()) return;
 		info.setReturnValue(0);
 	}
 	
 	@Inject(method = "onAdjacentBlockUpdate", at = @At("HEAD"), cancellable = true)
 	private void vbe_onAdjacentBlockUpdate(Level level, int x, int y, int z, int blockID, CallbackInfo info) {
+		if (!VBE.ENHANCED_DOORS.getValue()) return;
 		info.cancel();
 		
 		BlockState state = level.getBlockState(x, y, z);
@@ -149,11 +157,13 @@ public abstract class DoorBlockMixin extends Block {
 	
 	@Inject(method = "canPlaceAt", at = @At("HEAD"), cancellable = true)
 	private void vbe_canPlaceAt(Level level, int x, int y, int z, CallbackInfoReturnable<Boolean> info) {
+		if (!VBE.ENHANCED_DOORS.getValue()) return;
 		info.setReturnValue(level.canSuffocate(x, y - 1, z));
 	}
 	
 	@Inject(method = "updateBoundingBox", at = @At("HEAD"), cancellable = true)
 	public void vbe_updateBoundingBox(BlockView view, int x, int y, int z, CallbackInfo info) {
+		if (!VBE.ENHANCED_DOORS.getValue()) return;
 		info.cancel();
 		
 		if (!(view instanceof BlockStateView level)) return;
@@ -202,6 +212,7 @@ public abstract class DoorBlockMixin extends Block {
 		}
 	}
 	
+	@Unique
 	private boolean vbe_hasConnectedPower(Level level, int x, int y, int z, BlockState state) {
 		boolean inverted = state.get(VBEBlockProperties.INVERTED);
 		Direction offset = state.get(VBEBlockProperties.FACING);

@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import paulevs.vbe.VBE;
 
 @Mixin(CraftingContainer.class)
 public class CraftingContainerMixin {
@@ -20,6 +21,7 @@ public class CraftingContainerMixin {
 	
 	@Inject(method = "onClosed", at = @At("HEAD"), cancellable = true)
 	public void vbe_onClosed(PlayerEntity player, CallbackInfo info) {
+		if (!VBE.DISABLE_WORKBENCH_DROP.getValue()) return;
 		info.cancel();
 		if (this.level.isRemote) return;
 		PlayerInventory inventory = player.inventory;

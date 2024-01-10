@@ -8,6 +8,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import paulevs.vbe.VBE;
 
 @Mixin(ClientInteractionManager.class)
 public class ClientInteractionManagerMixin {
@@ -16,6 +17,7 @@ public class ClientInteractionManagerMixin {
 		at = @At("HEAD"), cancellable = true
 	)
 	private void vbe_onUseBlock(PlayerEntity player, Level level, ItemStack stack, int x, int y, int z, int side, CallbackInfoReturnable<Boolean> info) {
+		if (!VBE.ENABLE_SHIFT_CLICK.getValue()) return;
 		if (stack != null && player.isChild()) info.setReturnValue(stack.useOnBlock(player, level, x, y, z, side));
 	}
 }

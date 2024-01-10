@@ -35,9 +35,6 @@ public class VBEFullSlabBlock extends TemplateBlock implements BeforeBlockRemove
 	public static HitResult hit;
 	private Block halfBlock;
 	
-	@Environment(EnvType.CLIENT)
-	public static BlockState breakingState;
-	
 	public VBEFullSlabBlock(Identifier id, Material material) {
 		super(id, material);
 		setTranslationKey(id.toString());

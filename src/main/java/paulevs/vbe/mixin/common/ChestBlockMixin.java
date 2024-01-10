@@ -23,6 +23,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import paulevs.vbe.VBE;
 import paulevs.vbe.block.VBEBlockProperties;
 import paulevs.vbe.block.VBEBlockProperties.ChestPart;
 import paulevs.vbe.utils.LevelUtil;
@@ -36,11 +37,14 @@ public abstract class ChestBlockMixin extends BlockWithEntity implements BeforeB
 	@Override
 	public void appendProperties(Builder<Block, BlockState> builder) {
 		super.appendProperties(builder);
+		if (!VBE.ENHANCED_CHESTS.getValue()) return;
 		builder.add(VBEBlockProperties.FACING, VBEBlockProperties.CHEST_PART);
 	}
 	
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext context) {
+		if (!VBE.ENHANCED_CHESTS.getValue()) return super.getPlacementState(context);
+		
 		Level level = context.getWorld();
 		BlockPos pos = context.getBlockPos();
 		PlayerEntity player = context.getPlayer();
@@ -82,6 +86,7 @@ public abstract class ChestBlockMixin extends BlockWithEntity implements BeforeB
 	
 	@Override
 	public void beforeBlockRemoved(Level level, int x, int y, int z) {
+		if (!VBE.ENHANCED_CHESTS.getValue()) return;
 		BlockState state = level.getBlockState(x, y, z);
 		if (!state.isOf(this)) return;
 		ChestPart part = state.get(VBEBlockProperties.CHEST_PART);
@@ -99,11 +104,13 @@ public abstract class ChestBlockMixin extends BlockWithEntity implements BeforeB
 	
 	@Inject(method = "canPlaceAt", at = @At("HEAD"), cancellable = true)
 	private void vbe_canPlaceAt(Level level, int x, int y, int z, CallbackInfoReturnable<Boolean> info) {
+		if (!VBE.ENHANCED_CHESTS.getValue()) return;
 		info.setReturnValue(true);
 	}
 	
 	@Inject(method = "canUse", at = @At("HEAD"), cancellable = true)
 	private void vbe_canUse(Level level, int x, int y, int z, PlayerEntity player, CallbackInfoReturnable<Boolean> info) {
+		if (!VBE.ENHANCED_CHESTS.getValue()) return;
 		info.setReturnValue(true);
 		
 		if (level.isRemote) {
@@ -144,6 +151,7 @@ public abstract class ChestBlockMixin extends BlockWithEntity implements BeforeB
 	@Environment(value= EnvType.CLIENT)
 	@Inject(method = "getTexture(Lnet/minecraft/level/BlockView;IIII)I", at = @At("HEAD"), cancellable = true)
 	private void vbe_getTextureForSide(BlockView view, int x, int y, int z, int side, CallbackInfoReturnable<Integer> info) {
+		if (!VBE.ENHANCED_CHESTS.getValue()) return;
 		if (side < 2) return;
 		if (!(view instanceof BlockStateView blockStateView)) return;
 		BlockState state = blockStateView.getBlockState(x, y, z);

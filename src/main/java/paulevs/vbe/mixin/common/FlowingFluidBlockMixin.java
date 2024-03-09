@@ -11,7 +11,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Random;
@@ -24,12 +23,12 @@ public abstract class FlowingFluidBlockMixin extends FluidBlock {
 		super(id, material);
 	}
 	
-	@Redirect(method = "onScheduledTick", at = @At(
+	@WrapOperation(method = "onScheduledTick", at = @At(
 		value = "INVOKE",
 		target = "Lnet/minecraft/level/Level;getBlockMeta(III)I"
 	))
-	private int vbe_fixWrongMeta(Level level, int x, int y, int z) {
-		return level.getBlockMeta(x, y - 1, z);
+	private int vbe_fixWrongMeta(Level level, int x, int y, int z, Operation<Integer> original) {
+		return original.call(level, x, y - 1, z);
 	}
 	
 	@WrapOperation(

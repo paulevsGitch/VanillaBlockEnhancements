@@ -2,7 +2,6 @@ package paulevs.vbe.block;
 
 import net.minecraft.block.Block;
 import paulevs.vbe.VBE;
-import paulevs.vbe.utils.CreativeUtil;
 
 public class VBEBlocks {
 	public static final VBEHalfSlabBlock STONE_SLAB_HALF = new VBEHalfSlabBlock(VBE.id("stone_slab_half"), Block.STONE);

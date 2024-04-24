@@ -19,7 +19,6 @@ public class CommonListener {
 	private void onBlockRegister(BlockRegistryEvent event) {
 		StairsShape.init();
 		VBEBlocks.init();
-		blockRegistered = true;
 	}
 	
 	@EventListener

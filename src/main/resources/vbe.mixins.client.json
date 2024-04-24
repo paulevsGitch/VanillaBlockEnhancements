@@ -11,7 +11,8 @@
 		"ArsenicBlockRendererMixin",
 		"ArsenicItemRendererMixin",
 		"BlockRendererMixin",
-		"LevelRendererMixin"
+		"LevelRendererMixin",
+		"MinecraftMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

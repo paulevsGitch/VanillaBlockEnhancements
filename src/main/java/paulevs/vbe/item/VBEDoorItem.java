@@ -20,7 +20,7 @@ public class VBEDoorItem extends TemplateDoorItem {
 	
 	public VBEDoorItem(Identifier id, DoorBlock door) {
 		super(id, Material.WOOD);
-		setTranslationKey(id.toString());
+		setTranslationKey(id);
 		this.door = door;
 	}
 	

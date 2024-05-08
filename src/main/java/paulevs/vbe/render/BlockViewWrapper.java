@@ -5,7 +5,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.material.Material;
 import net.minecraft.level.BlockView;
-import net.minecraft.level.gen.BiomeSource;
+import net.minecraft.level.biome.BiomeSource;
 import net.modificationstation.stationapi.api.block.BlockState;
 import net.modificationstation.stationapi.api.world.BlockStateView;
 
@@ -30,7 +30,7 @@ public class BlockViewWrapper implements BlockView, BlockStateView {
 	}
 	
 	@Override
-	public int getBlockId(int x, int y, int z) {
+	public int getBlockID(int x, int y, int z) {
 		return getBlockState(x, y, z).getBlock().id;
 	}
 	
@@ -44,9 +44,9 @@ public class BlockViewWrapper implements BlockView, BlockStateView {
 		return originalView.getLight(x, y, z, l);
 	}
 	
-	@Override
-	public float getBrightness(int x, int y, int z) {
-		return originalView.getBrightness(x, y, z);
+	@Override //getBrightness, fails to remap in V2
+	public float method_1782(int x, int y, int z) {
+		return originalView.method_1782(x, y, z);
 	}
 	
 	@Override
@@ -59,8 +59,8 @@ public class BlockViewWrapper implements BlockView, BlockStateView {
 		return getBlockState(x, y, z).getMaterial();
 	}
 	
-	@Override
-	public boolean isFullOpaque(int x, int y, int z) {
+	@Override // isFullOpaque, fails to remap in V2
+	public boolean method_1783(int x, int y, int z) {
 		return getBlockState(x, y, z).getBlock().isFullOpaque();
 	}
 	
@@ -69,9 +69,9 @@ public class BlockViewWrapper implements BlockView, BlockStateView {
 		return getBlockState(x, y, z).getMaterial().hasNoSuffocation();
 	}
 	
-	@Override
-	public BiomeSource getBiomeSource() {
-		return originalView.getBiomeSource();
+	@Override // getBiomeSource, fails to remap in V2
+	public BiomeSource method_1781() {
+		return originalView.method_1781();
 	}
 	
 	@Override

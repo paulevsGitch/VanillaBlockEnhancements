@@ -8,8 +8,8 @@ public class VBEBlocks {
 	public static final VBEFullSlabBlock STONE_SLAB_FULL = new VBEFullSlabBlock(VBE.id("stone_slab_full"), Block.STONE);
 	public static final VBEHalfSlabBlock SANDSTONE_SLAB_HALF = new VBEHalfSlabBlock(VBE.id("sandstone_slab_half"), Block.SANDSTONE);
 	public static final VBEFullSlabBlock SANDSTONE_SLAB_FULL = new VBEFullSlabBlock(VBE.id("sandstone_slab_full"), Block.SANDSTONE);
-	public static final VBEHalfSlabBlock OAK_SLAB_HALF = new VBEHalfSlabBlock(VBE.id("oak_slab_half"), Block.WOOD);
-	public static final VBEFullSlabBlock OAK_SLAB_FULL = new VBEFullSlabBlock(VBE.id("oak_slab_full"), Block.WOOD);
+	public static final VBEHalfSlabBlock OAK_SLAB_HALF = new VBEHalfSlabBlock(VBE.id("oak_slab_half"), Block.PLANKS);
+	public static final VBEFullSlabBlock OAK_SLAB_FULL = new VBEFullSlabBlock(VBE.id("oak_slab_full"), Block.PLANKS);
 	public static final VBEHalfSlabBlock COBBLESTONE_SLAB_HALF = new VBEHalfSlabBlock(VBE.id("cobblestone_slab_half"), Block.COBBLESTONE);
 	public static final VBEFullSlabBlock COBBLESTONE_SLAB_FULL = new VBEFullSlabBlock(VBE.id("cobblestone_slab_full"), Block.COBBLESTONE);
 	public static final VBELogBlock OAK_LOG = new VBELogBlock(VBE.id("oak_log"));

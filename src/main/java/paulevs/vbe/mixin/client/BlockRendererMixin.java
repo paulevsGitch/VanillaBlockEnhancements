@@ -39,7 +39,7 @@ public abstract class BlockRendererMixin {
 	
 	@WrapOperation(
 		method = "renderFence",
-		at = @At(value = "INVOKE", target = "Lnet/minecraft/level/BlockView;getBlockId(III)I")
+		at = @At(value = "INVOKE", target = "Lnet/minecraft/level/BlockView;getBlockID(III)I")
 	)
 	private int vbe_renderFence(BlockView view, int x, int y, int z, Operation<Integer> original) {
 		if (view instanceof BlockStateView stateView) {

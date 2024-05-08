@@ -16,7 +16,7 @@ public class VBELogBlock extends TemplateBlock {
 	
 	public VBELogBlock(Identifier id, Material material) {
 		super(id, material);
-		setTranslationKey(id.toString());
+		setTranslationKey(id);
 		setHardness(LOG.getHardness());
 		setSounds(WOOD_SOUNDS);
 		setDefaultState(getDefaultState().with(VBEBlockProperties.AXIS, Axis.Y));

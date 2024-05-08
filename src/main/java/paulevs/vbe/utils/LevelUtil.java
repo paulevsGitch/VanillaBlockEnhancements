@@ -3,7 +3,7 @@ package paulevs.vbe.utils;
 import net.minecraft.entity.living.player.PlayerEntity;
 import net.minecraft.level.Level;
 import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.maths.MathHelper;
+import net.minecraft.util.maths.MCMath;
 import net.minecraft.util.maths.Vec3D;
 import net.modificationstation.stationapi.api.block.BlockState;
 import net.modificationstation.stationapi.impl.world.chunk.ChunkSection;
@@ -22,13 +22,13 @@ public class LevelUtil {
 		
 		float yaw = player.prevYaw + (player.yaw - player.prevYaw);
 		yaw = -yaw * toRadians - (float) Math.PI;
-		float cosYaw = MathHelper.cos(yaw);
-		float sinYaw = MathHelper.sin(yaw);
-		float cosPitch = -MathHelper.cos(-pitch * toRadians);
+		float cosYaw = MCMath.cos(yaw);
+		float sinYaw = MCMath.sin(yaw);
+		float cosPitch = -MCMath.cos(-pitch * toRadians);
 		
 		Vec3D dir = pos.add(
 			sinYaw * cosPitch * dist,
-			(MathHelper.sin(-pitch * ((float) Math.PI / 180))) * dist,
+			(MCMath.sin(-pitch * ((float) Math.PI / 180))) * dist,
 			cosYaw * cosPitch * dist
 		);
 		

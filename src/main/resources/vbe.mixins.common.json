@@ -17,13 +17,13 @@
 		"FenceBlockMixin",
 		"ChestBlockMixin",
 		"SpruceTreeMixin",
-		"BirchTreeMixin",
+		"BirchTreeStructureMixin",
 		"ItemStackMixin",
 		"StoneSlabMixin",
 		"DoorBlockMixin",
 		"LogBlockMixin",
 		"AxeItemMixin",
-		"OakTreeMixin"
+		"OakTreeStructureMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

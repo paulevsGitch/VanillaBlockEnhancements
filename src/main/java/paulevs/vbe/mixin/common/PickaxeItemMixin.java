@@ -1,7 +1,7 @@
 package paulevs.vbe.mixin.common;
 
 import net.minecraft.block.Block;
-import net.minecraft.item.PickaxeItem;
+import net.minecraft.item.tool.PickaxeItem;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;

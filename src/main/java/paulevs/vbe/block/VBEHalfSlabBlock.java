@@ -34,14 +34,14 @@ public class VBEHalfSlabBlock extends TemplateBlock {
 	
 	public VBEHalfSlabBlock(Identifier id, Material material) {
 		super(id, material);
-		setTranslationKey(id.toString());
+		setTranslationKey(id);
 		this.textureGetter = side -> this.texture;
 		NO_AMBIENT_OCCLUSION[this.id] = true;
 	}
 	
 	public VBEHalfSlabBlock(Identifier id, Block source) {
 		super(id, source.material);
-		setTranslationKey(id.toString());
+		setTranslationKey(id);
 		Block.EMITTANCE[this.id] = Block.EMITTANCE[source.id] / 2;
 		setHardness(source.getHardness() * 0.5F);
 		setSounds(source.sounds);

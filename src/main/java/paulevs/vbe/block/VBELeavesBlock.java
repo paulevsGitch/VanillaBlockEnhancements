@@ -8,7 +8,7 @@ import net.minecraft.block.LeavesBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.living.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ShearsItem;
+import net.minecraft.item.tool.ShearsItem;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
 import net.minecraft.stat.Stats;
@@ -43,7 +43,7 @@ public class VBELeavesBlock extends LeavesBaseBlock implements BlockTemplate {
 	public VBELeavesBlock(Identifier id, Material material, int maxDistance) {
 		super(BlockTemplate.getNextId(), 0, material, false);
 		BlockTemplate.onConstructor(this, id);
-		setTranslationKey(id.toString());
+		setTranslationKey(id);
 		setSounds(GRASS_SOUNDS);
 		disableStat();
 		disableNotifyOnMetaDataChange();

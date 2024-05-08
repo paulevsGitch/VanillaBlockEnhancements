@@ -1,12 +1,12 @@
 package paulevs.vbe.mixin.common;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import net.minecraft.level.structure.SpruceTree;
+import net.minecraft.level.structure.SpruceTreeStructure;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import paulevs.vbe.block.VBEBlocks;
 
-@Mixin(SpruceTree.class)
+@Mixin(SpruceTreeStructure.class)
 public class SpruceTreeMixin {
 	@ModifyExpressionValue(
 		method = "generate",

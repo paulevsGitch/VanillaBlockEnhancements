@@ -42,8 +42,7 @@ public class VanillaLeavesWrapper extends VBELeavesBlock {
 	public int getColorMultiplier(BlockView view, int x, int y, int z) {
 		if ((meta & 1) == 1) return FoliageColor.getSpruceColor();
 		if ((meta & 2) == 2) return FoliageColor.getBirchColor();
-		// getBiomeSource, not remapped in V2
-		BiomeSource source = view.method_1781();
+		BiomeSource source = view.getBiomeSource();
 		source.getBiomes(x, z, 1, 1);
 		double t = source.temperatureNoises[0];
 		double w = source.rainfallNoises[0];

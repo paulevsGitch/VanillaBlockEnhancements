@@ -82,10 +82,8 @@ public class VBELeavesBlock extends LeavesBaseBlock implements BlockTemplate {
 			if (item != null && item.getType() instanceof ShearsItem) {
 				if (this.isStatEnabled) player.increaseStat(Stats.mineBlock[this.id], 1);
 				this.drop(level, x, y, z, new ItemStack(this));
-				return;
 			}
 		}
-		super.afterBreak(level, player, x, y, z, meta);
 	}
 	
 	@Override

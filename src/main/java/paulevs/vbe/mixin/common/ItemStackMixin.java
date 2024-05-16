@@ -15,15 +15,17 @@ public class ItemStackMixin {
 	@Shadow private int damage;
 	
 	@Inject(method = "<init>(III)V", at = @At("TAIL"))
-	private void bve_onStackInit1(int i, int j, int k, CallbackInfo info) {
-		int converted = ItemConverter.getID(itemId, damage);
+	private void bve_onStackInit1(int id, int count, int damage, CallbackInfo info) {
+		if (ItemConverter.resetDamage(itemId)) this.damage = 0;
+		int converted = ItemConverter.getID(itemId, this.damage);
 		if (converted == -1) return;
-		this.damage = ItemConverter.getDamage(itemId, damage);
+		this.damage = ItemConverter.getDamage(itemId, this.damage);
 		this.itemId = converted;
 	}
 	
 	@Inject(method = "<init>(Lnet/minecraft/util/io/CompoundTag;)V", at = @At("TAIL"))
 	private void bve_onStackInit2(CompoundTag tag, CallbackInfo info) {
+		if (ItemConverter.resetDamage(itemId)) this.damage = 0;
 		int converted = ItemConverter.getID(itemId, damage);
 		if (converted == -1) return;
 		this.damage = ItemConverter.getDamage(itemId, damage);

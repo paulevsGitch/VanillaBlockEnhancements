@@ -27,9 +27,6 @@ public class CommonListener {
 	@EventListener
 	private void onRecipesRegister(RecipeRegisterEvent event) {
 		if (event.recipeId != RecipeRegisterEvent.Vanilla.SMELTING.type()) return;
-		SmeltingRecipeRegistry.getInstance().addSmeltingRecipe(VBEBlocks.OAK_LOG.id, new ItemStack(Item.coal, 1, 1));
-		SmeltingRecipeRegistry.getInstance().addSmeltingRecipe(VBEBlocks.SPRUCE_LOG.id, new ItemStack(Item.coal, 1, 1));
-		SmeltingRecipeRegistry.getInstance().addSmeltingRecipe(VBEBlocks.BIRCH_LOG.id, new ItemStack(Item.coal, 1, 1));
 		CreativeUtil.registerBlockConverters();
 	}
 }

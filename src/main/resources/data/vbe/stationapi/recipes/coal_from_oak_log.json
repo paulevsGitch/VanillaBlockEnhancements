@@ -1,0 +1,9 @@
+{
+	"type": "minecraft:smelting",
+	"ingredient": {
+		"item": "vbe:oak_log"
+	},
+	"result": {
+		"item": "minecraft:coal"
+	}
+}

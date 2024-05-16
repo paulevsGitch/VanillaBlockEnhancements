@@ -7,6 +7,12 @@ import paulevs.vbe.block.VBEBlocks;
 import paulevs.vbe.item.VBEItems;
 
 public class ItemConverter {
+	private static final Block[] LOGS = new Block[] {
+		VBEBlocks.OAK_LOG,
+		VBEBlocks.SPRUCE_LOG,
+		VBEBlocks.BIRCH_LOG
+	};
+	
 	public static int getID(int id, int damage) {
 		Item item = null;
 		if (id == Block.STONE_SLAB.id && VBE.ENHANCED_SLABS.getValue()) item = VBEBlocks.getHalfSlabByMeta(damage).asItem();
@@ -19,5 +25,14 @@ public class ItemConverter {
 	
 	public static int getDamage(int id, int damage) {
 		return id == Block.STONE_SLAB.id && VBE.ENHANCED_SLABS.getValue() ? damage : 0;
+	}
+	
+	public static boolean resetDamage(int id) {
+		for (Block log : LOGS) {
+			Item item = log.asItem();
+			if (item == null) continue;
+			if (id == item.id) return true;
+		}
+		return false;
 	}
 }

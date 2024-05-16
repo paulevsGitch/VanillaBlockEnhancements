@@ -10,6 +10,7 @@ import paulevs.vbe.item.VBEItems;
 
 public class CreativeUtil {
 	private static final boolean NOT_INSTALLED = !FabricLoader.getInstance().isModLoaded("bhcreative");
+	private static boolean registered = false;
 	
 	public static boolean isCreative(PlayerEntity player) {
 		if (NOT_INSTALLED) return false;
@@ -17,7 +18,7 @@ public class CreativeUtil {
 	}
 	
 	public static void registerBlockConverters() {
-		if (NOT_INSTALLED) return;
+		if (NOT_INSTALLED || registered) return;
 		if (VBE.ENHANCED_SLABS.getValue()) {
 			BlockSelectAPI.registerConverter(VBEBlocks.STONE_SLAB_FULL, VBEBlocks.STONE_SLAB_HALF.asItem());
 			BlockSelectAPI.registerConverter(VBEBlocks.COBBLESTONE_SLAB_FULL, VBEBlocks.COBBLESTONE_SLAB_HALF.asItem());
@@ -26,5 +27,6 @@ public class CreativeUtil {
 		}
 		BlockSelectAPI.registerConverter(Block.WOOD_DOOR, VBEItems.OAK_DOOR);
 		BlockSelectAPI.registerConverter(Block.IRON_DOOR, VBEItems.IRON_DOOR);
+		registered = true;
 	}
 }

@@ -1,20 +1,20 @@
 package paulevs.vbe.listeners;
 
 import net.mine_diver.unsafeevents.listener.EventListener;
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.SmeltingRecipeRegistry;
 import net.modificationstation.stationapi.api.event.recipe.RecipeRegisterEvent;
 import net.modificationstation.stationapi.api.event.registry.BlockRegistryEvent;
 import net.modificationstation.stationapi.api.event.registry.ItemRegistryEvent;
+import net.modificationstation.stationapi.api.recipe.CraftingRegistry;
 import paulevs.vbe.block.StairsShape;
 import paulevs.vbe.block.VBEBlocks;
 import paulevs.vbe.item.VBEItems;
 import paulevs.vbe.utils.CreativeUtil;
 
 public class CommonListener {
-	public static boolean blockRegistered = false;
-	
 	@EventListener
 	private void onBlockRegister(BlockRegistryEvent event) {
 		StairsShape.init();
@@ -31,6 +31,8 @@ public class CommonListener {
 		SmeltingRecipeRegistry.getInstance().addSmeltingRecipe(VBEBlocks.OAK_LOG.id, new ItemStack(Item.coal, 1, 1));
 		SmeltingRecipeRegistry.getInstance().addSmeltingRecipe(VBEBlocks.SPRUCE_LOG.id, new ItemStack(Item.coal, 1, 1));
 		SmeltingRecipeRegistry.getInstance().addSmeltingRecipe(VBEBlocks.BIRCH_LOG.id, new ItemStack(Item.coal, 1, 1));
+		//CraftingRegistry.addShapelessRecipe(new ItemStack(Block.PLANKS, 4), new ItemStack(VBEBlocks.SPRUCE_LOG));
+		//CraftingRegistry.addShapelessRecipe(new ItemStack(Block.PLANKS, 4), new ItemStack(VBEBlocks.BIRCH_LOG));
 		CreativeUtil.registerBlockConverters();
 	}
 }

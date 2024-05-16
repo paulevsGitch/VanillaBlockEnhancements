@@ -8,11 +8,16 @@ import paulevs.vbe.item.VBEItems;
 
 public class ItemConverter {
 	public static int getID(int id, int damage) {
-		if (id == Block.STONE_SLAB.id && VBE.ENHANCED_SLABS.getValue()) return VBEBlocks.getHalfSlabByMeta(damage).asItem().id;
-		if (id == Block.LOG.id) return VBEBlocks.getLogByMeta(damage).asItem().id;
-		if (id == Block.LEAVES.id) return VBEBlocks.getLeavesByMeta(damage).asItem().id;
-		if (id == Item.woodDoor.id) return VBEItems.OAK_DOOR.asItem().id;
-		if (id == Item.ironDoor.id) return VBEItems.IRON_DOOR.asItem().id;
-		return -1;
+		Item item = null;
+		if (id == Block.STONE_SLAB.id && VBE.ENHANCED_SLABS.getValue()) item = VBEBlocks.getHalfSlabByMeta(damage).asItem();
+		if (id == Block.LOG.id) item = VBEBlocks.getLogByMeta(damage).asItem();
+		if (id == Block.LEAVES.id) item = VBEBlocks.getLeavesByMeta(damage).asItem();
+		if (id == Item.woodDoor.id) item = VBEItems.OAK_DOOR.asItem();
+		if (id == Item.ironDoor.id) item = VBEItems.IRON_DOOR.asItem();
+		return item == null ? -1 : item.id;
+	}
+	
+	public static int getDamage(int id, int damage) {
+		return id == Block.STONE_SLAB.id && VBE.ENHANCED_SLABS.getValue() ? damage : 0;
 	}
 }

@@ -5,8 +5,10 @@
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
 		"LevelMonsterSpawnerMixin",
+		"BirchTreeStructureMixin",
 		"CraftingContainerMixin",
 		"FlowingFluidBlockMixin",
+		"OakTreeStructureMixin",
 		"RecipeRegistryMixin",
 		"FarmlandBlockMixin",
 		"TrapdoorBlockMixin",
@@ -17,13 +19,11 @@
 		"FenceBlockMixin",
 		"ChestBlockMixin",
 		"SpruceTreeMixin",
-		"BirchTreeStructureMixin",
 		"ItemStackMixin",
 		"StoneSlabMixin",
 		"DoorBlockMixin",
 		"LogBlockMixin",
-		"AxeItemMixin",
-		"OakTreeStructureMixin"
+		"AxeItemMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

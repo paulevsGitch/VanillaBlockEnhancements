@@ -29,7 +29,10 @@ import java.util.Random;
 import java.util.function.Function;
 
 public class VBELeavesBlock extends LeavesBaseBlock implements BlockTemplate {
-	private static final Function<BlockState, BlockState> ACTIVATOR = state -> state.with(VBEBlockProperties.ACTIVE, true);
+	private static final Function<BlockState, BlockState> ACTIVATOR = state -> {
+		if (state.getBlock() instanceof VBELeavesBlock) return state.with(VBEBlockProperties.ACTIVE, true);
+		else return state;
+	};
 	private static final Function<BlockState, Boolean> LEAVES_FILTER = state -> state.isIn(VBEBlockTags.LEAVES);
 	private static final Function<BlockState, Boolean> LOG_FILTER = state -> state.isIn(VBEBlockTags.LOGS);
 	private static final Map<Integer, FloodFillSearch> SEARCH_CACHE = new HashMap<>();

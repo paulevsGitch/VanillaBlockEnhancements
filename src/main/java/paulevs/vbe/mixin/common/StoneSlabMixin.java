@@ -20,7 +20,7 @@ import java.util.List;
 
 @Mixin(StoneSlabBlock.class)
 public class StoneSlabMixin extends Block {
-	@Shadow private boolean field_2324;
+	@Shadow private boolean isFullBlock;
 	
 	public StoneSlabMixin(int i, Material arg) {
 		super(i, arg);
@@ -29,20 +29,15 @@ public class StoneSlabMixin extends Block {
 	@Override
 	public List<ItemStack> getDropList(Level level, int x, int y, int z, BlockState state, int meta) {
 		if (!VBE.ENHANCED_SLABS.getValue()) return null;
-		return Collections.singletonList(new ItemStack(VBEBlocks.getHalfSlabByMeta(meta), this.field_2324 ? 2 : 1));
+		return Collections.singletonList(new ItemStack(VBEBlocks.getHalfSlabByMeta(meta), this.isFullBlock ? 2 : 1));
 	}
-	
-	/*@Override
-	public void onBlockPlaced(Level level, int x, int y, int z, BlockState replacedState) {
-	
-	}*/
 	
 	@Inject(method = "onBlockPlaced", at = @At("HEAD"), cancellable = true)
 	private void vbe_onBlockPlaced(Level level, int x, int y, int z, CallbackInfo info) {
 		if (!VBE.ENHANCED_SLABS.getValue()) return;
 		info.cancel();
 		int meta = level.getBlockMeta(x, y, z);
-		BlockState state = (this.field_2324 ? VBEBlocks.getFullSlabByMeta(meta) : VBEBlocks.getHalfSlabByMeta(meta)).getDefaultState();
+		BlockState state = (this.isFullBlock ? VBEBlocks.getFullSlabByMeta(meta) : VBEBlocks.getHalfSlabByMeta(meta)).getDefaultState();
 		LevelUtil.setBlockSilent(level, x, y, z, state);
 	}
 }

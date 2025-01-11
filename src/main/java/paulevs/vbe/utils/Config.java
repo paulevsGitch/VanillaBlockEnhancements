@@ -18,8 +18,7 @@ public class Config {
 	private final File file;
 	
 	public Config(String name) {
-		//noinspection deprecation
-		this.file = new File(FabricLoader.getInstance().getConfigDirectory(), "vbe/" + name + ".cfg");
+		this.file = new File(FabricLoader.getInstance().getConfigDir().toFile(), "vbe/" + name + ".cfg");
 		if (file.exists()) load();
 	}
 	

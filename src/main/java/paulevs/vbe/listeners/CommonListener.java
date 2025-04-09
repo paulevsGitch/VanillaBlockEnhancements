@@ -11,18 +11,18 @@ import paulevs.vbe.utils.CreativeUtil;
 
 public class CommonListener {
 	@EventListener
-	private void onBlockRegister(BlockRegistryEvent event) {
+	public void onBlockRegister(BlockRegistryEvent event) {
 		StairsShape.init();
 		VBEBlocks.init();
 	}
 	
 	@EventListener
-	private void onItemRegister(ItemRegistryEvent event) {
+	public void onItemRegister(ItemRegistryEvent event) {
 		VBEItems.init();
 	}
 	
 	@EventListener
-	private void onRecipesRegister(RecipeRegisterEvent event) {
+	public void onRecipesRegister(RecipeRegisterEvent event) {
 		if (event.recipeId != RecipeRegisterEvent.Vanilla.SMELTING.type()) return;
 		CreativeUtil.registerBlockConverters();
 	}

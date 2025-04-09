@@ -7,7 +7,7 @@ import paulevs.vbe.block.VBEBlocks;
 
 public class ClientListener {
 	@EventListener
-	private void onBlockColorsRegister(BlockColorsRegisterEvent event) {
+	public void onBlockColorsRegister(BlockColorsRegisterEvent event) {
 		event.blockColors.registerColorProvider(
 			(blockState, blockView, blockPos, index) -> Block.LEAVES.getBaseColor(0),
 			VBEBlocks.OAK_LEAVES

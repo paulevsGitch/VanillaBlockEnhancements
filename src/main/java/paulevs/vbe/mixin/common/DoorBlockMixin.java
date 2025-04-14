@@ -41,7 +41,7 @@ public abstract class DoorBlockMixin extends Block {
 		super.appendProperties(builder);
 		if (!VBE.ENHANCED_DOORS.getValue()) return;
 		builder.add(
-			Properties.FACING,
+			Properties.HORIZONTAL_FACING,
 			VBEBlockProperties.TOP_BOTTOM,
 			VBEBlockProperties.OPENED,
 			VBEBlockProperties.INVERTED
@@ -172,7 +172,7 @@ public abstract class DoorBlockMixin extends Block {
 		if (!state.isOf(this)) return;
 		
 		TopBottom part = state.get(VBEBlockProperties.TOP_BOTTOM);
-		Direction d = state.get(Properties.FACING);
+		Direction d = state.get(Properties.HORIZONTAL_FACING);
 		
 		if (state.get(VBEBlockProperties.OPENED)) {
 			if (state.get(VBEBlockProperties.INVERTED)) d = d.rotateCounterclockwise(Axis.Y);
@@ -193,7 +193,7 @@ public abstract class DoorBlockMixin extends Block {
 	@Unique
 	private void vbe_updateSideDoor(Level level, int x, int y, int z, BlockState state) {
 		boolean inverted = state.get(VBEBlockProperties.INVERTED);
-		Direction offset = state.get(Properties.FACING);
+		Direction offset = state.get(Properties.HORIZONTAL_FACING);
 		offset = inverted ? offset.rotateClockwise(Axis.Y) : offset.rotateCounterclockwise(Axis.Y);
 		
 		x += offset.getOffsetX();
@@ -216,7 +216,7 @@ public abstract class DoorBlockMixin extends Block {
 	@Unique
 	private boolean vbe_hasConnectedPower(Level level, int x, int y, int z, BlockState state) {
 		boolean inverted = state.get(VBEBlockProperties.INVERTED);
-		Direction offset = state.get(Properties.FACING);
+		Direction offset = state.get(Properties.HORIZONTAL_FACING);
 		offset = inverted ? offset.rotateClockwise(Axis.Y) : offset.rotateCounterclockwise(Axis.Y);
 		
 		x += offset.getOffsetX();

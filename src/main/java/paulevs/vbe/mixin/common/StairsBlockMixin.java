@@ -38,7 +38,7 @@ public class StairsBlockMixin extends Block implements StairsShape {
 	@Override
 	public void appendProperties(Builder<Block, BlockState> builder) {
 		super.appendProperties(builder);
-		builder.add(Properties.FACING, VBEBlockProperties.STAIRS_PART);
+		builder.add(Properties.HORIZONTAL_FACING, VBEBlockProperties.STAIRS_PART);
 	}
 	
 	@Override
@@ -52,9 +52,9 @@ public class StairsBlockMixin extends Block implements StairsShape {
 			BlockPos pos = context.getBlockPos();
 			BlockState worldState = context.getWorld().getBlockState(pos.offset(facing.getOpposite()));
 			if (worldState.getBlock() instanceof StairsBlock) {
-				facing = worldState.get(Properties.FACING);
+				facing = worldState.get(Properties.HORIZONTAL_FACING);
 				StairsPart part = worldState.get(VBEBlockProperties.STAIRS_PART);
-				return state.with(Properties.FACING, facing).with(VBEBlockProperties.STAIRS_PART, part);
+				return state.with(Properties.HORIZONTAL_FACING, facing).with(VBEBlockProperties.STAIRS_PART, part);
 			}
 		}
 		
@@ -70,7 +70,7 @@ public class StairsBlockMixin extends Block implements StairsShape {
 			facing = Direction.fromRotation(player == null ? 0 : player.yaw);
 		}
 		
-		return state.with(Properties.FACING, facing);
+		return state.with(Properties.HORIZONTAL_FACING, facing);
 	}
 	
 	@Override

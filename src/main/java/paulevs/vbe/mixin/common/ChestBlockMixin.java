@@ -40,7 +40,7 @@ public abstract class ChestBlockMixin extends BlockWithEntity implements BeforeB
 		super.appendProperties(builder);
 		if (!VBE.ENHANCED_CHESTS.getValue()) return;
 		try {
-			builder.add(Properties.FACING, VBEBlockProperties.CHEST_PART);
+			builder.add(Properties.HORIZONTAL_FACING, VBEBlockProperties.CHEST_PART);
 		}
 		catch (Exception ignore) {}
 	}
@@ -54,7 +54,7 @@ public abstract class ChestBlockMixin extends BlockWithEntity implements BeforeB
 		PlayerEntity player = context.getPlayer();
 		Direction facing = Direction.fromRotation(player == null ? 0 : player.yaw);
 		
-		BlockState chest = getDefaultState().with(Properties.FACING, facing);
+		BlockState chest = getDefaultState().with(Properties.HORIZONTAL_FACING, facing);
 		if (player != null && player.isChild()) {
 			return chest.with(VBEBlockProperties.CHEST_PART, ChestPart.SINGLE);
 		}
@@ -65,7 +65,7 @@ public abstract class ChestBlockMixin extends BlockWithEntity implements BeforeB
 		if (
 			sideState.isOf(this) &&
 			sideState.get(VBEBlockProperties.CHEST_PART) == ChestPart.SINGLE &&
-			sideState.get(Properties.FACING) == facing
+			sideState.get(Properties.HORIZONTAL_FACING) == facing
 		) {
 			sideState = sideState.with(VBEBlockProperties.CHEST_PART, ChestPart.LEFT);
 			LevelUtil.setBlockSilent(level, sidePos.getX(), sidePos.getY(), sidePos.getZ(), sideState);
@@ -78,7 +78,7 @@ public abstract class ChestBlockMixin extends BlockWithEntity implements BeforeB
 		if (
 			sideState.isOf(this) &&
 			sideState.get(VBEBlockProperties.CHEST_PART) == ChestPart.SINGLE &&
-			sideState.get(Properties.FACING) == facing
+			sideState.get(Properties.HORIZONTAL_FACING) == facing
 		) {
 			sideState = sideState.with(VBEBlockProperties.CHEST_PART, ChestPart.RIGHT);
 			LevelUtil.setBlockSilent(level, sidePos.getX(), sidePos.getY(), sidePos.getZ(), sideState);
@@ -95,7 +95,7 @@ public abstract class ChestBlockMixin extends BlockWithEntity implements BeforeB
 		if (!state.isOf(this)) return;
 		ChestPart part = state.get(VBEBlockProperties.CHEST_PART);
 		if (part == ChestPart.SINGLE) return;
-		Direction facing = state.get(Properties.FACING);
+		Direction facing = state.get(Properties.HORIZONTAL_FACING);
 		Direction side = part == ChestPart.RIGHT ? facing.rotateCounterclockwise(Axis.Y) : facing.rotateClockwise(Axis.Y);
 		x += side.getOffsetX();
 		y += side.getOffsetY();
@@ -130,7 +130,7 @@ public abstract class ChestBlockMixin extends BlockWithEntity implements BeforeB
 			return;
 		}
 		
-		Direction facing = state.get(Properties.FACING);
+		Direction facing = state.get(Properties.HORIZONTAL_FACING);
 		Direction side = part == ChestPart.RIGHT ? facing.rotateCounterclockwise(Axis.Y) : facing.rotateClockwise(Axis.Y);
 		x += side.getOffsetX();
 		y += side.getOffsetY();
@@ -159,7 +159,7 @@ public abstract class ChestBlockMixin extends BlockWithEntity implements BeforeB
 		if (side < 2) return;
 		if (!(view instanceof BlockStateView blockStateView)) return;
 		BlockState state = blockStateView.getBlockState(x, y, z);
-		Direction facing = state.get(Properties.FACING);
+		Direction facing = state.get(Properties.HORIZONTAL_FACING);
 		if (facing.getId() != side && facing.getOpposite().getId() != side) {
 			info.setReturnValue(this.texture);
 			return;

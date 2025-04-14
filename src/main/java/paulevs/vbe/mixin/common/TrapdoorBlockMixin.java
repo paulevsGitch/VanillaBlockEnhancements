@@ -37,7 +37,7 @@ public class TrapdoorBlockMixin extends Block {
 		super.appendProperties(builder);
 		if (!VBE.ENHANCED_TRAPDOORS.getValue()) return;
 		builder.add(
-			Properties.FACING,
+			Properties.HORIZONTAL_FACING,
 			VBEBlockProperties.TOP_BOTTOM,
 			VBEBlockProperties.OPENED
 		);
@@ -53,7 +53,7 @@ public class TrapdoorBlockMixin extends Block {
 			facing = Direction.fromRotation(player == null ? 0 : player.yaw);
 		}
 		
-		BlockState state = getDefaultState().with(Properties.FACING, facing);
+		BlockState state = getDefaultState().with(Properties.HORIZONTAL_FACING, facing);
 		
 		BlockPos pos = context.getBlockPos();
 		Level level = context.getWorld();
@@ -127,7 +127,7 @@ public class TrapdoorBlockMixin extends Block {
 			return;
 		}
 		
-		Direction d = state.get(Properties.FACING);
+		Direction d = state.get(Properties.HORIZONTAL_FACING);
 		
 		switch (d.getAxis()) {
 			case X -> this.setBoundingBox(d.getOffsetX() < 0 ? 0 : max, 0.0F, 0.0F, d.getOffsetX() < 0 ? min : 1, 1.0F, 1.0F);

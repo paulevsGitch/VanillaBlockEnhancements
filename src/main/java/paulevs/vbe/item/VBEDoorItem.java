@@ -38,7 +38,7 @@ public class VBEDoorItem extends TemplateDoorItem {
 		}
 		
 		direction = Direction.fromRotation(player == null ? 0 : player.yaw).getOpposite();
-		BlockState state = door.getDefaultState().with(Properties.FACING, direction);
+		BlockState state = door.getDefaultState().with(Properties.HORIZONTAL_FACING, direction);
 		boolean power = level.hasRedstonePower(x, y, z) || level.hasRedstonePower(x, y + 1, z);
 		state = state.with(VBEBlockProperties.OPENED, power);
 		

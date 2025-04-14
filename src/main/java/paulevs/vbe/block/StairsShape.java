@@ -22,7 +22,7 @@ public interface StairsShape {
 	}
 	
 	default List<Box> vbe_getStairsShape(BlockStateView view, int x, int y, int z, BlockState state) {
-		final Direction facing = state.get(Properties.FACING);
+		final Direction facing = state.get(Properties.HORIZONTAL_FACING);
 		final StairsPart part = state.get(VBEBlockProperties.STAIRS_PART);
 		
 		byte corner = 0;
@@ -34,8 +34,8 @@ public interface StairsShape {
 		);
 		
 		if (sideState.getBlock() instanceof StairsBlock && sideState.get(VBEBlockProperties.STAIRS_PART) == part) {
-			if (sideState.get(Properties.FACING) == facing.rotateClockwise(Axis.Y)) corner = 1;
-			else if (sideState.get(Properties.FACING) == facing.rotateCounterclockwise(Axis.Y)) corner = 2;
+			if (sideState.get(Properties.HORIZONTAL_FACING) == facing.rotateClockwise(Axis.Y)) corner = 1;
+			else if (sideState.get(Properties.HORIZONTAL_FACING) == facing.rotateCounterclockwise(Axis.Y)) corner = 2;
 		}
 		
 		if (corner == 0) {
@@ -46,8 +46,8 @@ public interface StairsShape {
 			);
 			
 			if (sideState.getBlock() instanceof StairsBlock && sideState.get(VBEBlockProperties.STAIRS_PART) == part) {
-				if (sideState.get(Properties.FACING) == facing.rotateClockwise(Axis.Y)) corner = 3;
-				else if (sideState.get(Properties.FACING) == facing.rotateCounterclockwise(Axis.Y)) corner = 4;
+				if (sideState.get(Properties.HORIZONTAL_FACING) == facing.rotateClockwise(Axis.Y)) corner = 3;
+				else if (sideState.get(Properties.HORIZONTAL_FACING) == facing.rotateCounterclockwise(Axis.Y)) corner = 4;
 			}
 		}
 		
@@ -60,7 +60,7 @@ public interface StairsShape {
 			);
 			if (
 				sideState.getBlock() instanceof StairsBlock &&
-					sideState.get(Properties.FACING) == facing &&
+					sideState.get(Properties.HORIZONTAL_FACING) == facing &&
 					sideState.get(VBEBlockProperties.STAIRS_PART) == part
 			) {
 				corner = 0;

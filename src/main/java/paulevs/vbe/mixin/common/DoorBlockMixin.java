@@ -11,6 +11,7 @@ import net.minecraft.level.Level;
 import net.modificationstation.stationapi.api.block.BlockState;
 import net.modificationstation.stationapi.api.block.States;
 import net.modificationstation.stationapi.api.state.StateManager.Builder;
+import net.modificationstation.stationapi.api.state.property.Properties;
 import net.modificationstation.stationapi.api.util.math.Direction;
 import net.modificationstation.stationapi.api.util.math.Direction.Axis;
 import net.modificationstation.stationapi.api.world.BlockStateView;
@@ -40,7 +41,7 @@ public abstract class DoorBlockMixin extends Block {
 		super.appendProperties(builder);
 		if (!VBE.ENHANCED_DOORS.getValue()) return;
 		builder.add(
-			VBEBlockProperties.FACING,
+			Properties.FACING,
 			VBEBlockProperties.TOP_BOTTOM,
 			VBEBlockProperties.OPENED,
 			VBEBlockProperties.INVERTED
@@ -171,7 +172,7 @@ public abstract class DoorBlockMixin extends Block {
 		if (!state.isOf(this)) return;
 		
 		TopBottom part = state.get(VBEBlockProperties.TOP_BOTTOM);
-		Direction d = state.get(VBEBlockProperties.FACING);
+		Direction d = state.get(Properties.FACING);
 		
 		if (state.get(VBEBlockProperties.OPENED)) {
 			if (state.get(VBEBlockProperties.INVERTED)) d = d.rotateCounterclockwise(Axis.Y);
@@ -192,7 +193,7 @@ public abstract class DoorBlockMixin extends Block {
 	@Unique
 	private void vbe_updateSideDoor(Level level, int x, int y, int z, BlockState state) {
 		boolean inverted = state.get(VBEBlockProperties.INVERTED);
-		Direction offset = state.get(VBEBlockProperties.FACING);
+		Direction offset = state.get(Properties.FACING);
 		offset = inverted ? offset.rotateClockwise(Axis.Y) : offset.rotateCounterclockwise(Axis.Y);
 		
 		x += offset.getOffsetX();
@@ -215,7 +216,7 @@ public abstract class DoorBlockMixin extends Block {
 	@Unique
 	private boolean vbe_hasConnectedPower(Level level, int x, int y, int z, BlockState state) {
 		boolean inverted = state.get(VBEBlockProperties.INVERTED);
-		Direction offset = state.get(VBEBlockProperties.FACING);
+		Direction offset = state.get(Properties.FACING);
 		offset = inverted ? offset.rotateClockwise(Axis.Y) : offset.rotateCounterclockwise(Axis.Y);
 		
 		x += offset.getOffsetX();

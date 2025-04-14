@@ -11,6 +11,7 @@ import net.minecraft.util.maths.BlockPos;
 import net.modificationstation.stationapi.api.block.BlockState;
 import net.modificationstation.stationapi.api.item.ItemPlacementContext;
 import net.modificationstation.stationapi.api.state.StateManager.Builder;
+import net.modificationstation.stationapi.api.state.property.Properties;
 import net.modificationstation.stationapi.api.util.math.Direction;
 import net.modificationstation.stationapi.api.util.math.Direction.Axis;
 import net.modificationstation.stationapi.api.world.BlockStateView;
@@ -36,7 +37,7 @@ public class TrapdoorBlockMixin extends Block {
 		super.appendProperties(builder);
 		if (!VBE.ENHANCED_TRAPDOORS.getValue()) return;
 		builder.add(
-			VBEBlockProperties.FACING,
+			Properties.FACING,
 			VBEBlockProperties.TOP_BOTTOM,
 			VBEBlockProperties.OPENED
 		);
@@ -52,7 +53,7 @@ public class TrapdoorBlockMixin extends Block {
 			facing = Direction.fromRotation(player == null ? 0 : player.yaw);
 		}
 		
-		BlockState state = getDefaultState().with(VBEBlockProperties.FACING, facing);
+		BlockState state = getDefaultState().with(Properties.FACING, facing);
 		
 		BlockPos pos = context.getBlockPos();
 		Level level = context.getWorld();
@@ -126,7 +127,7 @@ public class TrapdoorBlockMixin extends Block {
 			return;
 		}
 		
-		Direction d = state.get(VBEBlockProperties.FACING);
+		Direction d = state.get(Properties.FACING);
 		
 		switch (d.getAxis()) {
 			case X -> this.setBoundingBox(d.getOffsetX() < 0 ? 0 : max, 0.0F, 0.0F, d.getOffsetX() < 0 ? min : 1, 1.0F, 1.0F);

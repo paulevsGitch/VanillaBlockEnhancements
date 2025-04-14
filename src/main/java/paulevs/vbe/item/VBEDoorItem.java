@@ -6,6 +6,7 @@ import net.minecraft.entity.living.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.level.Level;
 import net.modificationstation.stationapi.api.block.BlockState;
+import net.modificationstation.stationapi.api.state.property.Properties;
 import net.modificationstation.stationapi.api.template.item.TemplateDoorItem;
 import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.util.math.Direction;
@@ -37,7 +38,7 @@ public class VBEDoorItem extends TemplateDoorItem {
 		}
 		
 		direction = Direction.fromRotation(player == null ? 0 : player.yaw).getOpposite();
-		BlockState state = door.getDefaultState().with(VBEBlockProperties.FACING, direction);
+		BlockState state = door.getDefaultState().with(Properties.FACING, direction);
 		boolean power = level.hasRedstonePower(x, y, z) || level.hasRedstonePower(x, y + 1, z);
 		state = state.with(VBEBlockProperties.OPENED, power);
 		

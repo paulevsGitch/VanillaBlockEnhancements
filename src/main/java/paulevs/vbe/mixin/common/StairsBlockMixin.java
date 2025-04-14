@@ -12,6 +12,7 @@ import net.minecraft.util.maths.Box;
 import net.modificationstation.stationapi.api.block.BlockState;
 import net.modificationstation.stationapi.api.item.ItemPlacementContext;
 import net.modificationstation.stationapi.api.state.StateManager.Builder;
+import net.modificationstation.stationapi.api.state.property.Properties;
 import net.modificationstation.stationapi.api.util.math.Direction;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -37,7 +38,7 @@ public class StairsBlockMixin extends Block implements StairsShape {
 	@Override
 	public void appendProperties(Builder<Block, BlockState> builder) {
 		super.appendProperties(builder);
-		builder.add(VBEBlockProperties.FACING, VBEBlockProperties.STAIRS_PART);
+		builder.add(Properties.FACING, VBEBlockProperties.STAIRS_PART);
 	}
 	
 	@Override
@@ -51,9 +52,9 @@ public class StairsBlockMixin extends Block implements StairsShape {
 			BlockPos pos = context.getBlockPos();
 			BlockState worldState = context.getWorld().getBlockState(pos.offset(facing.getOpposite()));
 			if (worldState.getBlock() instanceof StairsBlock) {
-				facing = worldState.get(VBEBlockProperties.FACING);
+				facing = worldState.get(Properties.FACING);
 				StairsPart part = worldState.get(VBEBlockProperties.STAIRS_PART);
-				return state.with(VBEBlockProperties.FACING, facing).with(VBEBlockProperties.STAIRS_PART, part);
+				return state.with(Properties.FACING, facing).with(VBEBlockProperties.STAIRS_PART, part);
 			}
 		}
 		
@@ -69,7 +70,7 @@ public class StairsBlockMixin extends Block implements StairsShape {
 			facing = Direction.fromRotation(player == null ? 0 : player.yaw);
 		}
 		
-		return state.with(VBEBlockProperties.FACING, facing);
+		return state.with(Properties.FACING, facing);
 	}
 	
 	@Override

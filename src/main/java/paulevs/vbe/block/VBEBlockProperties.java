@@ -7,7 +7,6 @@ import net.modificationstation.stationapi.api.util.math.Direction;
 import net.modificationstation.stationapi.api.util.math.Direction.Axis;
 
 public class VBEBlockProperties {
-	public static final EnumProperty<Direction> FACING = EnumProperty.of("facing", Direction.class, dir -> dir.getAxis().isHorizontal());
 	public static final EnumProperty<Direction> DIRECTION = EnumProperty.of("direction", Direction.class);
 	public static final EnumProperty<StairsPart> STAIRS_PART = EnumProperty.of("part", StairsPart.class);
 	public static final EnumProperty<ChestPart> CHEST_PART = EnumProperty.of("part", ChestPart.class);

@@ -16,6 +16,7 @@ import net.modificationstation.stationapi.api.block.BeforeBlockRemoved;
 import net.modificationstation.stationapi.api.block.BlockState;
 import net.modificationstation.stationapi.api.item.ItemPlacementContext;
 import net.modificationstation.stationapi.api.state.StateManager.Builder;
+import net.modificationstation.stationapi.api.state.property.Properties;
 import net.modificationstation.stationapi.api.util.math.Direction;
 import net.modificationstation.stationapi.api.util.math.Direction.Axis;
 import net.modificationstation.stationapi.api.world.BlockStateView;
@@ -38,7 +39,10 @@ public abstract class ChestBlockMixin extends BlockWithEntity implements BeforeB
 	public void appendProperties(Builder<Block, BlockState> builder) {
 		super.appendProperties(builder);
 		if (!VBE.ENHANCED_CHESTS.getValue()) return;
-		builder.add(VBEBlockProperties.FACING, VBEBlockProperties.CHEST_PART);
+		try {
+			builder.add(Properties.FACING, VBEBlockProperties.CHEST_PART);
+		}
+		catch (Exception ignore) {}
 	}
 	
 	@Override
@@ -50,7 +54,7 @@ public abstract class ChestBlockMixin extends BlockWithEntity implements BeforeB
 		PlayerEntity player = context.getPlayer();
 		Direction facing = Direction.fromRotation(player == null ? 0 : player.yaw);
 		
-		BlockState chest = getDefaultState().with(VBEBlockProperties.FACING, facing);
+		BlockState chest = getDefaultState().with(Properties.FACING, facing);
 		if (player != null && player.isChild()) {
 			return chest.with(VBEBlockProperties.CHEST_PART, ChestPart.SINGLE);
 		}
@@ -61,7 +65,7 @@ public abstract class ChestBlockMixin extends BlockWithEntity implements BeforeB
 		if (
 			sideState.isOf(this) &&
 			sideState.get(VBEBlockProperties.CHEST_PART) == ChestPart.SINGLE &&
-			sideState.get(VBEBlockProperties.FACING) == facing
+			sideState.get(Properties.FACING) == facing
 		) {
 			sideState = sideState.with(VBEBlockProperties.CHEST_PART, ChestPart.LEFT);
 			LevelUtil.setBlockSilent(level, sidePos.getX(), sidePos.getY(), sidePos.getZ(), sideState);
@@ -74,7 +78,7 @@ public abstract class ChestBlockMixin extends BlockWithEntity implements BeforeB
 		if (
 			sideState.isOf(this) &&
 			sideState.get(VBEBlockProperties.CHEST_PART) == ChestPart.SINGLE &&
-			sideState.get(VBEBlockProperties.FACING) == facing
+			sideState.get(Properties.FACING) == facing
 		) {
 			sideState = sideState.with(VBEBlockProperties.CHEST_PART, ChestPart.RIGHT);
 			LevelUtil.setBlockSilent(level, sidePos.getX(), sidePos.getY(), sidePos.getZ(), sideState);
@@ -91,7 +95,7 @@ public abstract class ChestBlockMixin extends BlockWithEntity implements BeforeB
 		if (!state.isOf(this)) return;
 		ChestPart part = state.get(VBEBlockProperties.CHEST_PART);
 		if (part == ChestPart.SINGLE) return;
-		Direction facing = state.get(VBEBlockProperties.FACING);
+		Direction facing = state.get(Properties.FACING);
 		Direction side = part == ChestPart.RIGHT ? facing.rotateCounterclockwise(Axis.Y) : facing.rotateClockwise(Axis.Y);
 		x += side.getOffsetX();
 		y += side.getOffsetY();
@@ -126,7 +130,7 @@ public abstract class ChestBlockMixin extends BlockWithEntity implements BeforeB
 			return;
 		}
 		
-		Direction facing = state.get(VBEBlockProperties.FACING);
+		Direction facing = state.get(Properties.FACING);
 		Direction side = part == ChestPart.RIGHT ? facing.rotateCounterclockwise(Axis.Y) : facing.rotateClockwise(Axis.Y);
 		x += side.getOffsetX();
 		y += side.getOffsetY();
@@ -155,7 +159,7 @@ public abstract class ChestBlockMixin extends BlockWithEntity implements BeforeB
 		if (side < 2) return;
 		if (!(view instanceof BlockStateView blockStateView)) return;
 		BlockState state = blockStateView.getBlockState(x, y, z);
-		Direction facing = state.get(VBEBlockProperties.FACING);
+		Direction facing = state.get(Properties.FACING);
 		if (facing.getId() != side && facing.getOpposite().getId() != side) {
 			info.setReturnValue(this.texture);
 			return;

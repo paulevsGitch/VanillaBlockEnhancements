@@ -3,6 +3,7 @@ package paulevs.vbe.block;
 import net.minecraft.block.StairsBlock;
 import net.minecraft.util.maths.Box;
 import net.modificationstation.stationapi.api.block.BlockState;
+import net.modificationstation.stationapi.api.state.property.Properties;
 import net.modificationstation.stationapi.api.util.math.Direction;
 import net.modificationstation.stationapi.api.util.math.Direction.Axis;
 import net.modificationstation.stationapi.api.world.BlockStateView;
@@ -21,7 +22,7 @@ public interface StairsShape {
 	}
 	
 	default List<Box> vbe_getStairsShape(BlockStateView view, int x, int y, int z, BlockState state) {
-		final Direction facing = state.get(VBEBlockProperties.FACING);
+		final Direction facing = state.get(Properties.FACING);
 		final StairsPart part = state.get(VBEBlockProperties.STAIRS_PART);
 		
 		byte corner = 0;
@@ -33,8 +34,8 @@ public interface StairsShape {
 		);
 		
 		if (sideState.getBlock() instanceof StairsBlock && sideState.get(VBEBlockProperties.STAIRS_PART) == part) {
-			if (sideState.get(VBEBlockProperties.FACING) == facing.rotateClockwise(Axis.Y)) corner = 1;
-			else if (sideState.get(VBEBlockProperties.FACING) == facing.rotateCounterclockwise(Axis.Y)) corner = 2;
+			if (sideState.get(Properties.FACING) == facing.rotateClockwise(Axis.Y)) corner = 1;
+			else if (sideState.get(Properties.FACING) == facing.rotateCounterclockwise(Axis.Y)) corner = 2;
 		}
 		
 		if (corner == 0) {
@@ -45,8 +46,8 @@ public interface StairsShape {
 			);
 			
 			if (sideState.getBlock() instanceof StairsBlock && sideState.get(VBEBlockProperties.STAIRS_PART) == part) {
-				if (sideState.get(VBEBlockProperties.FACING) == facing.rotateClockwise(Axis.Y)) corner = 3;
-				else if (sideState.get(VBEBlockProperties.FACING) == facing.rotateCounterclockwise(Axis.Y)) corner = 4;
+				if (sideState.get(Properties.FACING) == facing.rotateClockwise(Axis.Y)) corner = 3;
+				else if (sideState.get(Properties.FACING) == facing.rotateCounterclockwise(Axis.Y)) corner = 4;
 			}
 		}
 		
@@ -59,7 +60,7 @@ public interface StairsShape {
 			);
 			if (
 				sideState.getBlock() instanceof StairsBlock &&
-					sideState.get(VBEBlockProperties.FACING) == facing &&
+					sideState.get(Properties.FACING) == facing &&
 					sideState.get(VBEBlockProperties.STAIRS_PART) == part
 			) {
 				corner = 0;
@@ -210,11 +211,11 @@ public interface StairsShape {
 								case 0 -> shapes.add(Box.create(0.0F, 0.0F, z1, 1.0F, 0.5F, z2));
 								case 1 -> {
 									if (facing.getOffsetZ() < 0) shapes.add(Box.create(0.5F, 0.0F, z1, 1.0F, 0.5F, z2));
-									else shapes.add(Box.create(0.0F, 0.5F, z1, 0.5F, 1.0F, z2));
+									else shapes.add(Box.create(0.0F, 0.0F, z1, 0.5F, 0.5F, z2));
 								}
 								case 2 -> {
 									if (facing.getOffsetZ() < 0) shapes.add(Box.create(0.0F, 0.0F, z1, 0.5F, 0.5F, z2));
-									else shapes.add(Box.create(0.5F, 0.5F, z1, 1.0F, 1.0F, z2));
+									else shapes.add(Box.create(0.5F, 0.0F, z1, 1.0F, 0.5F, z2));
 								}
 								case 3 -> {
 									shapes.add(Box.create(0.0F, 0.5F, z1, 1.0F, 1.0F, z2));

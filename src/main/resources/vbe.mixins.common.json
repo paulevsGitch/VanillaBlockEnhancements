@@ -19,11 +19,13 @@
 		"FenceBlockMixin",
 		"ChestBlockMixin",
 		"SpruceTreeMixin",
+		"ItemEntityMixin",
 		"ItemStackMixin",
 		"StoneSlabMixin",
 		"DoorBlockMixin",
 		"LogBlockMixin",
-		"AxeItemMixin"
+		"AxeItemMixin",
+		"StateMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

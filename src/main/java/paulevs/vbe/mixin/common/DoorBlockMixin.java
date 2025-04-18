@@ -50,9 +50,15 @@ public abstract class DoorBlockMixin extends Block {
 	
 	@Inject(method = "<init>", at = @At(value = "TAIL"))
 	private void vbe_onDoorInit(int id, Material material, CallbackInfo info) {
-		if (!VBE.ENHANCED_DOORS.getValue()) return;
 		NO_AMBIENT_OCCLUSION[this.id] = true;
 		LIGHT_OPACITY[this.id] = 0;
+		if (!VBE.ENHANCED_DOORS.getValue()) return;
+		setDefaultState(getDefaultState()
+			.with(Properties.HORIZONTAL_FACING, Direction.EAST)
+			.with(VBEBlockProperties.TOP_BOTTOM, TopBottom.BOTTOM)
+			.with(VBEBlockProperties.OPENED, true)
+			.with(VBEBlockProperties.INVERTED, false)
+		);
 	}
 	
 	@Environment(value= EnvType.CLIENT)

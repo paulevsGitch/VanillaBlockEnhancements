@@ -19,6 +19,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import paulevs.vbe.VBE;
 import paulevs.vbe.block.FenceConnector;
 import paulevs.vbe.block.StairsShape;
 import paulevs.vbe.render.BlockViewWrapper;
@@ -53,6 +54,7 @@ public abstract class BlockRendererMixin {
 	
 	@Inject(method = "renderStairs", at = @At("HEAD"), cancellable = true)
 	private void vbe_renderStairs(Block block, int x, int y, int z, CallbackInfoReturnable<Boolean> info) {
+		if (!VBE.ENHANCED_STAIRS.getValue()) return;
 		if (this.blockView instanceof BlockStateView stateView && block instanceof StairsShape stairs) {
 			VBEBlockRenderer.renderStairs(stairs, stateView.getBlockState(x, y, z), x, y, z, BlockRenderer.class.cast(this));
 			info.setReturnValue(true);

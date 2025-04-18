@@ -62,11 +62,21 @@ public class TrapdoorBlockMixin extends Block {
 		
 		if (player != null) {
 			HitResult hit = LevelUtil.raycast(level, player);
-			float dy = (float) (hit.pos.y - hit.y);
+			float dy = (float) (hit.pos.y - Math.floor(hit.pos.y));
 			state = state.with(VBEBlockProperties.TOP_BOTTOM, dy > 0.5F ? TopBottom.TOP : TopBottom.BOTTOM);
 		}
 		
 		return state;
+	}
+	
+	@Inject(method = "<init>", at = @At("TAIL"))
+	private void vbe_onInit(int id, Material material, CallbackInfo info) {
+		if (!VBE.ENHANCED_TRAPDOORS.getValue()) return;
+		setDefaultState(getDefaultState()
+			.with(Properties.HORIZONTAL_FACING, Direction.WEST)
+			.with(VBEBlockProperties.TOP_BOTTOM, TopBottom.BOTTOM)
+			.with(VBEBlockProperties.OPENED, false)
+		);
 	}
 	
 	@Inject(method = "onAdjacentBlockUpdate", at = @At("HEAD"), cancellable = true)

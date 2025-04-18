@@ -22,6 +22,7 @@ import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.util.math.Direction;
 import net.modificationstation.stationapi.api.util.math.Direction.Axis;
 import net.modificationstation.stationapi.api.world.BlockStateView;
+import paulevs.vbe.VBE;
 import paulevs.vbe.utils.CreativeUtil;
 import paulevs.vbe.utils.LevelUtil;
 
@@ -73,6 +74,15 @@ public class VBEHalfSlabBlock extends TemplateBlock {
 					return getDefaultState().with(VBEBlockProperties.DIRECTION, facing);
 				}
 			}
+		}
+		else if (!VBE.VERTICAL_SLABS.getValue()) {
+			PlayerEntity player = context.getPlayer();
+			float dy = 0.0F;
+			if (player != null) {
+				HitResult hit = LevelUtil.raycast(player.level, player);
+				dy = (float) (hit.pos.y - Math.floor(hit.pos.y));
+			}
+			return getDefaultState().with(VBEBlockProperties.DIRECTION, dy > 0.5F ? Direction.UP : Direction.DOWN);
 		}
 		return getDefaultState().with(VBEBlockProperties.DIRECTION, face);
 	}

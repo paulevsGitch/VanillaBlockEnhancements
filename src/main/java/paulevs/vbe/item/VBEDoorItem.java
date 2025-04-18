@@ -11,6 +11,7 @@ import net.modificationstation.stationapi.api.template.item.TemplateDoorItem;
 import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.util.math.Direction;
 import net.modificationstation.stationapi.api.util.math.Direction.Axis;
+import paulevs.vbe.VBE;
 import paulevs.vbe.block.VBEBlockProperties;
 import paulevs.vbe.block.VBEBlockProperties.TopBottom;
 import paulevs.vbe.utils.CreativeUtil;
@@ -27,6 +28,8 @@ public class VBEDoorItem extends TemplateDoorItem {
 	
 	@Override
 	public boolean useOnBlock(ItemStack stack, PlayerEntity player, Level level, int x, int y, int z, int side) {
+		if (!VBE.ENHANCED_DOORS.getValue()) return super.useOnBlock(stack, player, level, x, y, z, side);
+		
 		Direction direction = Direction.byId(side);
 		
 		x += direction.getOffsetX();

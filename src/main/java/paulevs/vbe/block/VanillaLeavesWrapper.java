@@ -20,6 +20,7 @@ public class VanillaLeavesWrapper extends VBELeavesBlock {
 	public VanillaLeavesWrapper(Identifier id, int meta) {
 		super(id);
 		this.meta = meta;
+		setHardness(LEAVES.getHardness());
 	}
 	
 	@Override

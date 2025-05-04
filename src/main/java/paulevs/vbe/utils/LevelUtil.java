@@ -1,11 +1,17 @@
 package paulevs.vbe.utils;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.living.player.PlayerEntity;
 import net.minecraft.level.Level;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.maths.MCMath;
 import net.minecraft.util.maths.Vec3D;
 import net.modificationstation.stationapi.api.block.BlockState;
+import net.modificationstation.stationapi.api.network.packet.PacketHelper;
+import net.modificationstation.stationapi.impl.packet.FlattenedBlockChangeS2CPacket;
 import net.modificationstation.stationapi.impl.world.chunk.ChunkSection;
 import net.modificationstation.stationapi.impl.world.chunk.FlattenedChunk;
 
@@ -44,5 +50,27 @@ public class LevelUtil {
 			chunk.sections[index] = section;
 		}
 		section.setBlockState(x & 15, y & 15, z & 15, state);
+	}
+	
+	public static void setBlockForceUpdate(Level level, int x, int y, int z, BlockState state) {
+		level.setBlockState(x, y, z, state);
+		updateBlock(level, x, y, z);
+	}
+	
+	public static void updateBlock(Level level, int x, int y, int z) {
+		if (level.isRemote) return;
+		if (FabricLoader.getInstance().getEnvironmentType() != EnvType.SERVER) return;
+		@SuppressWarnings("deprecation")
+		MinecraftServer server = (MinecraftServer) FabricLoader.getInstance().getGameInstance();
+		for (Object obj : server.serverPlayerConnectionManager.players) {
+			PlayerEntity player = (PlayerEntity) obj;
+			if (player.level != level) continue;
+			updateBlock(player, x, y, z);
+		}
+	}
+	
+	@Environment(EnvType.SERVER)
+	private static void updateBlock(PlayerEntity player, int x, int y, int z) {
+		PacketHelper.sendTo(player, new FlattenedBlockChangeS2CPacket(x, y, z, player.level));
 	}
 }

@@ -98,7 +98,9 @@ public abstract class DoorBlockMixin extends Block {
 		level.updateArea(x, y1, z, x, y2, z);
 		level.playLevelEvent(player, 1003, x, y, z, 0);
 		
-		vbe_updateSideDoor(level, x, y1, z, level.getBlockState(x, y1, z));
+		state = level.getBlockState(x, y1, z);
+		if (!state.isOf(this)) return;
+		vbe_updateSideDoor(level, x, y1, z, state);
 	}
 	
 	@Inject(method = "getTexture", at = @At("HEAD"), cancellable = true)
@@ -129,8 +131,8 @@ public abstract class DoorBlockMixin extends Block {
 		BlockState stateConnected = level.getBlockState(x, py, z);
 		
 		if (!stateConnected.isOf(this)) {
-			level.setBlockState(x, y1, z, States.AIR.get());
-			level.setBlockState(x, y2, z, States.AIR.get());
+			LevelUtil.setBlockForceUpdate(level, x, y1, z, States.AIR.get());
+			LevelUtil.setBlockForceUpdate(level, x, y2, z, States.AIR.get());
 			if (part == TopBottom.BOTTOM) {
 				level.updateArea(x, y1, z, x, y2, z);
 			}
@@ -139,8 +141,8 @@ public abstract class DoorBlockMixin extends Block {
 		}
 		
 		if (part == TopBottom.BOTTOM && !canPlaceAt(level, x, y, z)) {
-			level.setBlockState(x, y1, z, States.AIR.get());
-			level.setBlockState(x, y2, z, States.AIR.get());
+			LevelUtil.setBlockForceUpdate(level, x, y1, z, States.AIR.get());
+			LevelUtil.setBlockForceUpdate(level, x, y2, z, States.AIR.get());
 			level.updateArea(x, y1, z, x, y2, z);
 			this.drop(level, x, y1, z, 0);
 			return;
@@ -152,8 +154,8 @@ public abstract class DoorBlockMixin extends Block {
 			
 			if (opened != state.get(VBEBlockProperties.OPENED)) {
 				state = state.with(VBEBlockProperties.OPENED, opened);
-				level.setBlockState(x, y, z, state);
-				level.setBlockState(x, py, z, stateConnected.with(VBEBlockProperties.OPENED, opened));
+				LevelUtil.setBlockForceUpdate(level, x, y, z, state);
+				LevelUtil.setBlockForceUpdate(level, x, py, z, stateConnected.with(VBEBlockProperties.OPENED, opened));
 				level.updateArea(x, y1, z, x, y2, z);
 				level.playLevelEvent(null, 1003, x, y1, z, 0);
 			}
@@ -206,14 +208,14 @@ public abstract class DoorBlockMixin extends Block {
 		z += offset.getOffsetZ();
 		
 		BlockState sideStateBottom = level.getBlockState(x, y, z);
-		if (!sideStateBottom.isOf(this)) return;
+		if (!sideStateBottom.isOf(this) || sideStateBottom.get(VBEBlockProperties.INVERTED) == inverted) return;
 		BlockState sideStateTop = level.getBlockState(x, y + 1, z);
 		if (!sideStateTop.isOf(this)) return;
 		
 		boolean opened = state.get(VBEBlockProperties.OPENED);
 		if (opened != sideStateBottom.get(VBEBlockProperties.OPENED) || opened != sideStateTop.get(VBEBlockProperties.OPENED)) {
-			level.setBlockState(x, y, z, sideStateBottom.with(VBEBlockProperties.OPENED, opened));
-			level.setBlockState(x, y + 1, z, sideStateTop.with(VBEBlockProperties.OPENED, opened));
+			LevelUtil.setBlockForceUpdate(level, x, y, z, sideStateBottom.with(VBEBlockProperties.OPENED, opened));
+			LevelUtil.setBlockForceUpdate(level, x, y + 1, z, sideStateTop.with(VBEBlockProperties.OPENED, opened));
 			level.updateArea(x, y, z, x, y + 1, z);
 			level.playLevelEvent(null, 1003, x, y, z, 0);
 		}

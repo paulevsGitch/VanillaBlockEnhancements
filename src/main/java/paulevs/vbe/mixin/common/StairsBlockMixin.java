@@ -69,14 +69,9 @@ public class StairsBlockMixin extends Block implements StairsShape {
 			facing = Direction.fromRotation(player == null ? 0 : (player.yaw - 45.0F));
 		}
 		else {
-			float dy = 0.0F;
-			if (player != null) {
-				HitResult hit = LevelUtil.raycast(player.level, player);
-				dy = (float) (hit.pos.y - Math.floor(hit.pos.y));
-			}
 			state = state.with(
 				VBEBlockProperties.STAIRS_PART,
-				dy < 0.5F ? StairsPart.BOTTOM : StairsPart.TOP
+				facing == Direction.UP ? StairsPart.BOTTOM : StairsPart.TOP
 			);
 			facing = Direction.fromRotation(player == null ? 0 : player.yaw);
 		}

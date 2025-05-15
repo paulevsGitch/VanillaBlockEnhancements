@@ -52,6 +52,18 @@ public class LevelUtil {
 		section.setBlockState(x & 15, y & 15, z & 15, state);
 	}
 	
+	public static void setBlockSilent(Level level, int x, int y, int z, BlockState state, int meta) {
+		FlattenedChunk chunk = (FlattenedChunk) level.getChunkFromCache(x >> 4, z >> 4);
+		int index = level.getSectionIndex(y);
+		ChunkSection section = chunk.sections[index];
+		if (section == null) {
+			section = new ChunkSection(index);
+			chunk.sections[index] = section;
+		}
+		section.setBlockState(x & 15, y & 15, z & 15, state);
+		section.setMeta(x & 15, y & 15, z & 15, meta);
+	}
+	
 	public static void setBlockForceUpdate(Level level, int x, int y, int z, BlockState state) {
 		level.setBlockState(x, y, z, state);
 		updateBlock(level, x, y, z);

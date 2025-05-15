@@ -8,6 +8,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.living.player.PlayerEntity;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
+import net.minecraft.util.maths.Box;
 import net.modificationstation.stationapi.api.block.BlockState;
 import net.modificationstation.stationapi.api.block.States;
 import net.modificationstation.stationapi.api.state.StateManager.Builder;
@@ -23,6 +24,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import paulevs.vbe.VBE;
+import paulevs.vbe.block.VBEBlockFixer;
 import paulevs.vbe.block.VBEBlockProperties;
 import paulevs.vbe.block.VBEBlockProperties.TopBottom;
 import paulevs.vbe.block.VBEBlockTags;
@@ -30,6 +32,8 @@ import paulevs.vbe.utils.LevelUtil;
 
 @Mixin(DoorBlock.class)
 public abstract class DoorBlockMixin extends Block {
+	@Unique private static boolean vbe_stopUpdate;
+	
 	@Shadow public abstract boolean canPlaceAt(Level arg, int i, int j, int k);
 	
 	public DoorBlockMixin(int i, Material arg) {
@@ -46,6 +50,21 @@ public abstract class DoorBlockMixin extends Block {
 			VBEBlockProperties.OPENED,
 			VBEBlockProperties.INVERTED
 		);
+	}
+	
+	@Override
+	public void onBlockPlaced(Level level, int x, int y, int z) {
+		System.out.println("Placed door " + level.getBlockMeta(x, y, z));
+		BlockState state1 = level.getBlockState(x, y, z);
+		if (!state1.isOf(this)) return;
+		int meta = level.getBlockMeta(x, y, z);
+		BlockState state2 = VBEBlockFixer.fixDoor(state1, meta);
+		if (state2 != state1) {
+			//vbe_stopUpdate = true;
+			LevelUtil.setBlockSilent(level, x, y, z, state2);
+			//level.updateBlock(x, y, z);
+			//vbe_stopUpdate = false;
+		}
 	}
 	
 	@Inject(method = "<init>", at = @At(value = "TAIL"))
@@ -65,6 +84,7 @@ public abstract class DoorBlockMixin extends Block {
 	@Inject(method = "getRenderType", at = @At("HEAD"), cancellable = true)
 	private void vbe_getRenderType(CallbackInfoReturnable<Integer> info) {
 		if (!VBE.ENHANCED_DOORS.getValue()) return;
+		if (this != WOOD_DOOR && this != IRON_DOOR) return;
 		info.setReturnValue(0);
 	}
 	
@@ -88,11 +108,12 @@ public abstract class DoorBlockMixin extends Block {
 		state = state.with(VBEBlockProperties.OPENED, opened);
 		
 		if (level.getBlockState(x, y, z) == state) return;
-		LevelUtil.setBlockSilent(level, x, y, z, state);
+		LevelUtil.setBlockSilent(level, x, y, z, state, VBEBlockFixer.getDoorMeta(state));
 		
 		state = level.getBlockState(x, py, z);
 		if (state.isOf(this)) {
-			LevelUtil.setBlockSilent(level, x, py, z, state.with(VBEBlockProperties.OPENED, opened));
+			BlockState state2 = state.with(VBEBlockProperties.OPENED, opened);
+			LevelUtil.setBlockSilent(level, x, py, z, state2, VBEBlockFixer.getDoorMeta(state2));
 		}
 		
 		level.updateArea(x, y1, z, x, y2, z);
@@ -106,6 +127,7 @@ public abstract class DoorBlockMixin extends Block {
 	@Inject(method = "getTexture", at = @At("HEAD"), cancellable = true)
 	private void vbe_fixTexture(int i, int j, CallbackInfoReturnable<Integer> info) {
 		if (!VBE.ENHANCED_DOORS.getValue()) return;
+		if (this != WOOD_DOOR && this != IRON_DOOR) return;
 		info.setReturnValue(0);
 	}
 	
@@ -171,7 +193,7 @@ public abstract class DoorBlockMixin extends Block {
 	}
 	
 	@Inject(method = "updateBoundingBox", at = @At("HEAD"), cancellable = true)
-	public void vbe_updateBoundingBox(BlockView view, int x, int y, int z, CallbackInfo info) {
+	private void vbe_updateBoundingBox(BlockView view, int x, int y, int z, CallbackInfo info) {
 		if (!VBE.ENHANCED_DOORS.getValue()) return;
 		info.cancel();
 		
@@ -192,10 +214,46 @@ public abstract class DoorBlockMixin extends Block {
 		float min = 3F / 16F;
 		float max = 1F - min;
 		
+		if (this != WOOD_DOOR && this != IRON_DOOR) {
+			y1 = 0.0F;
+			y2 = 1.0F;
+		}
+		
 		switch (d.getAxis()) {
 			case X -> this.setBoundingBox(d.getOffsetX() < 0 ? 0 : max, y1, 0.0F, d.getOffsetX() < 0 ? min : 1, y2, 1.0F);
 			case Z -> this.setBoundingBox(0.0F, y1, d.getOffsetZ() < 0 ? 0 : max, 1.0F, y2, d.getOffsetZ() < 0 ? min : 1);
 		}
+	}
+	
+	// Doubled code for mod compat
+	@Environment(EnvType.CLIENT)
+	@Inject(method = "getOutlineShape", at = @At("HEAD"), cancellable = true)
+	private void vbe_getOutlineShape(Level level, int x, int y, int z, CallbackInfoReturnable<Box> info) {
+		if (!VBE.ENHANCED_DOORS.getValue()) return;
+		info.cancel();
+		
+		BlockState state = level.getBlockState(x, y, z);
+		if (!state.isOf(this)) return;
+		
+		TopBottom part = state.get(VBEBlockProperties.TOP_BOTTOM);
+		Direction d = state.get(Properties.HORIZONTAL_FACING);
+		
+		if (state.get(VBEBlockProperties.OPENED)) {
+			if (state.get(VBEBlockProperties.INVERTED)) d = d.rotateCounterclockwise(Axis.Y);
+			else d = d.rotateClockwise(Axis.Y);
+		}
+		
+		float y1 = part == TopBottom.BOTTOM ? 0 : -1;
+		float y2 = part == TopBottom.BOTTOM ? 2 : 1;
+		float min = 3F / 16F;
+		float max = 1F - min;
+		
+		switch (d.getAxis()) {
+			case X -> this.setBoundingBox(d.getOffsetX() < 0 ? 0 : max, y1, 0.0F, d.getOffsetX() < 0 ? min : 1, y2, 1.0F);
+			case Z -> this.setBoundingBox(0.0F, y1, d.getOffsetZ() < 0 ? 0 : max, 1.0F, y2, d.getOffsetZ() < 0 ? min : 1);
+		}
+		
+		info.setReturnValue(super.getOutlineShape(level, x, y, z));
 	}
 	
 	@Unique
@@ -214,8 +272,14 @@ public abstract class DoorBlockMixin extends Block {
 		
 		boolean opened = state.get(VBEBlockProperties.OPENED);
 		if (opened != sideStateBottom.get(VBEBlockProperties.OPENED) || opened != sideStateTop.get(VBEBlockProperties.OPENED)) {
-			LevelUtil.setBlockForceUpdate(level, x, y, z, sideStateBottom.with(VBEBlockProperties.OPENED, opened));
+			BlockState state2 = sideStateBottom.with(VBEBlockProperties.OPENED, opened);
+			level.setBlockMeta(x, y, z, VBEBlockFixer.getDoorMeta(state2));
+			LevelUtil.setBlockForceUpdate(level, x, y, z, state2);
+			
+			state2 = sideStateTop.with(VBEBlockProperties.OPENED, opened);
+			level.setBlockMeta(x, y + 1, z, VBEBlockFixer.getDoorMeta(state2));
 			LevelUtil.setBlockForceUpdate(level, x, y + 1, z, sideStateTop.with(VBEBlockProperties.OPENED, opened));
+			
 			level.updateArea(x, y, z, x, y + 1, z);
 			level.playLevelEvent(null, 1003, x, y, z, 0);
 		}

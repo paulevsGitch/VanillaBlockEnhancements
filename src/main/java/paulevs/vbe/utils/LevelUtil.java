@@ -41,6 +41,17 @@ public class LevelUtil {
 		return level.getHitResult(pos, dir, false);
 	}
 	
+	public static void setMetaSilent(Level level, int x, int y, int z, int meta) {
+		FlattenedChunk chunk = (FlattenedChunk) level.getChunkFromCache(x >> 4, z >> 4);
+		int index = level.getSectionIndex(y);
+		ChunkSection section = chunk.sections[index];
+		if (section == null) {
+			section = new ChunkSection(index);
+			chunk.sections[index] = section;
+		}
+		section.setMeta(x & 15, y & 15, z & 15, meta);
+	}
+	
 	public static void setBlockSilent(Level level, int x, int y, int z, BlockState state) {
 		FlattenedChunk chunk = (FlattenedChunk) level.getChunkFromCache(x >> 4, z >> 4);
 		int index = level.getSectionIndex(y);

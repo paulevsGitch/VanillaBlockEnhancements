@@ -273,11 +273,11 @@ public abstract class DoorBlockMixin extends Block {
 		boolean opened = state.get(VBEBlockProperties.OPENED);
 		if (opened != sideStateBottom.get(VBEBlockProperties.OPENED) || opened != sideStateTop.get(VBEBlockProperties.OPENED)) {
 			BlockState state2 = sideStateBottom.with(VBEBlockProperties.OPENED, opened);
-			level.setBlockMeta(x, y, z, VBEBlockFixer.getDoorMeta(state2));
+			LevelUtil.setMetaSilent(level, x, y, z, VBEBlockFixer.getDoorMeta(state2));
 			LevelUtil.setBlockForceUpdate(level, x, y, z, state2);
 			
 			state2 = sideStateTop.with(VBEBlockProperties.OPENED, opened);
-			level.setBlockMeta(x, y + 1, z, VBEBlockFixer.getDoorMeta(state2));
+			LevelUtil.setMetaSilent(level, x, y + 1, z, VBEBlockFixer.getDoorMeta(state2));
 			LevelUtil.setBlockForceUpdate(level, x, y + 1, z, sideStateTop.with(VBEBlockProperties.OPENED, opened));
 			
 			level.updateArea(x, y, z, x, y + 1, z);

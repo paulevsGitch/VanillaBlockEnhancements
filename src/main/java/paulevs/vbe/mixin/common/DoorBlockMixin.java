@@ -54,7 +54,6 @@ public abstract class DoorBlockMixin extends Block {
 	
 	@Override
 	public void onBlockPlaced(Level level, int x, int y, int z) {
-		System.out.println("Placed door " + level.getBlockMeta(x, y, z));
 		BlockState state1 = level.getBlockState(x, y, z);
 		if (!state1.isOf(this)) return;
 		int meta = level.getBlockMeta(x, y, z);

@@ -7,7 +7,6 @@ import net.minecraft.entity.living.LivingEntity;
 import net.minecraft.entity.living.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.level.Level;
-import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.maths.BlockPos;
 import net.minecraft.util.maths.Box;
 import net.modificationstation.stationapi.api.block.BlockState;
@@ -24,7 +23,6 @@ import paulevs.vbe.VBE;
 import paulevs.vbe.block.StairsShape;
 import paulevs.vbe.block.VBEBlockProperties;
 import paulevs.vbe.block.VBEBlockProperties.StairsPart;
-import paulevs.vbe.utils.LevelUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;

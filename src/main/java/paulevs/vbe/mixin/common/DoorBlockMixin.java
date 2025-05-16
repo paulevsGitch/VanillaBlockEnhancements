@@ -90,7 +90,6 @@ public abstract class DoorBlockMixin extends Block {
 	
 	@Inject(method = "canUse", at = @At("HEAD"), cancellable = true)
 	private void vbe_canUse(Level level, int x, int y, int z, PlayerEntity player, CallbackInfoReturnable<Boolean> info) {
-		System.out.println(VBEBlockFixer.isVanillaDoor(this));
 		if (!VBE.ENHANCED_DOORS.getValue() || !VBEBlockFixer.isVanillaDoor(this)) return;
 		info.setReturnValue(true);
 		
@@ -259,7 +258,6 @@ public abstract class DoorBlockMixin extends Block {
 	
 	@Unique
 	private void vbe_updateSideDoor(Level level, int x, int y, int z, BlockState state) {
-		System.out.println("Update side");
 		boolean inverted = state.get(VBEBlockProperties.INVERTED);
 		Direction offset = state.get(Properties.HORIZONTAL_FACING);
 		offset = inverted ? offset.rotateClockwise(Axis.Y) : offset.rotateCounterclockwise(Axis.Y);

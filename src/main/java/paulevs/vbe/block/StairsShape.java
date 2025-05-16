@@ -188,14 +188,14 @@ public interface StairsShape {
 									else shapes.add(Box.create(x1, 0.0F, 0.0F, x2, 0.5F, 0.5F));
 								}
 								case 3 -> {
-									shapes.add(Box.create(x1, 0.5F, 0.0F, x2, 1.0F, 1.0F));
+									shapes.add(Box.create(x1, 0.0F, 0.0F, x2, 0.5F, 1.0F));
 									x1 = facing.getOffsetX() < 0 ? 0.5F : 0.0F;
 									x2 = facing.getOffsetX() < 0 ? 1.0F : 0.5F;
 									if (facing.getOffsetX() < 0) shapes.add(Box.create(x1, 0.0F, 0.0F, x2, 0.5F, 0.5F));
 									else shapes.add(Box.create(x1, 0.0F, 0.5F, x2, 0.5F, 1.0F));
 								}
 								case 4 -> {
-									shapes.add(Box.create(x1, 0.5F, 0.0F, x2, 1.0F, 1.0F));
+									shapes.add(Box.create(x1, 0.0F, 0.0F, x2, 0.5F, 1.0F));
 									x1 = facing.getOffsetX() < 0 ? 0.5F : 0.0F;
 									x2 = facing.getOffsetX() < 0 ? 1.0F : 0.5F;
 									if (facing.getOffsetX() < 0) shapes.add(Box.create(x1, 0.0F, 0.5F, x2, 0.5F, 1.0F));
@@ -218,14 +218,14 @@ public interface StairsShape {
 									else shapes.add(Box.create(0.5F, 0.0F, z1, 1.0F, 0.5F, z2));
 								}
 								case 3 -> {
-									shapes.add(Box.create(0.0F, 0.5F, z1, 1.0F, 1.0F, z2));
+									shapes.add(Box.create(0.0F, 0.0F, z1, 1.0F, 0.5F, z2));
 									z1 = facing.getOffsetZ() < 0 ? 0.5F : 0.0F;
 									z2 = facing.getOffsetZ() < 0 ? 1.0F : 0.5F;
 									if (facing.getOffsetZ() < 0) shapes.add(Box.create(0.5F, 0.0F, z1, 1.0F, 0.5F, z2));
 									else shapes.add(Box.create(0.0F, 0.0F, z1, 0.5F, 0.5F, z2));
 								}
 								case 4 -> {
-									shapes.add(Box.create(0.0F, 0.5F, z1, 1.0F, 1.0F, z2));
+									shapes.add(Box.create(0.0F, 0.0F, z1, 1.0F, 0.5F, z2));
 									z1 = facing.getOffsetZ() < 0 ? 0.5F : 0.0F;
 									z2 = facing.getOffsetZ() < 0 ? 1.0F : 0.5F;
 									if (facing.getOffsetZ() < 0) shapes.add(Box.create(0.0F, 0.0F, z1, 0.5F, 0.5F, z2));

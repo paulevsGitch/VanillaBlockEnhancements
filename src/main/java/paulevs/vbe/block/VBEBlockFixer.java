@@ -1,5 +1,6 @@
 package paulevs.vbe.block;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.DoorBlock;
 import net.minecraft.block.StairsBlock;
 import net.minecraft.block.TrapdoorBlock;
@@ -39,6 +40,7 @@ public class VBEBlockFixer {
 	}
 	
 	public static BlockState fixDoor(BlockState state, int meta) {
+		if (!isVanillaDoor(state.getBlock())) return state;
 		if (skipFix(state, meta)) return state;
 		boolean bottom = meta < 8;
 		boolean open = (meta & 4) == 0;
@@ -47,6 +49,7 @@ public class VBEBlockFixer {
 			.with(VBEBlockProperties.TOP_BOTTOM, bottom ? TopBottom.BOTTOM : TopBottom.TOP)
 			.with(Properties.HORIZONTAL_FACING, dir)
 			.with(VBEBlockProperties.OPENED, open);
+			//.with(VBEBlockProperties.INVERTED, true);
 	}
 	
 	public static int getDoorMeta(BlockState state) {
@@ -81,5 +84,10 @@ public class VBEBlockFixer {
 	
 	private static boolean skipFix(BlockState state, int meta) {
 		return meta == 0 || state != state.getBlock().getDefaultState();
+	}
+	
+	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
+	public static boolean isVanillaDoor(Block block) {
+		return block == Block.WOOD_DOOR || block == Block.IRON_DOOR;
 	}
 }

@@ -28,7 +28,9 @@ public class VBEDoorItem extends TemplateDoorItem {
 	
 	@Override
 	public boolean useOnBlock(ItemStack stack, PlayerEntity player, Level level, int x, int y, int z, int side) {
-		if (!VBE.ENHANCED_DOORS.getValue()) return super.useOnBlock(stack, player, level, x, y, z, side);
+		if (!VBE.ENHANCED_DOORS.getValue()) {
+			return super.useOnBlock(stack, player, level, x, y, z, side);
+		}
 		
 		Direction direction = Direction.byId(side);
 		
@@ -55,10 +57,8 @@ public class VBEDoorItem extends TemplateDoorItem {
 		boolean inverted = sideState.isOf(door) && !sideState.get(VBEBlockProperties.INVERTED);
 		state = state.with(VBEBlockProperties.INVERTED, inverted);
 		
-		level.stopPhysics = true;
 		LevelUtil.setBlockSilent(level, x, y, z, state.with(VBEBlockProperties.TOP_BOTTOM, TopBottom.BOTTOM));
 		LevelUtil.setBlockSilent(level, x, y + 1, z, state.with(VBEBlockProperties.TOP_BOTTOM, TopBottom.TOP));
-		level.stopPhysics = false;
 		
 		level.updateArea(x, y, z, x, y + 1, z);
 		

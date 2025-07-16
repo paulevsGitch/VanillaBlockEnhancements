@@ -1,0 +1,12 @@
+{
+	"values": [
+		"vbe:stone_slab_half",
+		"vbe:stone_slab_full",
+		"vbe:sandstone_slab_half",
+		"vbe:sandstone_slab_full",
+		"vbe:oak_slab_half",
+		"vbe:oak_slab_full",
+		"vbe:cobblestone_slab_half",
+		"vbe:cobblestone_slab_full"
+	]
+}

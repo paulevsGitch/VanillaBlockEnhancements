@@ -54,6 +54,6 @@ public class VanillaLeavesWrapper extends VBELeavesBlock {
 	public List<ItemStack> getDropList(Level level, int x, int y, int z, BlockState state, int meta) {
 		int count = LEAVES.getDropCount(level.random);
 		if (count == 0) return Collections.emptyList();
-		return Collections.singletonList(new ItemStack(Block.SAPLING.id, count, this.meta));
+		return Collections.singletonList(new ItemStack(Block.SAPLING.asItem().id, count, this.meta));
 	}
 }

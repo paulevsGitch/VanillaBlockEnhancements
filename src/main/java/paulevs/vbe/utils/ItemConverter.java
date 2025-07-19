@@ -13,13 +13,13 @@ public class ItemConverter {
 		VBEBlocks.BIRCH_LOG
 	};
 	
-	public static int getID(int id, int damage) {
+	public static int getID(int itemId, int damage) {
 		Item item = null;
-		if (id == Block.STONE_SLAB.id && VBE.ENHANCED_SLABS.getValue()) item = VBEBlocks.getHalfSlabByMeta(damage).asItem();
-		if (id == Block.LOG.id) item = VBEBlocks.getLogByMeta(damage).asItem();
-		if (id == Block.LEAVES.id) item = VBEBlocks.getLeavesByMeta(damage).asItem();
-		if (id == Item.woodDoor.id) item = VBEItems.OAK_DOOR.asItem();
-		if (id == Item.ironDoor.id) item = VBEItems.IRON_DOOR.asItem();
+		if (itemId == Block.STONE_SLAB.asItem().id && VBE.ENHANCED_SLABS.getValue()) item = VBEBlocks.getHalfSlabByMeta(damage).asItem();
+		if (itemId == Block.LOG.asItem().id) item = VBEBlocks.getLogByMeta(damage).asItem();
+		if (itemId == Block.LEAVES.asItem().id) item = VBEBlocks.getLeavesByMeta(damage).asItem();
+		if (itemId == Item.woodDoor.id) item = VBEItems.OAK_DOOR.asItem();
+		if (itemId == Item.ironDoor.id) item = VBEItems.IRON_DOOR.asItem();
 		return item == null ? -1 : item.id;
 	}
 	
@@ -27,11 +27,11 @@ public class ItemConverter {
 		return id == Block.STONE_SLAB.id && VBE.ENHANCED_SLABS.getValue() ? damage : 0;
 	}
 	
-	public static boolean resetDamage(int id) {
+	public static boolean resetDamage(int itemId) {
 		for (Block log : LOGS) {
 			Item item = log.asItem();
 			if (item == null) continue;
-			if (id == item.id) return true;
+			if (itemId == item.id) return true;
 		}
 		return false;
 	}

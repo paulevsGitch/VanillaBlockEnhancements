@@ -22,6 +22,7 @@
 		"SpruceTreeMixin",
 		"TorchBlockMixin",
 		"ItemEntityMixin",
+		"FireBlockMixin",
 		"ItemStackMixin",
 		"StoneSlabMixin",
 		"DoorBlockMixin",

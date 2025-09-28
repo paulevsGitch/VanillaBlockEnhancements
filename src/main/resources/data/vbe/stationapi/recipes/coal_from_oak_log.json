@@ -4,6 +4,7 @@
 		"item": "vbe:oak_log"
 	},
 	"result": {
-		"item": "minecraft:coal"
+		"item": "minecraft:coal",
+		"damage": 1
 	}
 }
